@@ -4,7 +4,6 @@
 #@String rows
 #@String columns
 #@String stitchorder
-#@String scopename
 #@String channame
 #@String size
 #@String overlap_pct
@@ -73,6 +72,16 @@ if awsdownload == 'True':
                         break
                 if output:
                         print(output.strip())
+        tiflist=[]
+        for root, dirs, files in os.walk(localtemp):
+                for name in files:
+                        if '.tif' in name:
+                                tiflist.append([root,name])
+        print(len(tiflist), 'tifs found')
+        for eachtif in tiflist:
+                if eachtif[0]!=localtemp:
+                        os.rename(os.path.join(eachtif[0],eachtif[1]),os.path.join(localtemp,eachtif[1]))
+
         subdir = localtemp
         
 
@@ -80,44 +89,29 @@ if os.path.isdir(subdir):
         dirlist=os.listdir(subdir) 
         welllist=[]
         presuflist = []
-        middledict = {}
         permprefix = None
         permsuffix = None
-        if scopename=='TI-E':
-                for eachfile in dirlist:
+        for eachfile in dirlist:
                         if '.tif' in eachfile:
                                 if filterstring in eachfile:
-                                        prefix1,suffix1=eachfile.split('MMStack_')
-                                        prefix2,suffix2=suffix1.split('-')
-                                        prefix3,suffix3=suffix2.split('ome')
-                                        if prefix2 not in welllist:
-                                                welllist.append(prefix2)
-                                        if (prefix1,suffix3) not in presuflist:
-                                                presuflist.append((prefix1,suffix3))
-                                        if channame in eachfile:
-                                                if permprefix == None:
-                                                        permprefix = prefix1
-                                                        permsuffix = suffix3
-                presuflist.sort()
-        else:
-                for eachfile in dirlist:
-                        if '.tif' in eachfile:
-                                if filterstring in eachfile:
-                                        prefixBeforeWell,suffixWithWell=eachfile.split('Well')
-                                        Well,suffixAfterWell=suffixWithWell.split('_Channel')
-                                        if Well not in welllist:
-                                                welllist.append(Well)
-                                        betweenWellAndSeries,suffixWithSeries=suffixAfterWell.split('Site_')
-                                        Series,channelSuffix=suffixWithSeries.split('_')
-                                        prefix1=prefixBeforeWell+'Well'+Well
-                                        if (prefix1,channelSuffix) not in presuflist:
-                                                presuflist.append((prefix1,channelSuffix))
-                                                middledict[(prefix1,channelSuffix)]=betweenWellAndSeries
-                                        if channame in channelSuffix:
-                                                if permprefix == None:
-                                                        permprefix=prefix1
-                                                        permsuffix=channelSuffix
-                presuflist.sort()	
+                                        if 'Overlay' not in eachfile:
+                                                prefixBeforeWell,suffixWithWell=eachfile.split('_Well_')
+                                                Well,suffixAfterWell=suffixWithWell.split('_Site_')
+                                                channelSuffix = suffixAfterWell[suffixAfterWell.index('_')+1:]
+                                                if (prefixBeforeWell,channelSuffix) not in presuflist:
+                                                        presuflist.append((prefixBeforeWell,channelSuffix))
+                                                if Well not in welllist:
+                                                        welllist.append(Well)
+                                                if channame in channelSuffix:
+                                                        if permprefix == None:
+                                                                permprefix=prefixBeforeWell
+                                                                permsuffix=channelSuffix
+
+        for eachpresuf in presuflist:
+                if eachpresuf[1][-4:]!='.tif':
+                        if eachpresuf[1][-5:]!='.tiff':
+                                presuflist.remove(eachpresuf)
+        presuflist.sort()	
         print welllist, presuflist
 
         for eachwell in welllist:
@@ -126,11 +120,7 @@ if os.path.isdir(subdir):
                 standard_grid_instructions=["type=["+stitchorder+"] order=[Right & Down                ] grid_size_x="+rows+" grid_size_y="+columns+" tile_overlap="+overlap_pct+" first_file_index_i=0 directory="+in_subdir+" file_names=",
                 " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
                 copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+in_subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
-                if scopename=='TI-E':
-                        filename=permprefix+'MMStack_'+eachwell+"-Site_{i}.ome"+permsuffix
-                else:
-                        filename=permprefix +'_Channel'+ middledict[(permprefix,permsuffix)] + 'Site_{i}_' +permsuffix
-                        
+                filename=permprefix+'_Well_'+eachwell+'_Site_{i}_'+permsuffix                        
                 fileoutname='Stitched'+filename.replace("{i}","")
                 IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                 im=IJ.getImage()
@@ -145,10 +135,7 @@ if os.path.isdir(subdir):
                         tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
                         if not os.path.exists(tile_subdir_persuf):
                                 os.mkdir(tile_subdir_persuf)
-                        if scopename == 'TI-E':
-                                filename=thisprefix+'MMStack_'+eachwell+"-Site_{i}.ome"+thissuffix
-                        else:
-                                filename = thisprefix + '_Channel' + middledict[eachpresuf] + 'Site_{i}_' + thissuffix
+                        filename=thisprefix+'_Well_'+eachwell+'_Site_{i}_'+thissuffix
                         fileoutname='Stitched'+filename.replace("{i}","")
                         with open(os.path.join(in_subdir, 'TileConfiguration.registered.txt'),'r') as infile:
                                 with open(os.path.join(in_subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
