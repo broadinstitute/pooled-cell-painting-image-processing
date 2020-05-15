@@ -5,6 +5,8 @@ import os
 
 import boto3
 
+sys.path.append('/opt/pooled-cell-painting-lambda')
+
 import create_CSVs
 import run_DCP
 import create_batch_jobs
