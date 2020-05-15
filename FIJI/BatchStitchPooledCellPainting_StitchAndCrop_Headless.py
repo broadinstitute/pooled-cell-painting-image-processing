@@ -43,7 +43,6 @@ upscaledsize=int(stitchedsize)*float(scalingstring)
 if upscaledsize > 46340:
         upscaledsize = 46340
 tilesize=int(int(upscaledsize)/tileperside)
-tenxsize=str(int(upscaledsize/10))
 
 
 out_subdir=os.path.join(outfolder, out_subdir_tag)
@@ -83,10 +82,10 @@ if awsdownload == 'True':
                         os.rename(os.path.join(eachtif[0],eachtif[1]),os.path.join(localtemp,eachtif[1]))
 
         subdir = localtemp
-        
+
 
 if os.path.isdir(subdir):
-        dirlist=os.listdir(subdir) 
+        dirlist=os.listdir(subdir)
         welllist=[]
         presuflist = []
         permprefix = None
@@ -111,16 +110,16 @@ if os.path.isdir(subdir):
                 if eachpresuf[1][-4:]!='.tif':
                         if eachpresuf[1][-5:]!='.tiff':
                                 presuflist.remove(eachpresuf)
-        presuflist.sort()	
+        presuflist.sort()
         print welllist, presuflist
 
         for eachwell in welllist:
                 in_subdir=subdir
-                        
+
                 standard_grid_instructions=["type=["+stitchorder+"] order=[Right & Down                ] grid_size_x="+rows+" grid_size_y="+columns+" tile_overlap="+overlap_pct+" first_file_index_i=0 directory="+in_subdir+" file_names=",
                 " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
                 copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+in_subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
-                filename=permprefix+'_Well_'+eachwell+'_Site_{i}_'+permsuffix                        
+                filename=permprefix+'_Well_'+eachwell+'_Site_{i}_'+permsuffix
                 fileoutname='Stitched'+filename.replace("{i}","")
                 IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                 im=IJ.getImage()
@@ -143,15 +142,18 @@ if os.path.isdir(subdir):
                                                 line=line.replace(permprefix,thisprefix)
                                                 line=line.replace(permsuffix,thissuffix)
                                                 outfile.write(line)
-                        
+
                         IJ.run("Grid/Collection stitching", copy_grid_instructions)
                         im=IJ.getImage()
+                        print("Canvas Size...", "width="+stitchedsize+" height="+stitchedsize+" position=Top-Left zero")
                         IJ.run("Canvas Size...", "width="+stitchedsize+" height="+stitchedsize+" position=Top-Left zero")
                         im2=IJ.getImage()
-                        IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+str(upscaledsize)+" height="+str(upscaledsize)+" interpolation=Bilinear average create")
+                        print("Scale...", "x=- y=- width="+str(upscaledsize)+" height="+str(upscaledsize)+" interpolation=Bilinear average create")
+                        IJ.run("Scale...", "x=- y=- width="+str(upscaledsize)+" height="+str(upscaledsize)+" interpolation=Bilinear average create")
                         im3=IJ.getImage()
                         IJ.saveAs(im3,'tiff',os.path.join(out_subdir,fileoutname))
                         im=IJ.getImage()
+                        print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                         im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                         im_10=IJ.getImage()
                         IJ.saveAs(im_10,"Tiff",os.path.join(downsample_subdir,fileoutname))
