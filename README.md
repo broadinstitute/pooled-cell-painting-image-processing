@@ -1,1 +1,1 @@
-# pooled-cell-painting-processing
+# pooled-cell-painting-image-processing
