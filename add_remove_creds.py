@@ -23,9 +23,6 @@ def replace(file, pattern, subst):
 with open('substitutions.json','rb') as a:
     subs = json.load(a)
 
-print(subs.keys())
-print(subs.values())
-
 if sys.argv[1] == 'add':
     val_from = subs.keys()
 elif sys.argv[1] == 'remove':
