@@ -1,7 +1,9 @@
 { "painting_rows":"38",
   "painting_columns":"38",
+  "painting_channels":"5",
   "barcoding_rows":"19",
   "barcoding_columns":"19",
+  "barcoding_cycles":"12",
   "overlap_pct":"20",
   "_commentonstitchorder":"Typically should be either 'Grid: snake by rows' or 'Grid: row-by-row'",
   "stitchorder":"Grid: snake by rows"}
