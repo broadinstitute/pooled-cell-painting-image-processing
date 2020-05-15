@@ -20,7 +20,7 @@ fleet_file_name = '/tmp/fleet_file_1.json'
 
 def lambda_handler(event, context):
     # Log the received event
-    bucket = event['Records'][0]['s3']['bucket']['name']
+    bucket_name = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
     prefix, batchAndPipe = key.split('pipelines/')
     image_prefix = prefix.split('workspace')[0]
