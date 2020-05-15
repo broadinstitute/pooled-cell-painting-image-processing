@@ -1,0 +1,13 @@
+{
+  "_comment1": "Paths in this file are relative to the root of your S3 bucket",
+  "output_file_location": "projects/2018_11_20_Periscope_X/20200211_6W_CP151A2",
+  "_comment2a": "The line below allows you to tell DF if any of the metadata values specified in your groups should mean files",
+  "_comment2b": "end up in different subfolders.  Set to [] if none, otherwise set in order.",
+  "shared_metadata": {"input_file_location": "/home/ubuntu/bucket/projects/2018_11_20_Periscope_X","subdir":"20200211_6W_CP151A2/images_corrected/barcoding","scalingstring":"2", "overlap_pct":"20","size":"1480","rows":"19","columns":"19", "stitchorder":"Grid: snake by rows", "channame":"DAPI", "tileperside":"10", "awsdownload":"True", "bucketname":"dummybucket", "localtemp":"local_temp"},
+  "_comment3": "The following groups are tasks, and each will be run in parallel",
+  "groups": [
+    {"out_subdir_tag":"151A2_B1","filterstring": "Well_4","downloadfilter":"*Well_4_*"},
+    {"out_subdir_tag":"151A2_B2","filterstring": "Well_5","downloadfilter":"*Well_5*"}
+  ]
+}
+
