@@ -28,9 +28,8 @@ def create_CSV_pipeline1(platename, seriesperwell, path, listoffiles):
     df.to_csv(file_out_name,index=False)
     return file_out_name
 
-def create_CSV_pipeline2(platename, seriesperwell, path, listoffiles):
-    illum_path = path.replace('images','illum')
-    columns = ['Metadata_Plate', 'Metadata_Series']
+def create_CSV_pipeline2(platename, seriesperwell, path, illum_path,listoffiles, well_list):
+    columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_Well', 'Metadata_Well_Value']
     columns_per_channel = ['PathName_','FileName_','Series_','Frame_']
     channels = ['Mito', 'DNA', 'ER', 'WGA', 'PhalloidinSlow','PhalloidinFast']
     columns += [col + chan for col in columns_per_channel for chan in channels]
@@ -41,6 +40,16 @@ def create_CSV_pipeline2(platename, seriesperwell, path, listoffiles):
     total_file_count = seriesperwell*len(listoffiles)
     df['Metadata_Plate'] = [platename] * total_file_count
     df['Metadata_Series'] = range(seriesperwell) * len(listoffiles)
+    well_df_list = []
+    well_val_df_list = []
+    for eachwell in well_list:
+        well_df_list += [eachwell] * seriesperwell
+        wellval = eachwell.split('Well')[1]
+        if wellval[0] == '_':
+            wellval = wellval[1:]
+        well_val_df_list += [wellval] * seriesperwell
+    df['Metadata_Well'] = well_df_list
+    df['Metadata_Well_Value'] = well_val_df_list
     for chan in channels:
         df['Series_'+chan] = range(seriesperwell) * len(listoffiles)
         df['PathName_'+chan] = [path] * total_file_count
@@ -49,13 +58,13 @@ def create_CSV_pipeline2(platename, seriesperwell, path, listoffiles):
     full_list_1 = [x for sublist in temp_list for x in sublist]
     for chan in channels[:-2]:
          df['FileName_'+chan] = full_list_1
-         df['FileName_Illum'+chan] = [platename+'_Illum'+chan] * total_file_count
+         df['FileName_Illum'+chan] = [platename+'_Illum'+chan+'.npy'] * total_file_count
          df['PathName_Illum'+chan] = [illum_path] * total_file_count
     temp_list = [[x] * seriesperwell for x in file_list_1]
     df['FileName_PhalloidinFast'] = [x for sublist in temp_list for x in sublist]
     temp_list = [[x] * seriesperwell for x in file_list_2]
     df['FileName_PhalloidinSlow'] = [x for sublist in temp_list for x in sublist]
-    df['FileName_IllumPhalloidin'] = [platename+'_IllumPhalloidin'] * total_file_count
+    df['FileName_IllumPhalloidin'] = [platename+'_IllumPhalloidin.npy'] * total_file_count
     df['PathName_IllumPhalloidin'] = [illum_path] * total_file_count
     df['Frame_PhalloidinFast'] = [0] * total_file_count
     df['Frame_PhalloidinSlow'] = [0] * total_file_count
