@@ -77,11 +77,11 @@ def generate_task_definition():
         },
 	{
 	    "name": "AWS_ACCESS_KEY_ID",
-	    "value": os.environ["AWS_ACCESS_KEY_ID"]
+	    "value": os.environ["MY_AWS_ACCESS_KEY_ID"]
 	},
 	{
 	    "name": "AWS_SECRET_ACCESS_KEY",
-	    "value": os.environ["AWS_SECRET_ACCESS_KEY"]
+	    "value": os.environ["MY_AWS_SECRET_ACCESS_KEY"]
 	},
 	{
 	    "name": "AWS_BUCKET",
@@ -311,7 +311,7 @@ class JobQueue():
 #################################
 
 def setup():
-    print('started')
+    print(APP_NAME,'setup started')
     ECS_TASK_NAME = APP_NAME + 'Task'
     ECS_SERVICE_NAME = APP_NAME + 'Service'
     sqs = boto3.client('sqs')
