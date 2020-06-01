@@ -1,4 +1,5 @@
 import json
+import re
 
 import run_DCP
 
@@ -21,6 +22,47 @@ def parse_image_names(imlist,filter):
                         else:
                             image_dict[plate][well][cycle] += [imname]
     return image_dict
+    
+def return_full_wells(image_dict,expected_cycles):
+    im_dict_out = {}
+    expected_cycles = int(expected_cycles)
+    platelist = image_dict.keys()
+    for eachplate in platelist:
+        print('Checking compeleteness of plate', eachplate)
+        platedict = image_dict[eachplate]
+        well_list = platedict.keys()
+        #first let's see how many wells have every cycle
+        full_wells = []
+        for eachwell in well_list:
+            cycle_list = platedict[eachwell].keys()
+            if len(cycle_list) == expected_cycles:
+                has_all_files = True
+                #let's also make sure each cycle has all its files; for Cycle 1, that's 1, for the rest it's 5
+                for cycle in cycle_list:
+                    if len(platedict[eachwell][cycle]) not in (1,5):
+                        has_all_files = False
+                if has_all_files:
+                    full_wells.append(eachwell)
+
+        #Initialize our output dictionary for the plate
+        print('Writing out the output for plate',eachplate,'has full wells',full_wells)
+        per_cycle_dict={}
+        for cycle in range(1,expected_cycles+1):
+            per_cycle_dict[cycle]={}
+        for eachwell in full_wells:
+            cycle_list = platedict[eachwell].keys()
+            for cycle in cycle_list:
+                match = re.search('[-_]c[_-]{0,1}[0-9]{1,2}',cycle)
+                out = match.group(0)
+                cycle_num = int(out[out.index('c')+1:])
+                if cycle_num == 1:
+                    per_cycle_dict[cycle_num][eachwell]=[cycle,platedict[eachwell][cycle]*5]
+                else:
+                    temp_list = platedict[eachwell][cycle]
+                    temp_list.sort()
+                    per_cycle_dict[cycle_num][eachwell]=[cycle,temp_list]
+        im_dict_out[eachplate] = per_cycle_dict
+    return im_dict_out
     
 def download_and_read_metadata_file(s3, bucket_name, metadata_file_name, metadata_on_bucket_name):
     with open(metadata_file_name, 'wb') as f:
