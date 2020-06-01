@@ -18,7 +18,7 @@ class JobQueue():
         print('Batch sent. Message ID:',response.get('MessageId'))
 
 
-def create_batch_jobs_1(startpath,batchsuffix,illumpipename,platelist):
+def create_batch_jobs_1(startpath,batchsuffix,illumpipename,platelist, app_name):
     #startpath=posixpath.join('projects',topdirname)
     pipelinepath=posixpath.join(startpath,os.path.join('workspace/pipelines',batchsuffix))
     illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'illum'))

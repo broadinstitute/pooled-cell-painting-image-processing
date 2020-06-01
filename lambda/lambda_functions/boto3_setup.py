@@ -320,6 +320,7 @@ def setup():
     get_or_create_cluster(ecs)
     update_ecs_task_definition(ecs, ECS_TASK_NAME)
     create_or_update_ecs_service(ecs, ECS_SERVICE_NAME, ECS_TASK_NAME)
+    return APP_NAME
 
 #################################
 # SERVICE 2: SUBMIT JOB

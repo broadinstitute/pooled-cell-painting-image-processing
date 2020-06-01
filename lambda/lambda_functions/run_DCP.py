@@ -14,7 +14,8 @@ def run_setup(bucket_name,prefix,batch,step):
     if 'config_ours' in sys.modules.keys():
         sys.modules.pop('config_ours')
     import boto3_setup
-    boto3_setup.setup()
+    app_name = boto3_setup.setup()
+    return app_name
     
 def run_cluster(bucket_name,prefix,batch,step, filename, njobs):
     os.chdir('/tmp')

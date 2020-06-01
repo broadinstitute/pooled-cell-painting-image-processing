@@ -18,12 +18,12 @@ class JobQueue():
         print('Batch sent. Message ID:',response.get('MessageId'))
 
 
-def create_batch_jobs_1(startpath,batchsuffix,illumpipename,platelist):
+def create_batch_jobs_1(startpath,batchsuffix,illumpipename,platelist, app_name):
     #startpath=posixpath.join('projects',topdirname)
     pipelinepath=posixpath.join(startpath,os.path.join('workspace/pipelines',batchsuffix))
     illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'illum'))
     datafilepath=posixpath.join(startpath,os.path.join('workspace/load_data_csv',batchsuffix))
-    illumqueue = JobQueue('2018_11_20_Periscope_X_IllumPaintingQueue')
+    illumqueue = JobQueue(app_name+'Queue')
     for toillum in platelist:
         templateMessage_illum = {'Metadata': 'Metadata_Plate='+toillum,
                                  'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath,
@@ -33,12 +33,12 @@ def create_batch_jobs_1(startpath,batchsuffix,illumpipename,platelist):
 
     print('Illum job submitted. Check your queue')
 
-def create_batch_jobs_2(startpath,batchsuffix,illumpipename,platelist, well_list):
+def create_batch_jobs_2(startpath,batchsuffix,illumpipename,platelist, well_list, app_name):
     #startpath=posixpath.join('projects',topdirname)
     pipelinepath=posixpath.join(startpath,os.path.join('workspace/pipelines',batchsuffix))
     illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'images_corrected'))
     datafilepath=posixpath.join(startpath,os.path.join('workspace/load_data_csv',batchsuffix))
-    illumqueue = JobQueue('2018_11_20_Periscope_X_ApplyIllumPaintingQueue')
+    illumqueue = JobQueue(app_name+'Queue')
     for toillum in platelist:
         for well in well_list:
             templateMessage_illum = {'Metadata': 'Metadata_Plate='+toillum+',Metadata_Well='+well,
