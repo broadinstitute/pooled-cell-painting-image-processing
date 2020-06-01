@@ -17,7 +17,7 @@ CLUSTER_MACHINES = 1
 TASKS_PER_MACHINE = 1
 MACHINE_TYPE = ['m4.xlarge']
 MACHINE_PRICE = 0.10
-EBS_VOL_SIZE = 300                       # In GB.  Minimum allowed is 22.
+EBS_VOL_SIZE = 200                       # In GB.  Minimum allowed is 22.
 
 # DOCKER INSTANCE RUNNING ENVIRONMENT:
 DOCKER_CORES = 4                        # Number of CellProfiler processes to run inside a docker container
