@@ -23,7 +23,7 @@ def create_batch_jobs_1(startpath,batchsuffix,illumpipename,platelist, app_name)
     pipelinepath=posixpath.join(startpath,os.path.join('workspace/pipelines',batchsuffix))
     illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'illum'))
     datafilepath=posixpath.join(startpath,os.path.join('workspace/load_data_csv',batchsuffix))
-    illumqueue = JobQueue('2018_11_20_Periscope_X_IllumPaintingQueue')
+    illumqueue = JobQueue(app_name+'Queue')
     for toillum in platelist:
         templateMessage_illum = {'Metadata': 'Metadata_Plate='+toillum,
                                  'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath,
