@@ -35,7 +35,7 @@ def lambda_handler(event, context):
     num_series = int(metadata['painting_rows']) * int(metadata['painting_columns'])
     
     #Get the list of images in this experiment
-    image_list_prefix = image_prefix+batch+'/images'
+    image_list_prefix = image_prefix+batch+'/images/'
     image_list = helpful_functions.paginate_a_folder(s3,bucket,image_list_prefix)
     image_dict = helpful_functions.parse_image_names(image_list,filter='20X')
     metadata ['painting_file_data'] = image_dict
