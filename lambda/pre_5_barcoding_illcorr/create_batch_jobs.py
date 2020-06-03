@@ -58,7 +58,7 @@ def create_batch_jobs_5(startpath,batchsuffix,illumpipename,platelist, expected_
     for toillum in platelist:
         for cycle in range(1,expected_cycles+1):
             templateMessage_illum = {'Metadata': 'Metadata_Plate='+toillum+',Metadata_SBSCycle='+str(cycle), 
-                                     'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath,
+                                     'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath,output_structure:'Metadata_Plate',
                                      'input': pipelinepath, 'data_file':posixpath.join(datafilepath,toillum, 'load_data_pipeline5.csv')}
                 
             illumqueue.scheduleBatch(templateMessage_illum)

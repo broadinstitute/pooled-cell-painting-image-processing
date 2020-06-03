@@ -30,12 +30,12 @@ SECONDS_TO_START = 3*60                 # Wait before the next CP process is ini
 #SQS QUEUE INFORMATION:
 SQS_QUEUE_NAME = APP_NAME + 'Queue'
 SQS_MESSAGE_VISIBILITY = 720*60           # Timeout (secs) for messages in flight (average time to be processed)
-SQS_DEAD_LETTER_QUEUE = 'arn:aws:sqs:us-east-1:XXXXXXXXXXXX:DeadMessages_default_cluster'
+SQS_DEAD_LETTER_QUEUE = 'arn:aws:sqs:us-east-1:XXXXXXXXXXXX:DeadMessages_default'
 
 # LOG GROUP INFORMATION:
 LOG_GROUP_NAME = APP_NAME
 
 # REDUNDANCY CHECKS
-CHECK_IF_DONE_BOOL = 'True'  #True or False- should it check if there are a certain number of non-empty files and delete the job if yes?
+CHECK_IF_DONE_BOOL = 'False'  #True or False- should it check if there are a certain number of non-empty files and delete the job if yes?
 EXPECTED_NUMBER_FILES = 5    #What is the number of files that trigger skipping a job?
 MIN_FILE_SIZE_BYTES = 1
