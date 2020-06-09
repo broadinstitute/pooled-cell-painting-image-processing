@@ -66,7 +66,7 @@ def lambda_handler(event, context):
     filter_prefix = image_prefix+batch+'/illum'
     expected_len = (int(metadata['painting_channels'])+1)*len(platelist)
     
-    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs)
+    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, filter_out = 'Cycle')
     
     if not done:
         print('Still work ongoing')

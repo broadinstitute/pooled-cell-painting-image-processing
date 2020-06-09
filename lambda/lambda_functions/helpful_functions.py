@@ -86,9 +86,15 @@ def paginate_a_folder(s3,bucket_name,prefix):
         image_list += [x['Key'] for x in page['Contents']]
     return image_list
 
-def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs):
+def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, filter_in = None, filter_out = None):
     #Step 1- how many files are there in the illum folder?
     image_list = paginate_a_folder(s3, bucket_name, filter_prefix)
+    
+    if filter_in != None:
+        image_list = [x for x in image_list if filter_in in x]
+    if filter_out != None:
+        image_list = [x for x in image_list if filter_out not in x]
+
     if len(image_list) >= expected_len:
         return True
     else:
@@ -125,7 +131,6 @@ def try_to_run_monitor(s3, bucket_name, prefix, batch, step, prev_step_app_name)
     boto3_setup.monitor()
 
 def try_a_shutdown(s3, bucket_name, prefix, batch, step, prev_step_app_name):
-    APP_NAME = prev_step_app_name
     print('Trying monitor')
     try:
         import botocore
