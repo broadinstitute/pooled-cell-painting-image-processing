@@ -20,6 +20,7 @@ pipeline_name = '2_Apply_Illum_forCP_TI2.cppipe'
 metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'illumFleet.json'
 prev_step_app_name = '2018_11_20_Periscope_X_IllumPainting'
+step = '2'
 
 def lambda_handler(event, context):
     # Log the received event
@@ -72,29 +73,19 @@ def lambda_handler(event, context):
     
     else:
         # first let's just try to run the monitor on 
-        APP_NAME = prev_step_app_name
-        print('Trying monitor')
-        try:
-            import botocore
-            helpful_functions.try_to_run_monitor(s3, bucket_name, prefix, batch, '1', prev_step_app_name)
-        except botocore.exceptions.ClientError as error:
-            print('Monitor cleanup of previous step failed with error: ',error)
-            print('Usually this is no existing queue by that name, maybe a previous monitor cleaned up')
-        except:
-            print('Monitor cleanup of previous step failed with error',sys.exc_info()[0])
-            pass
+        helpful_functions.try_a_shutdown(s3, bucket_name, prefix, batch, step, prev_step_app_name)
         
         #now let's do our stuff!
-        run_DCP.run_setup(bucket_name,prefix,batch,'2')
+        run_DCP.run_setup(bucket_name,prefix,batch,step)
         
         #make the jobs
         create_batch_jobs.create_batch_jobs_2(image_prefix,batch,pipeline_name,platelist, well_list)
         
         #Start a cluster
-        run_DCP.run_cluster(bucket_name,prefix,batch,'2', fleet_file_name, len(platelist)*len(well_list))  
+        run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, len(platelist)*len(well_list))  
 
         #Run the monitor
-        run_DCP.run_monitor(bucket_name, prefix, batch,'2')
+        run_DCP.run_monitor(bucket_name, prefix, batch,step)
         print('Go run the monitor now')
     
 
