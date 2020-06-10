@@ -19,7 +19,7 @@ sqs = boto3.client('sqs')
 pipeline_name = '6_Apply_Illum_forBarcoding_TI2.cppipe'
 metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'illumFleet.json'
-prev_step_app_name = '2018_11_20_Periscope_Calico_IllumBarcoding'
+prev_step_app_name = '2018_11_20_Periscope_X_IllumBarcoding'
 prev_step_num = '5'
 step = '6'
 
