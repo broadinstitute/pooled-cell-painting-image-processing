@@ -58,7 +58,7 @@ def create_batch_jobs_5(startpath,batchsuffix,illumpipename,platelist, expected_
     for toillum in platelist:
         for cycle in range(1,expected_cycles+1):
             templateMessage_illum = {'Metadata': 'Metadata_Plate='+toillum+',Metadata_SBSCycle='+str(cycle), 
-                                     'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath, output_structure:'Metadata_Plate',
+                                     'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath, 'output_structure':'Metadata_Plate',
                                      'input': pipelinepath, 'data_file':posixpath.join(datafilepath,toillum, 'load_data_pipeline5.csv')}
                 
             illumqueue.scheduleBatch(templateMessage_illum)
@@ -74,7 +74,7 @@ def create_batch_jobs_6(startpath,batchsuffix,illumpipename,plate_and_well_list,
     for toillum in plate_and_well_list:
         for arb in range(19): #later do this per site
             templateMessage_illum = {'Metadata': 'Metadata_Plate='+toillum[0]+',Metadata_Well='+toillum[1]+',Metadata_ArbitraryGroup='+str(arb),
-                                     'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath, output_structure:'Metadata_Plate-Metadata_Well',
+                                     'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath, 'output_structure':'Metadata_Plate-Metadata_Well',
                                      'input': pipelinepath, 'data_file':posixpath.join(datafilepath,toillum[0], 'load_data_pipeline6.csv')}
                 
             illumqueue.scheduleBatch(templateMessage_illum)
