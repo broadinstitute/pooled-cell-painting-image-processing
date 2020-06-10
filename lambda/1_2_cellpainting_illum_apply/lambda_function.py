@@ -19,6 +19,7 @@ sqs = boto3.client('sqs')
 pipeline_name = '2_Apply_Illum_forCP_TI2.cppipe'
 metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'illumFleet.json'
+prev_step_num = '1'
 prev_step_app_name = '2018_11_20_Periscope_X_IllumPainting'
 step = '2'
 
@@ -73,7 +74,7 @@ def lambda_handler(event, context):
     
     else:
         # first let's just try to run the monitor on 
-        helpful_functions.try_a_shutdown(s3, bucket_name, prefix, batch, step, prev_step_app_name)
+        helpful_functions.try_a_shutdown(s3, bucket_name, prefix, batch, prev_step_num, prev_step_app_name)
         
         #now let's do our stuff!
         app_name = run_DCP.run_setup(bucket_name,prefix,batch,step)

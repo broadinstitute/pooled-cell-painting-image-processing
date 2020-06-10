@@ -133,11 +133,11 @@ def try_to_run_monitor(s3, bucket_name, prefix, batch, step, prev_step_app_name)
     import boto3_setup
     boto3_setup.monitor()
 
-def try_a_shutdown(s3, bucket_name, prefix, batch, step, prev_step_app_name):
+def try_a_shutdown(s3, bucket_name, prefix, batch, prev_step_number, prev_step_app_name):
     print('Trying monitor')
     try:
         import botocore
-        try_to_run_monitor(s3, bucket_name, prefix, batch, str(int(step)-1), prev_step_app_name)
+        try_to_run_monitor(s3, bucket_name, prefix, batch, str(prev_step_number), prev_step_app_name)
     except botocore.exceptions.ClientError as error:
         print('Monitor cleanup of previous step failed with error: ',error)
         print('Usually this is no existing queue by that name, maybe a previous monitor cleaned up')
