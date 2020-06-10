@@ -124,7 +124,7 @@ def create_CSV_pipeline5(platename, seriesperwell, expected_cycles, path, plated
     
 def create_CSV_pipeline6(platename, seriesperwell, expected_cycles, path, illum_path, platedict):
     expected_cycles = int(expected_cycles)
-    columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_Well', 'Metadata_Well_Value']
+    columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_Well', 'Metadata_Well_Value', 'Metadata_ArbitraryGroup']
     columns_per_channel = ['PathName_','FileName_','Series_','Frame_']
     cycles = ['Cycle%02d_' %x for x in range(1,expected_cycles+1)]
     or_il = ['Orig','Illum']
@@ -135,6 +135,7 @@ def create_CSV_pipeline6(platename, seriesperwell, expected_cycles, path, illum_
     total_file_count = seriesperwell * len(well_list)
     df['Metadata_Plate'] = [platename] * total_file_count
     df['Metadata_Series'] = range(seriesperwell) * len(well_list)
+    df['Metadata_ArbitraryGroup'] = range(19)*19*len(well_list)
     well_df_list = []
     well_val_df_list = []
     for eachwell in well_list:

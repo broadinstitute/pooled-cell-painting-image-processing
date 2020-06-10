@@ -72,10 +72,11 @@ def create_batch_jobs_6(startpath,batchsuffix,illumpipename,plate_and_well_list,
     datafilepath=posixpath.join(startpath,os.path.join('workspace/load_data_csv',batchsuffix))
     illumqueue = JobQueue(app_name+'Queue')
     for toillum in plate_and_well_list:
-        templateMessage_illum = {'Metadata': 'Metadata_Plate='+toillum[0]+',Metadata_Well='+toillum[1],
-                                 'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath,
-                                 'input': pipelinepath, 'data_file':posixpath.join(datafilepath,toillum[0], 'load_data_pipeline6.csv')}
-            
-        illumqueue.scheduleBatch(templateMessage_illum)
+        for arb in range(19): #later do this per site
+            templateMessage_illum = {'Metadata': 'Metadata_Plate='+toillum[0]+',Metadata_Well='+toillum[1]+',Metadata_ArbitraryGroup='+str(arb),
+                                     'pipeline': posixpath.join(pipelinepath,illumpipename),'output': illumoutpath, output_structure:'Metadata_Plate-Metadata_Well',
+                                     'input': pipelinepath, 'data_file':posixpath.join(datafilepath,toillum[0], 'load_data_pipeline6.csv')}
+                
+            illumqueue.scheduleBatch(templateMessage_illum)
 
     print('Illum job submitted. Check your queue')

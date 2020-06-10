@@ -21,6 +21,7 @@ metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'illumFleet.json'
 prev_step_app_name = '2018_11_20_Periscope_Calico_IllumBarcoding'
 step = '6'
+max_fleet_size = 200
 
 def lambda_handler(event, context):
     # Log the received event
@@ -71,8 +72,8 @@ def lambda_handler(event, context):
             csv_on_bucket_name = prefix + 'load_data_csv/'+batch+'/'+eachplate+'/load_data_pipeline6.csv'
             print('Created', csv_on_bucket_name)
             with open(per_plate_csv,'rb') as a:
-                s3.put_object(Body= a, Bucket = bucket_name, Key = csv_on_bucket_name )
-
+                s3.put_object(Body= a, Bucket = bucket_name, Key = csv_on_bucket_name)
+                
         # first let's just try to run the monitor on the last step, in case we haven't yet
         helpful_functions.try_a_shutdown(s3, bucket_name, prefix, batch, step, prev_step_app_name)
         
@@ -83,7 +84,7 @@ def lambda_handler(event, context):
         create_batch_jobs.create_batch_jobs_6(image_prefix,batch,pipeline_name,plate_and_well_list, app_name)
         
         #Start a cluster
-        run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, len(plate_and_well_list))  
+        run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, max_fleet_size)  
 
         #Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch,step)
