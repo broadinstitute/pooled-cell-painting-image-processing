@@ -5,7 +5,7 @@ import boto3
 
 sys.path.append('/tmp')
 
-def run_setup(bucket_name,prefix,batch,step):
+def run_setup(bucket_name,prefix,batch,step,cellprofiler=True):
     os.chdir('/tmp')
     grab_batch_config(bucket_name,prefix,batch,step)
     #We might sometimes run setup after running cleanup on the step before, so we want to import our configs fresh
@@ -14,7 +14,7 @@ def run_setup(bucket_name,prefix,batch,step):
     if 'config_ours' in sys.modules.keys():
         sys.modules.pop('config_ours')
     import boto3_setup
-    app_name = boto3_setup.setup()
+    app_name = boto3_setup.setup(cellprofiler=cellprofiler)
     return app_name
     
 def run_cluster(bucket_name,prefix,batch,step, filename, njobs):
@@ -37,4 +37,4 @@ def grab_fleet_file(bucket_name,prefix,batch,step, filename):
     s3 = boto3.client('s3')
     our_fleet = prefix+'lambda/'+batch+'/'+str(step)+'/' + filename
     with open('/tmp/fleet_ours.json', 'wb') as f:
-        s3.download_fileobj(bucket_name, our_fleet, f)        
+        s3.download_fileobj(bucket_name, our_fleet, f)      

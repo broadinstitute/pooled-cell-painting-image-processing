@@ -48,6 +48,33 @@ def create_batch_jobs_2(startpath,batchsuffix,illumpipename,platelist, well_list
             illumqueue.scheduleBatch(templateMessage_illum)
 
     print('Illum job submitted. Check your queue')
+
+def create_batch_jobs_4(startpath,batchsuffix,metadata, plate_and_well_list, app_name):
+    local_start_path = posixpath.join("/home/ubuntu/bucket",startpath)
+    stitchqueue = JobQueue(app_name+'Queue')
+    stitchMessage = {'Metadata': '',
+		'output_file_location': posixpath.join(startpath,batchsuffix),
+		'shared_metadata': {
+		    "input_file_location": local_start_path, "scalingstring":"1", "overlap_pct":metadata["overlap_pct"], "size":"1480",
+		    "rows":metadata["painting_rows"], "columns":metadata["painting_columns"], "stitchorder":metadata["stitchorder"], 
+		    "channame":"DNA", "tileperside":"10", "awsdownload":"True", "bucketname":"imaging-platform", "localtemp":"local_temp"
+		}
+	}
+    for tostitch in plate_and_well_list:
+        if '_' not in tostitch[1]:
+            well = 'Well_'+tostitch[1][4:]
+        else:
+            well = tostitch[1]
+        stitchMessage["Metadata"] = {
+            "subdir":posixpath.join(batchsuffix,'images_corrected','painting',tostitch[0]+"-"+tostitch[1]),
+            "out_subdir_tag":tostitch[0]+"_"+tostitch[1], 
+            "filterstring": well,
+            "downloadfilter":"*"+well+"*"
+            
+        }
+        stitchqueue.scheduleBatch(stitchMessage)
+
+    print('Stitching job submitted. Check your queue')
     
 def create_batch_jobs_5(startpath,batchsuffix,illumpipename,platelist, expected_cycles, app_name):
     #startpath=posixpath.join('projects',topdirname)

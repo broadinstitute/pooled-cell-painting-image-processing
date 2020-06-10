@@ -11,6 +11,7 @@ from email.mime.text import MIMEText
 
 import numpy
 
+CPU_SHARES = 1024
 from config_ours import *
 WAIT_TIME = 60
 MONITOR_TIME = 60
@@ -67,59 +68,110 @@ def generate_task_definition():
     sqs = boto3.client('sqs')
     queue_name = get_queue_url(sqs)
     task_definition['containerDefinitions'][0]['environment'] += [
-	{
-            'name': 'APP_NAME',
-            'value': APP_NAME
-        },
-        {
-            'name': 'SQS_QUEUE_URL',
-            'value': queue_name
-        },
-	{
-	    "name": "AWS_ACCESS_KEY_ID",
-	    "value": os.environ["MY_AWS_ACCESS_KEY_ID"]
-	},
-	{
-	    "name": "AWS_SECRET_ACCESS_KEY",
-	    "value": os.environ["MY_AWS_SECRET_ACCESS_KEY"]
-	},
-	{
-	    "name": "AWS_BUCKET",
-	    "value": AWS_BUCKET
-	},
-	{
-	    "name": "DOCKER_CORES",
-	    "value": str(DOCKER_CORES)
-	},
-	{
-	    "name": "LOG_GROUP_NAME",
-	    "value": LOG_GROUP_NAME
-	},
-	{
-	    "name": "CHECK_IF_DONE_BOOL",
-	    "value": CHECK_IF_DONE_BOOL
-	},
-	{
-	    "name": "EXPECTED_NUMBER_FILES",
-	    "value": str(EXPECTED_NUMBER_FILES)
-	},
-	{
-	    "name": "ECS_CLUSTER",
-	    "value": ECS_CLUSTER
-	},
-	{
-	    "name": "SECONDS_TO_START",
-	    "value": str(SECONDS_TO_START)
-	},
-	{
-	    "name": "MIN_FILE_SIZE_BYTES",
-	    "value": str(MIN_FILE_SIZE_BYTES)
-	}
+    {
+        'name': 'APP_NAME',
+        'value': APP_NAME
+    },
+    {
+        'name': 'SQS_QUEUE_URL',
+        'value': queue_name
+    },
+    {
+        "name": "AWS_ACCESS_KEY_ID",
+        "value": os.environ["MY_AWS_ACCESS_KEY_ID"]
+    },
+    {
+        "name": "AWS_SECRET_ACCESS_KEY",
+        "value": os.environ["MY_AWS_SECRET_ACCESS_KEY"]
+    },
+    {
+        "name": "AWS_BUCKET",
+        "value": AWS_BUCKET
+    },
+    {
+        "name": "DOCKER_CORES",
+        "value": str(DOCKER_CORES)
+    },
+    {
+        "name": "LOG_GROUP_NAME",
+        "value": LOG_GROUP_NAME
+    },
+    {
+        "name": "CHECK_IF_DONE_BOOL",
+        "value": CHECK_IF_DONE_BOOL
+    },
+    {
+        "name": "EXPECTED_NUMBER_FILES",
+        "value": str(EXPECTED_NUMBER_FILES)
+    },
+    {
+        "name": "ECS_CLUSTER",
+        "value": ECS_CLUSTER
+    },
+    {
+        "name": "SECONDS_TO_START",
+        "value": str(SECONDS_TO_START)
+    },
+    {
+        "name": "MIN_FILE_SIZE_BYTES",
+        "value": str(MIN_FILE_SIZE_BYTES)
+    }
     ]
     return task_definition
 
-def update_ecs_task_definition(ecs, ECS_TASK_NAME):
-    task_definition = generate_task_definition()
+def generate_fiji_task_definition():
+    task_definition = TASK_DEFINITION.copy()
+    sqs = boto3.client('sqs')
+    queue_name = get_queue_url(sqs)
+    task_definition['containerDefinitions'][0]['environment'] += [
+    {
+        'name': 'APP_NAME',
+        'value': APP_NAME
+    },
+    {
+        'name': 'SQS_QUEUE_URL',
+        'value': queue_name
+    },
+    {
+        "name": "AWS_ACCESS_KEY_ID",
+        "value": os.environ["MY_AWS_ACCESS_KEY_ID"]
+    },
+    {
+        "name": "AWS_SECRET_ACCESS_KEY",
+        "value": os.environ["MY_AWS_SECRET_ACCESS_KEY"]
+    },
+    {
+        "name": "AWS_BUCKET",
+        "value": AWS_BUCKET
+    },
+    {
+        "name": "LOG_GROUP_NAME",
+        "value": LOG_GROUP_NAME
+    },
+    {
+        "name": "EXPECTED_NUMBER_FILES",
+        "value": str(EXPECTED_NUMBER_FILES)
+    },
+    {
+        "name": "ECS_CLUSTER",
+        "value": ECS_CLUSTER
+    },
+    {
+        "name": "MIN_FILE_SIZE_BYTES",
+        "value": str(MIN_FILE_SIZE_BYTES)
+    },
+    {
+        "name": "SCRIPT_DOWNLOAD_URL",
+        "value": SCRIPT_DOWNLOAD_URL
+    }
+    ]
+    return task_definition
+
+def update_ecs_task_definition(ecs, ECS_TASK_NAME, cellprofiler):
+    if cellprofiler:
+        task_definition = generate_task_definition()
+    else:
+        task_definition = generate_fiji_task_definition()
     ecs.register_task_definition(family=ECS_TASK_NAME,containerDefinitions=task_definition['containerDefinitions'])
     print('Task definition registered')
 
@@ -310,7 +362,7 @@ class JobQueue():
 # SERVICE 1: SETUP (formerly fab)
 #################################
 
-def setup():
+def setup(cellprofiler):
     print(APP_NAME,'setup started')
     ECS_TASK_NAME = APP_NAME + 'Task'
     ECS_SERVICE_NAME = APP_NAME + 'Service'
@@ -318,7 +370,7 @@ def setup():
     get_or_create_queue(sqs)
     ecs = boto3.client('ecs')
     get_or_create_cluster(ecs)
-    update_ecs_task_definition(ecs, ECS_TASK_NAME)
+    update_ecs_task_definition(ecs, ECS_TASK_NAME, cellprofiler)
     create_or_update_ecs_service(ecs, ECS_SERVICE_NAME, ECS_TASK_NAME)
     return APP_NAME
 
@@ -361,8 +413,11 @@ def submitJob():
 #################################
 
 def startCluster(fleetfile, njobs):
-
-    nmachines = min(200,int(numpy.ceil(float(njobs)/float(DOCKER_CORES))))
+    try:
+        DOCKER_CORES = float(DOCKER_CORES)
+    except: 
+        DOCKER_CORES = 1.0
+    nmachines = min(200,int(numpy.ceil(float(njobs)/(DOCKER_CORES*TASKS_PER_MACHINE))))
 
     #Step 1: set up the configuration files
     s3client = boto3.client('s3')
