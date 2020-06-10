@@ -1,5 +1,6 @@
 import json
 import re
+import sys
 
 import run_DCP
 
@@ -124,8 +125,10 @@ def check_named_queue(sqs, SQS_QUEUE_NAME):
 def try_to_run_monitor(s3, bucket_name, prefix, batch, step, prev_step_app_name):
     prev_step_monitor_bucket_name = prefix + 'monitors/'+batch+'/'+step+'/'+prev_step_app_name + 'SpotFleetRequestId.json'
     prev_step_monitor_name = '/tmp/'+prev_step_app_name + 'SpotFleetRequestId.json'
+    print('Trying to shut down ',prev_step_monitor_bucket_name)
     with open(prev_step_monitor_name, 'wb') as f:
         s3.download_fileobj(bucket_name,  prev_step_monitor_bucket_name, f)
+    print('Grabbing config for batch',batch,'step',step)
     run_DCP.grab_batch_config(bucket_name,prefix,batch,step)
     import boto3_setup
     boto3_setup.monitor()
@@ -134,7 +137,7 @@ def try_a_shutdown(s3, bucket_name, prefix, batch, step, prev_step_app_name):
     print('Trying monitor')
     try:
         import botocore
-        helpful_functions.try_to_run_monitor(s3, bucket_name, prefix, batch, str(int(step)-1), prev_step_app_name)
+        try_to_run_monitor(s3, bucket_name, prefix, batch, str(int(step)-1), prev_step_app_name)
     except botocore.exceptions.ClientError as error:
         print('Monitor cleanup of previous step failed with error: ',error)
         print('Usually this is no existing queue by that name, maybe a previous monitor cleaned up')
