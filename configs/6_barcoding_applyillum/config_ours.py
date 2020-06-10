@@ -14,13 +14,13 @@ AWS_BUCKET = 'dummybucket'
 # EC2 AND ECS INFORMATION:
 ECS_CLUSTER = 'default_cluster'
 CLUSTER_MACHINES = 1
-TASKS_PER_MACHINE = 1
-MACHINE_TYPE = ['m4.2xlarge']
-MACHINE_PRICE = 0.20
-EBS_VOL_SIZE = 350                       # In GB.  Minimum allowed is 22.
+TASKS_PER_MACHINE = 2
+MACHINE_TYPE = ['r4.2xlarge']
+MACHINE_PRICE = 0.40
+EBS_VOL_SIZE = 800                       # In GB.  Minimum allowed is 22.
 
 # DOCKER INSTANCE RUNNING ENVIRONMENT:
-DOCKER_CORES = 1                        # Number of CellProfiler processes to run inside a docker container
+DOCKER_CORES = 2                        # Number of CellProfiler processes to run inside a docker container
 CPU_SHARES = DOCKER_CORES * 1024        # ECS computing units assigned to each docker container (1024 units = 1 core)
 MEMORY = 30000                          # Memory assigned to the docker container in MB
 SECONDS_TO_START = 3*60                 # Wait before the next CP process is initiated to avoid memory collisions
