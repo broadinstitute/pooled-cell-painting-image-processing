@@ -62,11 +62,11 @@ def lambda_handler(event, context):
             
     #Now it's time to run DCP
     #Replacement for 'fab setup'
-    run_DCP.run_setup(bucket,prefix,batch,step)
+    app_name = run_DCP.run_setup(bucket,prefix,batch,step)
     #run_DCP.grab_batch_config(bucket,prefix,batch,step)
     
     #Make a batch
-    create_batch_jobs.create_batch_jobs_1(image_prefix,batch,pipeline_name,platelist)
+    create_batch_jobs.create_batch_jobs_1(image_prefix,batch,pipeline_name,platelist, app_name)
     
     #Start a cluster
     run_DCP.run_cluster(bucket,prefix,batch,step, fleet_file_name, len(platelist))  

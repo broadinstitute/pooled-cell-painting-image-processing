@@ -76,10 +76,10 @@ def lambda_handler(event, context):
         helpful_functions.try_a_shutdown(s3, bucket_name, prefix, batch, step, prev_step_app_name)
         
         #now let's do our stuff!
-        run_DCP.run_setup(bucket_name,prefix,batch,step)
+        app_name = run_DCP.run_setup(bucket_name,prefix,batch,step)
         
         #make the jobs
-        create_batch_jobs.create_batch_jobs_2(image_prefix,batch,pipeline_name,platelist, well_list)
+        create_batch_jobs.create_batch_jobs_2(image_prefix,batch,pipeline_name,platelist, well_list, app_name)
         
         #Start a cluster
         run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, len(platelist)*len(well_list))  
