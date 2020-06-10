@@ -22,7 +22,6 @@ fleet_file_name = 'illumFleet.json'
 prev_step_app_name = '2018_11_20_Periscope_Calico_IllumBarcoding'
 prev_step_num = '5'
 step = '6'
-max_fleet_size = 200
 
 def lambda_handler(event, context):
     # Log the received event
@@ -85,7 +84,7 @@ def lambda_handler(event, context):
         create_batch_jobs.create_batch_jobs_6(image_prefix,batch,pipeline_name,plate_and_well_list, app_name)
         
         #Start a cluster
-        run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, max_fleet_size)  
+        run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, len(plate_and_well_list)*19)  
 
         #Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch,step)
