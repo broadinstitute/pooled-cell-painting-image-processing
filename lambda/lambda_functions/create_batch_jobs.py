@@ -36,7 +36,7 @@ def create_batch_jobs_1(startpath,batchsuffix,illumpipename,platelist, app_name)
 def create_batch_jobs_2(startpath,batchsuffix,illumpipename,platelist, well_list, app_name):
     #startpath=posixpath.join('projects',topdirname)
     pipelinepath=posixpath.join(startpath,os.path.join('workspace/pipelines',batchsuffix))
-    illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'images_corrected'))
+    illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'images_corrected/painting'))
     datafilepath=posixpath.join(startpath,os.path.join('workspace/load_data_csv',batchsuffix))
     illumqueue = JobQueue(app_name+'Queue')
     for toillum in platelist:
@@ -68,7 +68,7 @@ def create_batch_jobs_5(startpath,batchsuffix,illumpipename,platelist, expected_
 def create_batch_jobs_6(startpath,batchsuffix,illumpipename,plate_and_well_list, app_name):
     #startpath=posixpath.join('projects',topdirname)
     pipelinepath=posixpath.join(startpath,os.path.join('workspace/pipelines',batchsuffix))
-    illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'images_corrected'))
+    illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'images_corrected/barcoding'))
     datafilepath=posixpath.join(startpath,os.path.join('workspace/load_data_csv',batchsuffix))
     illumqueue = JobQueue(app_name+'Queue')
     for toillum in plate_and_well_list:
