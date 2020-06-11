@@ -95,7 +95,7 @@ def create_batch_jobs_5(startpath,batchsuffix,illumpipename,platelist, expected_
 def create_batch_jobs_6(startpath,batchsuffix,illumpipename,plate_and_well_list, app_name):
     #startpath=posixpath.join('projects',topdirname)
     pipelinepath=posixpath.join(startpath,os.path.join('workspace/pipelines',batchsuffix))
-    illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'images_corrected/barcoding'))
+    illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'images_aligned/barcoding'))
     datafilepath=posixpath.join(startpath,os.path.join('workspace/load_data_csv',batchsuffix))
     illumqueue = JobQueue(app_name+'Queue')
     for toillum in plate_and_well_list:
@@ -107,3 +107,21 @@ def create_batch_jobs_6(startpath,batchsuffix,illumpipename,plate_and_well_list,
             illumqueue.scheduleBatch(templateMessage_illum)
 
     print('Illum job submitted. Check your queue')
+    
+    
+def create_batch_jobs_7(startpath,batchsuffix,pipename,plate_and_well_list, site_list,app_name):
+    #startpath=posixpath.join('projects',topdirname)
+    pipelinepath=posixpath.join(startpath,os.path.join('workspace/pipelines',batchsuffix))
+    outpath=posixpath.join(startpath,os.path.join(batchsuffix,'images_corrected/barcoding'))
+    inpath=posixpath.join(startpath,os.path.join('workspace/metadata',batchsuffix))
+    datafilepath=posixpath.join(startpath,os.path.join('workspace/load_data_csv',batchsuffix))
+    correctqueue = JobQueue(app_name+'Queue')
+    for tocorrect in plate_and_well_list:
+        for site in site_list: #later do this per site
+            templateMessage_correct = {'Metadata': 'Metadata_Plate='+tocorrect[0]+',Metadata_Well='+tocorrect[1]+',Metadata_Site='+str(site),
+                                     'pipeline': posixpath.join(pipelinepath,pipename),'output': outpath, 
+                                     'input': inpath, 'data_file':posixpath.join(datafilepath,tocorrect[0], 'load_data_pipeline7.csv')}
+                
+            correctqueue.scheduleBatch(templateMessage_correct)
+
+    print('Correction job submitted. Check your queue')

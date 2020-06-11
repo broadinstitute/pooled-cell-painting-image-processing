@@ -183,3 +183,41 @@ def create_CSV_pipeline6(platename, seriesperwell, expected_cycles, path, illum_
     file_out_name = '/tmp/'+str(platename)+'.csv'
     df.to_csv(file_out_name,index=False)
     return file_out_name
+    
+def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_list):
+    expected_cycles = int(expected_cycles)
+    columns = ['Metadata_Plate', 'Metadata_Site', 'Metadata_Well']
+    columns_per_channel = ['PathName_','FileName_']
+    cycles = ['Cycle%02d_' %x for x in range(1,expected_cycles+1)]
+    channels = ['A','C','G','T']
+    columns += [col+cycle+channel for col in columns_per_channel for cycle in cycles for channel in channels]
+    columns += ['PathName_Cycle01_DAPI','FileName_Cycle01_DAPI']
+    df = pandas.DataFrame(columns=columns)
+    total_file_count = seriesperwell * len(well_list)
+    df['Metadata_Plate'] = [platename] * total_file_count
+    df['Metadata_Site'] = range(seriesperwell) *len(well_list)
+    well_df_list = []
+    parsed_well_list = []
+    pathlist = []
+    for eachwell in well_list:
+        well_df_list += [eachwell] * seriesperwell
+        pathlist += [os.path.join(path,platename+'-'+eachwell)] * seriesperwell
+        if 'Well' not in eachwell:
+            parsed_well_list.append(eachwell)
+        else:
+            if 'Well_' in eachwell:
+                parsed_well_list.append(eachwell[5:])
+            else:
+                parsed_well_list.append(eachwell[4:])
+    df['Metadata_Well'] = well_df_list
+    for cycle in range(1,(expected_cycles+1)):
+        this_cycle = '_Cycle%02d_' % cycle
+        for chan in channels:
+            df['PathName'+this_cycle+chan] = pathlist
+            df['FileName'+this_cycle+chan] = ['Plate_'+platename+'_Well_'+well+'_Site_'+str(site)+this_cycle+chan+'.tiff' for well in parsed_well_list for site in range(seriesperwell)]  #this name doesn't have digit padding
+        if cycle == 1:
+            df['PathName_Cycle01_DAPI'] = pathlist 
+            df['FileName_Cycle01_DAPI'] = ['Plate_'+platename+'_Well_'+well+'_Site_'+str(site)+'_Cycle01_DAPI.tiff' for well in parsed_well_list for site in range(seriesperwell)]
+    file_out_name = '/tmp/'+str(platename)+'.csv'
+    df.to_csv(file_out_name,index=False)
+    return file_out_name
