@@ -76,6 +76,37 @@ def create_CSV_pipeline2(platename, seriesperwell, path, illum_path,listoffiles,
     file_out_name = '/tmp/'+str(platename)+'.csv'
     df.to_csv(file_out_name,index=False)
     return file_out_name
+
+def create_CSV_pipeline3(platename, seriesperwell, path, well_list, range_skip):
+    columns = ['Metadata_Plate', 'Metadata_Site', 'Metadata_Well', 'Metadata_Well_Value']
+    columns_per_channel = ['PathName_','FileName_']
+    channels = ['DNA','Phalloidin']
+    columns += [col + chan for col in columns_per_channel for chan in channels]
+    df = pandas.DataFrame(columns=columns)
+    sitelist = range(0,seriesperwell,range_skip)
+    sites_per_well = len(sitelist)
+    total_file_count = sites_per_well*len(well_list)
+    df['Metadata_Plate'] = [platename] * total_file_count
+    df['Metadata_Site'] = sitelist * len(well_list)
+    well_df_list = []
+    well_val_df_list = []
+    parsed_well_list = []
+    for eachwell in well_list:
+        well_df_list += [eachwell] * sites_per_well
+        wellval = eachwell.split('Well')[1]
+        if wellval[0] == '_':
+            wellval = wellval[1:]
+        well_val_df_list += [wellval] * sites_per_well
+        parsed_well_list.append(wellval)
+    df['Metadata_Well'] = well_df_list
+    df['Metadata_Well_Value'] = well_val_df_list
+    path_list = [os.path.join(path,platename+'-'+well) for well in well_list for site in sitelist]
+    for chan in channels:
+        df['PathName_'+chan] = path_list
+        df['FileName_'+chan] = ['Plate_'+platename+'_Well_'+well+'_Site_'+str(site)+'_Corr'+chan+'.tiff' for well in parsed_well_list for site in sitelist] 
+    file_out_name = '/tmp/'+str(platename)+'.csv'
+    df.to_csv(file_out_name,index=False)
+    return file_out_name
     
 def create_CSV_pipeline5(platename, seriesperwell, expected_cycles, path, platedict):
     expected_cycles = int(expected_cycles)

@@ -1,6 +1,9 @@
 import json
+import os
 import re
 import sys
+
+import pandas
 
 import run_DCP
 
@@ -144,3 +147,17 @@ def try_a_shutdown(s3, bucket_name, prefix, batch, prev_step_number, prev_step_a
     except:
         print('Monitor cleanup of previous step failed with error',sys.exc_info()[0])
         pass
+    
+def concat_some_csvs(s3,bucket_name,file_list,csvname):
+    tmp_name = os.path.join('/tmp',csvname)
+    df_dict={}
+    count = 0
+    for eachfile in file_list:
+        with open(tmp_name, 'wb') as f:
+            s3.download_fileobj(bucket_name,  eachfile, f)
+        df_dict[eachfile]=pandas.read_csv(tmp_name,index_col=False)
+        count+=1
+        if count % 100 == 0:
+            print(count)
+    df_merged = pandas.concat(df_dict, ignore_index=True)
+    return df_merged
