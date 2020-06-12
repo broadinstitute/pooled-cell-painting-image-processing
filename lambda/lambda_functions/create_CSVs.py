@@ -217,7 +217,7 @@ def create_CSV_pipeline6(platename, seriesperwell, expected_cycles, path, illum_
     
 def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_list):
     expected_cycles = int(expected_cycles)
-    columns = ['Metadata_Plate', 'Metadata_Site', 'Metadata_Well']
+    columns = ['Metadata_Plate', 'Metadata_Site', 'Metadata_Well', 'Metadata_Well_Value']
     columns_per_channel = ['PathName_','FileName_']
     cycles = ['Cycle%02d_' %x for x in range(1,expected_cycles+1)]
     channels = ['A','C','G','T']
@@ -228,19 +228,23 @@ def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_l
     df['Metadata_Plate'] = [platename] * total_file_count
     df['Metadata_Site'] = range(seriesperwell) *len(well_list)
     well_df_list = []
+    well_val_df_list = []
     parsed_well_list = []
     pathlist = []
     for eachwell in well_list:
         well_df_list += [eachwell] * seriesperwell
         pathlist += [os.path.join(path,platename+'-'+eachwell)] * seriesperwell
         if 'Well' not in eachwell:
-            parsed_well_list.append(eachwell)
+            well_val = eachwell
         else:
             if 'Well_' in eachwell:
-                parsed_well_list.append(eachwell[5:])
+                well_val = eachwell[5:]
             else:
-                parsed_well_list.append(eachwell[4:])
+                well_val = eachwell[4:]
+        parsed_well_list.append(wellval)
+        well_val_df_list += [wellval] * seriesperwell
     df['Metadata_Well'] = well_df_list
+    df['Metadata_Well_Value'] = well_val_df_list
     for cycle in range(1,(expected_cycles+1)):
         this_cycle = '_Cycle%02d_' % cycle
         for chan in channels:
