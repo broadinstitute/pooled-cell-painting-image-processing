@@ -28,9 +28,13 @@ def lambda_handler(event, context):
     bucket_name = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
     keys = [x['s3']['object']['key'] for x in event['Records'] ]
-    plate = key.split('/')[-2].split('_')[0]
-    batch = key.split('/')[-5]
-    image_prefix = key.split(batch)[0]
+    if '.cppipe' in key:
+        plate = key.split('/')[-2].split('_')[0]
+        batch = key.split('/')[-5]
+        image_prefix = key.split(batch)[0]
+    else:
+        batch = key.split('/')[-2]
+        image_prefix = key.split('workspace')[0]
     prefix = os.path.join(image_prefix,'workspace/')
     
     print(plate,batch,image_prefix,prefix)
