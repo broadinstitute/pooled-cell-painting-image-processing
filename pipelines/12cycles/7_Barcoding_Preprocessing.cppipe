@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:4
 DateRevision:319
 GitHash:
-ModuleCount:82
+ModuleCount:85
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:\'Unknown\'|variable_revision_number:6|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
@@ -1049,6 +1049,7 @@ CompensateColors:[module_num:20|svn_version:\'Unknown\'|variable_revision_number
     Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:\xff\xfeN\x00o\x00
     Should images be rescaled 0-1 before compensating but after masking to objects?:\xff\xfeN\x00o\x00
     Should histogram matching be performed between the image groups?:\xff\xfeN\x00o\x00
+    What compensation class should serve as the template histogram?:\xff\xfe1\x00
     Should images be rescaled 0-1 after compensating?:\xff\xfeN\x00o\x00
     Should the images be divided by a scalar based on group percentiles:\xff\xfeY\x00e\x00s\x00
     What percentile should be used for multiplication:\xff\xfe9\x009\x00.\x009\x00
@@ -1168,6 +1169,8 @@ RelateObjects:[module_num:26|svn_version:\'Unknown\'|variable_revision_number:5|
     Calculate distances to other parents?:\xff\xfeN\x00o\x00
     Do you want to save the children with parents as a new object set?:\xff\xfeN\x00o\x00
     Name the output object:\xff\xfeR\x00e\x00l\x00a\x00t\x00e\x00O\x00b\x00j\x00e\x00c\x00t\x00s\x00
+    Parent name:\xff\xfeN\x00o\x00n\x00e\x00
+    Parent name:\xff\xfeN\x00o\x00n\x00e\x00
     Parent name:\xff\xfeN\x00o\x00n\x00e\x00
     Parent name:\xff\xfeN\x00o\x00n\x00e\x00
     Parent name:\xff\xfeN\x00o\x00n\x00e\x00
@@ -2152,6 +2155,8 @@ CalculateMath:[module_num:77|svn_version:\'Unknown\'|variable_revision_number:2|
     Enter the lower bound:\xff\xfe0\x00.\x000\x00
     Constrain the result to an upper bound?:\xff\xfeN\x00o\x00
     Enter the upper bound:\xff\xfe1\x00.\x000\x00
+    How should the output value be rounded?:\xff\xfeN\x00o\x00t\x00 \x00r\x00o\x00u\x00n\x00d\x00e\x00d\x00
+    Enter how many decimal places the value should be rounded to:\xff\xfe0\x00
 
 CalculateMath:[module_num:78|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:\xff\xfeD\x00i\x00v\x00i\x00d\x00e\x002\x000\x00f\x00l\x00o\x00o\x00r\x00
@@ -2174,6 +2179,8 @@ CalculateMath:[module_num:78|svn_version:\'Unknown\'|variable_revision_number:2|
     Enter the lower bound:\xff\xfe0\x00.\x000\x00
     Constrain the result to an upper bound?:\xff\xfeN\x00o\x00
     Enter the upper bound:\xff\xfe1\x00.\x000\x00
+    How should the output value be rounded?:\xff\xfeR\x00o\x00u\x00n\x00d\x00e\x00d\x00 \x00d\x00o\x00w\x00n\x00 \x00t\x00o\x00 \x00t\x00h\x00e\x00 \x00n\x00e\x00x\x00t\x00-\x00l\x00o\x00w\x00e\x00s\x00t\x00 \x00i\x00n\x00t\x00e\x00g\x00e\x00r\x00
+    Enter how many decimal places the value should be rounded to:\xff\xfe0\x00
 
 CalculateMath:[module_num:79|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:\xff\xfeD\x00i\x00v\x00i\x00d\x00e\x002\x000\x00d\x00i\x00f\x00f\x00
@@ -2196,6 +2203,8 @@ CalculateMath:[module_num:79|svn_version:\'Unknown\'|variable_revision_number:2|
     Enter the lower bound:\xff\xfe0\x00.\x000\x00
     Constrain the result to an upper bound?:\xff\xfeN\x00o\x00
     Enter the upper bound:\xff\xfe1\x00.\x000\x00
+    How should the output value be rounded?:\xff\xfeN\x00o\x00t\x00 \x00r\x00o\x00u\x00n\x00d\x00e\x00d\x00
+    Enter how many decimal places the value should be rounded to:\xff\xfe0\x00
 
 FlagImage:[module_num:80|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:\xff\xfe1\x00
@@ -2215,9 +2224,41 @@ FlagImage:[module_num:80|svn_version:\'Unknown\'|variable_revision_number:4|show
     Rules file name:\xff\xfer\x00u\x00l\x00e\x00s\x00.\x00t\x00x\x00t\x00
     Class number:\xff\xfe
 
-OverlayOutlines:[module_num:81|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:81|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:\xff\xfeN\x00o\x00n\x00e\x00
+    Raise the power of the result by:\xff\xfe1\x00.\x000\x00
+    Multiply the result by:\xff\xfe1\x00.\x000\x00
+    Add to result:\xff\xfe0\x00.\x000\x00
+    Set values less than 0 equal to 0?:\xff\xfeY\x00e\x00s\x00
+    Set values greater than 1 equal to 1?:\xff\xfeY\x00e\x00s\x00
+    Ignore the image masks?:\xff\xfeN\x00o\x00
+    Name the output image:\xff\xfeM\x00a\x00x\x00S\x00q\x00R\x00t\x00
+    Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
+    Select the first image:\xff\xfeM\x00a\x00x\x00O\x00f\x00A\x00l\x00l\x00B\x00a\x00c\x00k\x00S\x00u\x00b\x00C\x00y\x00c\x00l\x00e\x00s\x00
+    Multiply the first image by:\xff\xfe1\x00.\x000\x00
+    Measurement:\xff\xfe
+    Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
+    Select the second image:\xff\xfe
+    Multiply the second image by:\xff\xfe1\x00.\x000\x00
+    Measurement:\xff\xfe
+
+RescaleIntensity:[module_num:82|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:\xff\xfeM\x00a\x00x\x00S\x00q\x00R\x00t\x00
+    Name the output image:\xff\xfeR\x00e\x00s\x00c\x00a\x00l\x00e\x00I\x00n\x00t\x00e\x00n\x00s\x00i\x00t\x00y\x00
+    Rescaling method:\xff\xfeS\x00t\x00r\x00e\x00t\x00c\x00h\x00 \x00e\x00a\x00c\x00h\x00 \x00i\x00m\x00a\x00g\x00e\x00 \x00t\x00o\x00 \x00u\x00s\x00e\x00 \x00t\x00h\x00e\x00 \x00f\x00u\x00l\x00l\x00 \x00i\x00n\x00t\x00e\x00n\x00s\x00i\x00t\x00y\x00 \x00r\x00a\x00n\x00g\x00e\x00
+    Method to calculate the minimum intensity:\xff\xfeC\x00u\x00s\x00t\x00o\x00m\x00
+    Method to calculate the maximum intensity:\xff\xfeC\x00u\x00s\x00t\x00o\x00m\x00
+    Lower intensity limit for the input image:\xff\xfe0\x00.\x000\x00
+    Upper intensity limit for the input image:\xff\xfe1\x00.\x000\x00
+    Intensity range for the input image:\xff\xfe0\x00.\x000\x00,\x001\x00.\x000\x00
+    Intensity range for the output image:\xff\xfe0\x00.\x000\x00,\x001\x00.\x000\x00
+    Select image to match in maximum intensity:\xff\xfeN\x00o\x00n\x00e\x00
+    Divisor value:\xff\xfe1\x00.\x000\x00
+    Divisor measurement:\xff\xfeN\x00o\x00n\x00e\x00
+
+OverlayOutlines:[module_num:83|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:\xff\xfeN\x00o\x00
-    Select image on which to display outlines:\xff\xfeM\x00a\x00x\x00O\x00f\x00A\x00l\x00l\x00B\x00a\x00c\x00k\x00S\x00u\x00b\x00C\x00y\x00c\x00l\x00e\x00s\x00
+    Select image on which to display outlines:\xff\xfeR\x00e\x00s\x00c\x00a\x00l\x00e\x00I\x00n\x00t\x00e\x00n\x00s\x00i\x00t\x00y\x00
     Name the output image:\xff\xfeM\x00a\x00x\x00_\x00O\x00v\x00e\x00r\x00l\x00a\x00y\x00
     Outline display mode:\xff\xfeC\x00o\x00l\x00o\x00r\x00
     Select method to determine brightness of outlines:\xff\xfeM\x00a\x00x\x00 \x00o\x00f\x00 \x00i\x00m\x00a\x00g\x00e\x00
@@ -2227,7 +2268,7 @@ OverlayOutlines:[module_num:81|svn_version:\'Unknown\'|variable_revision_number:
     Select outline color:\xff\xfe#\x000\x000\x008\x000\x00F\x00F\x00
     Select objects to display:\xff\xfeC\x00e\x00l\x00l\x00s\x00
 
-SaveImages:[module_num:82|svn_version:\'Unknown\'|variable_revision_number:13|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:84|svn_version:\'Unknown\'|variable_revision_number:13|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:\xff\xfeI\x00m\x00a\x00g\x00e\x00
     Select the image to save:\xff\xfeM\x00a\x00x\x00_\x00O\x00v\x00e\x00r\x00l\x00a\x00y\x00
     Select method for constructing file names:\xff\xfeS\x00i\x00n\x00g\x00l\x00e\x00 \x00n\x00a\x00m\x00e\x00
@@ -2238,6 +2279,24 @@ SaveImages:[module_num:82|svn_version:\'Unknown\'|variable_revision_number:13|sh
     Text to append to the image name:\xff\xfe
     Saved file format:\xff\xfet\x00i\x00f\x00f\x00
     Output file location:\xff\xfeD\x00e\x00f\x00a\x00u\x00l\x00t\x00 \x00O\x00u\x00t\x00p\x00u\x00t\x00 \x00F\x00o\x00l\x00d\x00e\x00r\x00 \x00s\x00u\x00b\x00-\x00f\x00o\x00l\x00d\x00e\x00r\x00\x7C\x00o\x00v\x00e\x00r\x00l\x00a\x00y\x00
+    Image bit depth:\xff\xfe8\x00-\x00b\x00i\x00t\x00 \x00i\x00n\x00t\x00e\x00g\x00e\x00r\x00
+    Overwrite existing files without warning?:\xff\xfeN\x00o\x00
+    When to save:\xff\xfeE\x00v\x00e\x00r\x00y\x00 \x00c\x00y\x00c\x00l\x00e\x00
+    Record the file and path information to the saved image?:\xff\xfeN\x00o\x00
+    Create subfolders in the output folder?:\xff\xfeN\x00o\x00
+    Base image folder:\xff\xfeE\x00l\x00s\x00e\x00w\x00h\x00e\x00r\x00e\x00.\x00.\x00.\x00\x7C\x00
+
+SaveImages:[module_num:85|svn_version:\'Unknown\'|variable_revision_number:13|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:\xff\xfeI\x00m\x00a\x00g\x00e\x00
+    Select the image to save:\xff\xfeM\x00a\x00x\x00_\x00O\x00v\x00e\x00r\x00l\x00a\x00y\x00
+    Select method for constructing file names:\xff\xfeS\x00i\x00n\x00g\x00l\x00e\x00 \x00n\x00a\x00m\x00e\x00
+    Select image name for file prefix:\xff\xfeN\x00o\x00n\x00e\x00
+    Enter single file name:\xff\xfeP\x00l\x00a\x00t\x00e\x00_\x00\\\x00g\x00<\x00P\x00l\x00a\x00t\x00e\x00>\x00_\x00W\x00e\x00l\x00l\x00_\x00\\\x00g\x00<\x00W\x00e\x00l\x00l\x00V\x00a\x00l\x00u\x00e\x00>\x00_\x00S\x00i\x00t\x00e\x00_\x00\\\x00g\x00<\x00S\x00i\x00t\x00e\x00>\x00_\x00M\x00a\x00x\x00_\x00O\x00v\x00e\x00r\x00l\x00a\x00y\x00
+    Number of digits:\xff\xfe4\x00
+    Append a suffix to the image file name?:\xff\xfeN\x00o\x00
+    Text to append to the image name:\xff\xfe
+    Saved file format:\xff\xfep\x00n\x00g\x00
+    Output file location:\xff\xfeD\x00e\x00f\x00a\x00u\x00l\x00t\x00 \x00O\x00u\x00t\x00p\x00u\x00t\x00 \x00F\x00o\x00l\x00d\x00e\x00r\x00 \x00s\x00u\x00b\x00-\x00f\x00o\x00l\x00d\x00e\x00r\x00\x7C\x00.\x00.\x00/\x00o\x00v\x00e\x00r\x00l\x00a\x00y\x00
     Image bit depth:\xff\xfe8\x00-\x00b\x00i\x00t\x00 \x00i\x00n\x00t\x00e\x00g\x00e\x00r\x00
     Overwrite existing files without warning?:\xff\xfeN\x00o\x00
     When to save:\xff\xfeE\x00v\x00e\x00r\x00y\x00 \x00c\x00y\x00c\x00l\x00e\x00
