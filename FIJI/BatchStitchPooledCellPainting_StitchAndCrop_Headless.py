@@ -35,14 +35,12 @@ if not os.path.exists(tile_outdir):
 if not os.path.exists(downsample_outdir):
         os.mkdir(downsample_outdir)
 
-stitchedsize=str(int(rows)*int(size))
-if int(stitchedsize) > 46340:
-        stitchedsize = '46340'
+stitchedsize=int(rows)*int(size)
 tileperside=int(tileperside)
-upscaledsize=int(stitchedsize)*float(scalingstring)
+upscaledsize=int(stitchedsize*float(scalingstring))
 if upscaledsize > 46340:
         upscaledsize = 46340
-tilesize=int(int(upscaledsize)/tileperside)
+tilesize=int(upscaledsize/tileperside)
 
 
 out_subdir=os.path.join(outfolder, out_subdir_tag)
@@ -145,11 +143,13 @@ if os.path.isdir(subdir):
 
                         IJ.run("Grid/Collection stitching", copy_grid_instructions)
                         im=IJ.getImage()
-                        print("Canvas Size...", "width="+stitchedsize+" height="+stitchedsize+" position=Top-Left zero")
-                        IJ.run("Canvas Size...", "width="+stitchedsize+" height="+stitchedsize+" position=Top-Left zero")
+                        width = str(im.width*float(scalingstring))
+                        height = str(im.height*float(scalingstring))
+                        print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                        IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                         im2=IJ.getImage()
-                        print("Scale...", "x=- y=- width="+str(upscaledsize)+" height="+str(upscaledsize)+" interpolation=Bilinear average create")
-                        IJ.run("Scale...", "x=- y=- width="+str(upscaledsize)+" height="+str(upscaledsize)+" interpolation=Bilinear average create")
+                        print("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
+                        IJ.run("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
                         im3=IJ.getImage()
                         IJ.saveAs(im3,'tiff',os.path.join(out_subdir,fileoutname))
                         im=IJ.getImage()
