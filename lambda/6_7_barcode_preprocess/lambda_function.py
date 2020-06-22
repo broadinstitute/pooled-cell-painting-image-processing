@@ -28,16 +28,17 @@ def lambda_handler(event, context):
     bucket_name = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
     keys = [x['s3']['object']['key'] for x in event['Records'] ]
-    if '.cppipe' in key:
+    if '.cppipe' not in key:
         plate = key.split('/')[-2].split('_')[0]
         batch = key.split('/')[-5]
         image_prefix = key.split(batch)[0]
+        print(plate)
     else:
         batch = key.split('/')[-2]
         image_prefix = key.split('workspace')[0]
     prefix = os.path.join(image_prefix,'workspace/')
     
-    print(plate,batch,image_prefix,prefix)
+    print(batch,image_prefix,prefix)
     
     #get the metadata file, so we can add stuff to it
     metadata_on_bucket_name = os.path.join(prefix,'metadata',batch,'metadata.json')
