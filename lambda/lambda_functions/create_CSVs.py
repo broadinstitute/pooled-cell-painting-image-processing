@@ -241,8 +241,8 @@ def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_l
                 well_val = eachwell[5:]
             else:
                 well_val = eachwell[4:]
-        parsed_well_list.append(wellval)
-        well_val_df_list += [wellval] * seriesperwell
+        parsed_well_list.append(well_val)
+        well_val_df_list += [well_val] * seriesperwell
     df['Metadata_Well'] = well_df_list
     df['Metadata_Well_Value'] = well_val_df_list
     for cycle in range(1,(expected_cycles+1)):
