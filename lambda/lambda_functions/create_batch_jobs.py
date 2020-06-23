@@ -124,6 +124,22 @@ def create_batch_jobs_6(startpath,batchsuffix,illumpipename,plate_and_well_list,
 
     print('Illum job submitted. Check your queue')
     
+def create_batch_jobs_6A(startpath,batchsuffix,pipeline_name_list,plate_and_well_list, app_name):
+    #startpath=posixpath.join('projects',topdirname)
+    pipelinepath=posixpath.join(startpath,os.path.join('workspace/pipelines',batchsuffix))
+    illumoutpath=posixpath.join(startpath,os.path.join(batchsuffix,'images_aligned_troubleshooting/barcoding'))
+    datafilepath=posixpath.join(startpath,os.path.join('workspace/load_data_csv',batchsuffix))
+    illumqueue = JobQueue(app_name+'Queue')
+    for toillum in plate_and_well_list:
+        for arb in [0]: #later do this per site
+            for illumpipename in pipeline_name_list:
+                templateMessage_illum = {'Metadata': 'Metadata_Plate='+toillum[0]+',Metadata_Well='+toillum[1]+',Metadata_ArbitraryGroup='+str(arb),
+                                         'pipeline': posixpath.join(pipelinepath,illumpipename),'output': posixpath.join(illumoutpath,illumpipename[:-7]), 'output_structure':'Metadata_Plate-Metadata_Well',
+                                         'input': pipelinepath, 'data_file':posixpath.join(datafilepath,toillum[0], 'load_data_pipeline6.csv')}
+                
+                illumqueue.scheduleBatch(templateMessage_illum)
+
+    print('Illum job submitted. Check your queue')
     
 def create_batch_jobs_7(startpath,batchsuffix,pipename,plate_and_well_list, site_list,app_name):
     #startpath=posixpath.join('projects',topdirname)
