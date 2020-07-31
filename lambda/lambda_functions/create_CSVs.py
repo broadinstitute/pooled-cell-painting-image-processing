@@ -268,46 +268,46 @@ def create_CSV_pipeline6(platename, seriesperwell, expected_cycles, path, illum_
                 df['Frame_'+this_cycle+'OrigC'] = [4] * total_file_count
             else:
                 df['Frame_'+this_cycle+'OrigG'] = df['Frame_'+this_cycle+'OrigT'] = df['Frame_'+this_cycle+'OrigA'] = df['Frame_'+this_cycle+'OrigC'] = [0] * total_file_count
-        elif one_or_many == 'many' & fast_or_slow == 'slow':
-            columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_Well', 'Metadata_Well_Value']
-            columns_per_channel = ['PathName_','FileName_','Frame_']
-            cycles = ['Cycle%02d_' %x for x in range(1,expected_cycles+1)]
-            or_il = ['Orig','Illum']
-            channels = ['A','C','G','T', 'DNA']
-            columns += [col+cycle+oi+channel for col in columns_per_channel for cycle in cycles for oi in or_il for channel in channels]
-            df = pandas.DataFrame(columns=columns)
-            well_list=platedict["1"].keys()
-            total_file_count = seriesperwell * len(well_list)
-            df['Metadata_Plate'] = [platename] * total_file_count
-            df['Metadata_Series'] = range(seriesperwell) * len(well_list)
-            well_df_list = []
-            well_val_df_list = []
-            for eachwell in well_list:
-                well_df_list += [eachwell] * seriesperwell
-                wellval = eachwell.split('Well')[1]
-                if wellval[0] == '_':
-                    wellval = wellval[1:]
-                well_val_df_list += [wellval] * seriesperwell
-            df['Metadata_Well'] = well_df_list
-            df['Metadata_Well_Value'] = well_val_df_list
-            for cycle in range(1,(expected_cycles+1)):
-                this_cycle = 'Cycle%02d_' % cycle
-                path_list = []
-                file_list = []
-                for eachwell in platedict[str(cycle)]:
-                    path_list += [os.path.join(path,platedict[str(cycle)][eachwell][0])]*seriesperwell
-                    file_list += platedict[str(cycle)][eachwell][1]
-                for chan in channels:
-                    df['PathName_'+this_cycle+'Orig'+chan] = path_list
-                    df['Frame_'+this_cycle+'Illum'+chan] = [0] * total_file_count
-                    df['PathName_'+this_cycle+'Illum'+chan] = [illum_path] * total_file_count
-                    df['FileName_'+this_cycle+'Illum'+chan] = [platename +'_Cycle'+str(cycle)+'_Illum'+chan+'.npy'] * total_file_count #this name doesn't have digit padding
-                    df['FileName_'+this_cycle+'Orig'+chan] = file_list
-                df['Frame_'+this_cycle+'OrigDNA'] = [0] * total_file_count
-                df['Frame_'+this_cycle+'OrigG'] = [1] * total_file_count 
-                df['Frame_'+this_cycle+'OrigT'] = [2] * total_file_count
-                df['Frame_'+this_cycle+'OrigA'] = [3] * total_file_count
-                df['Frame_'+this_cycle+'OrigC'] = [4] * total_file_count
+    elif one_or_many == 'many' & fast_or_slow == 'slow':
+        columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_Well', 'Metadata_Well_Value']
+        columns_per_channel = ['PathName_','FileName_','Frame_']
+        cycles = ['Cycle%02d_' %x for x in range(1,expected_cycles+1)]
+        or_il = ['Orig','Illum']
+        channels = ['A','C','G','T', 'DNA']
+        columns += [col+cycle+oi+channel for col in columns_per_channel for cycle in cycles for oi in or_il for channel in channels]
+        df = pandas.DataFrame(columns=columns)
+        well_list=platedict["1"].keys()
+        total_file_count = seriesperwell * len(well_list)
+        df['Metadata_Plate'] = [platename] * total_file_count
+        df['Metadata_Series'] = range(seriesperwell) * len(well_list)
+        well_df_list = []
+        well_val_df_list = []
+        for eachwell in well_list:
+            well_df_list += [eachwell] * seriesperwell
+            wellval = eachwell.split('Well')[1]
+            if wellval[0] == '_':
+                wellval = wellval[1:]
+            well_val_df_list += [wellval] * seriesperwell
+        df['Metadata_Well'] = well_df_list
+        df['Metadata_Well_Value'] = well_val_df_list
+        for cycle in range(1,(expected_cycles+1)):
+            this_cycle = 'Cycle%02d_' % cycle
+            path_list = []
+            file_list = []
+            for eachwell in platedict[str(cycle)]:
+                path_list += [os.path.join(path,platedict[str(cycle)][eachwell][0])]*seriesperwell
+                file_list += platedict[str(cycle)][eachwell][1]
+            for chan in channels:
+                df['PathName_'+this_cycle+'Orig'+chan] = path_list
+                df['Frame_'+this_cycle+'Illum'+chan] = [0] * total_file_count
+                df['PathName_'+this_cycle+'Illum'+chan] = [illum_path] * total_file_count
+                df['FileName_'+this_cycle+'Illum'+chan] = [platename +'_Cycle'+str(cycle)+'_Illum'+chan+'.npy'] * total_file_count #this name doesn't have digit padding
+                df['FileName_'+this_cycle+'Orig'+chan] = file_list
+            df['Frame_'+this_cycle+'OrigDNA'] = [0] * total_file_count
+            df['Frame_'+this_cycle+'OrigG'] = [1] * total_file_count 
+            df['Frame_'+this_cycle+'OrigT'] = [2] * total_file_count
+            df['Frame_'+this_cycle+'OrigA'] = [3] * total_file_count
+            df['Frame_'+this_cycle+'OrigC'] = [4] * total_file_count
         file_out_name = '/tmp/'+str(platename)+'.csv'
         df.to_csv(file_out_name,index=False)
         return file_out_name
