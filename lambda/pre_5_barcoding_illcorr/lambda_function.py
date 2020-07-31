@@ -46,9 +46,9 @@ def lambda_handler(event, context):
     print('Parsing the image list')
     #We've saved the previous for looking at/debugging later, but really all we want is the ones with all cycles
     if metadata['one_or_many_files'] == 1:
-        parsed_image_dict = helpful_functions.return_full_wells(image_dict,expected_cycles)
+        parsed_image_dict = helpful_functions.return_full_wells(image_dict,expected_cycles, metadata['one_or_many_files'])
     else:
-        parsed_image_dict = helpful_functions.return_full_wells(image_dict,expected_cycles,files_per_well=num_series)
+        parsed_image_dict = helpful_functions.return_full_wells(image_dict,expected_cycles, metadata['one_or_many_files'], files_per_well=num_series)
     metadata['wells_with_all_cycles'] = parsed_image_dict
     helpful_functions.write_metadata_file(s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name)
     

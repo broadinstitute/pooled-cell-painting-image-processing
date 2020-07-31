@@ -55,7 +55,7 @@ def lambda_handler(event, context):
         per_well_im_list = []
         for eachwell in well_list:
             per_well = platedict[eachwell][paint_cycle_name]
-            per_well.sort(reverse=True)
+            per_well.sort()
             if len(per_well)==full_well_files:
                 per_well_im_list.append(per_well)
         bucket_folder = '/home/ubuntu/bucket/'+image_prefix+batch+'/images/'+eachplate+'/'+paint_cycle_name
