@@ -417,11 +417,16 @@ def submitJob():
 #################################
 
 def startCluster(fleetfile, njobs):
+
+    print(njobs, "jobs to do")
+
     try:
         DOCKER_CORES = float(DOCKER_CORES)
     except: 
         DOCKER_CORES = 1.0
     nmachines = min(200,int(numpy.ceil(float(njobs)/(DOCKER_CORES*TASKS_PER_MACHINE))))
+
+    print (nmachines, "machines being started to run them")
 
     #Step 1: set up the configuration files
     s3client = boto3.client('s3')

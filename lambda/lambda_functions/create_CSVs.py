@@ -142,7 +142,7 @@ def create_CSV_pipeline5(platename, seriesperwell, expected_cycles, path, plated
     expected_cycles = int(expected_cycles)
     columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_SBSCycle']
     channels = ['OrigT', 'OrigG', 'OrigA', 'OrigC', 'OrigDNA']
-    if one_or_many == 'one' & fast_or_slow == 'fast':
+    if one_or_many == 'one' and fast_or_slow == 'fast':
         columns_per_channel = ['PathName_','FileName_','Series_','Frame_']
         columns += [col + chan for col in columns_per_channel for chan in channels]
         df = pandas.DataFrame(columns=columns)
@@ -180,7 +180,7 @@ def create_CSV_pipeline5(platename, seriesperwell, expected_cycles, path, plated
         df['Frame_OrigT'] = ([2]*seriesperwell*len(well_list))+([0]*seriesperwell*len(well_list)*(expected_cycles-1))
         df['Frame_OrigA'] = ([3]*seriesperwell*len(well_list))+([0]*seriesperwell*len(well_list)*(expected_cycles-1))
         df['Frame_OrigC'] = ([4]*seriesperwell*len(well_list))+([0]*seriesperwell*len(well_list)*(expected_cycles-1))
-    elif one_or_many == 'many' & fast_or_slow == 'slow':
+    elif one_or_many == 'many' and fast_or_slow == 'slow':
         columns_per_channel = ['PathName_','FileName_','Frame_']
         columns += [col + chan for col in columns_per_channel for chan in channels]
         df = pandas.DataFrame(columns=columns)
@@ -211,7 +211,7 @@ def create_CSV_pipeline5(platename, seriesperwell, expected_cycles, path, plated
     
 def create_CSV_pipeline6(platename, seriesperwell, expected_cycles, path, illum_path, platedict, one_or_many, fast_or_slow):
     expected_cycles = int(expected_cycles)
-    if one_or_many == 'one' & fast_or_slow == 'fast':
+    if one_or_many == 'one' and fast_or_slow == 'fast':
         columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_Well', 'Metadata_Well_Value', 'Metadata_ArbitraryGroup']
         columns_per_channel = ['PathName_','FileName_','Series_','Frame_']
         cycles = ['Cycle%02d_' %x for x in range(1,expected_cycles+1)]
@@ -268,7 +268,7 @@ def create_CSV_pipeline6(platename, seriesperwell, expected_cycles, path, illum_
                 df['Frame_'+this_cycle+'OrigC'] = [4] * total_file_count
             else:
                 df['Frame_'+this_cycle+'OrigG'] = df['Frame_'+this_cycle+'OrigT'] = df['Frame_'+this_cycle+'OrigA'] = df['Frame_'+this_cycle+'OrigC'] = [0] * total_file_count
-    elif one_or_many == 'many' & fast_or_slow == 'slow':
+    elif one_or_many == 'many' and fast_or_slow == 'slow':
         columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_Well', 'Metadata_Well_Value']
         columns_per_channel = ['PathName_','FileName_','Frame_']
         cycles = ['Cycle%02d_' %x for x in range(1,expected_cycles+1)]
