@@ -42,7 +42,7 @@ def lambda_handler(event, context):
     helpful_functions.write_metadata_file(s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name)
 
     if metadata['one_or_many_files'] == 'one':
-        full_well_files = 3
+        full_well_files = 1
     else:
         full_well_files = num_series
     
@@ -57,8 +57,6 @@ def lambda_handler(event, context):
             per_well = platedict[eachwell][paint_cycle_name]
             per_well.sort(reverse=True)
             if len(per_well)==full_well_files:
-                if metadata['one_or_many_files'] == 'one':
-                    per_well = [per_well[0],per_well[2]] #we don't want the slow phalloidin for this
                 per_well_im_list.append(per_well)
         bucket_folder = '/home/ubuntu/bucket/'+image_prefix+batch+'/images/'+eachplate+'/'+paint_cycle_name
         per_plate_csv = create_CSVs.create_CSV_pipeline1(eachplate, num_series, bucket_folder, per_well_im_list, metadata['one_or_many_files'])

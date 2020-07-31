@@ -50,7 +50,7 @@ def lambda_handler(event, context):
     paint_cycle_name = platedict[well_list[0]].keys()[0]
     per_well_im_list = []
     if metadata['one_or_many_files'] == 'one':
-        full_well_files = 3
+        full_well_files = 1
     else:
         full_well_files = num_series
     for eachwell in well_list:
