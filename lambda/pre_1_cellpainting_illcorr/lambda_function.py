@@ -40,6 +40,11 @@ def lambda_handler(event, context):
     image_dict = helpful_functions.parse_image_names(image_list,filter='20X')
     metadata ['painting_file_data'] = image_dict
     helpful_functions.write_metadata_file(s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name)
+
+    if metadata['one_or_many_files'] == 'one':
+        full_well_files = 3
+    else:
+        full_well_files = num_series
     
     #Pull the file names we care about, and make the CSV
     platelist = image_dict.keys()
@@ -51,11 +56,12 @@ def lambda_handler(event, context):
         for eachwell in well_list:
             per_well = platedict[eachwell][paint_cycle_name]
             per_well.sort(reverse=True)
-            if len(per_well)==3:
-                per_well = [per_well[0],per_well[2]] #we don't want the slow phalloidin for this
+            if len(per_well)==full_well_files:
+                if metadata['one_or_many_files'] == 'one':
+                    per_well = [per_well[0],per_well[2]] #we don't want the slow phalloidin for this
                 per_well_im_list.append(per_well)
         bucket_folder = '/home/ubuntu/bucket/'+image_prefix+batch+'/images/'+eachplate+'/'+paint_cycle_name
-        per_plate_csv = create_CSVs.create_CSV_pipeline1(eachplate, num_series, bucket_folder, per_well_im_list)
+        per_plate_csv = create_CSVs.create_CSV_pipeline1(eachplate, num_series, bucket_folder, per_well_im_list, metadata['one_or_many_files'])
         csv_on_bucket_name = prefix + 'load_data_csv/'+batch+'/'+eachplate+'/load_data_pipeline1.csv'
         with open(per_plate_csv,'rb') as a:
             s3.put_object(Body= a, Bucket = bucket, Key = csv_on_bucket_name )

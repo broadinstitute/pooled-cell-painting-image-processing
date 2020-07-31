@@ -49,13 +49,17 @@ def lambda_handler(event, context):
     well_list = platedict.keys()
     paint_cycle_name = platedict[well_list[0]].keys()[0]
     per_well_im_list = []
+    if metadata['one_or_many_files'] == 'one':
+        full_well_files = 3
+    else:
+        full_well_files = num_series
     for eachwell in well_list:
         per_well = platedict[eachwell][paint_cycle_name]
-        if len(per_well)==3: #only keep full wells
+        if len(per_well)==full_well_files: #only keep full wells
             per_well_im_list.append(per_well)
     bucket_folder = '/home/ubuntu/bucket/'+image_prefix+batch+'/images/'+plate+'/'+paint_cycle_name
     illum_folder =  '/home/ubuntu/bucket/'+image_prefix+batch+'/illum/'+plate
-    per_plate_csv = create_CSVs.create_CSV_pipeline2(plate, num_series, bucket_folder, illum_folder, per_well_im_list, well_list)
+    per_plate_csv = create_CSVs.create_CSV_pipeline2(plate, num_series, bucket_folder, illum_folder, per_well_im_list, well_list, metadata['one_or_many_files'])
     csv_on_bucket_name = prefix + 'load_data_csv/'+batch+'/'+plate+'/load_data_pipeline2.csv'
     print(csv_on_bucket_name)
     with open(per_plate_csv,'rb') as a:
