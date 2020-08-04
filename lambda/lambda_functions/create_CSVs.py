@@ -43,7 +43,7 @@ def create_CSV_pipeline1(platename, seriesperwell, path, listoffiles, one_or_man
     return file_out_name
 
 def create_CSV_pipeline2(platename, seriesperwell, path, illum_path,listoffiles, well_list, one_or_many):
-    columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_Well', 'Metadata_Well_Value']
+    columns = ['Metadata_Plate', 'Metadata_Site', 'Metadata_Well', 'Metadata_Well_Value']
     if one_or_many == 'one':
         columns_per_channel = ['PathName_','FileName_','Series_','Frame_','PathName_Illum','FileName_Illum']
         channels = ['Mito', 'DNA', 'ER', 'WGA', 'Phalloidin']
@@ -51,7 +51,7 @@ def create_CSV_pipeline2(platename, seriesperwell, path, illum_path,listoffiles,
         df = pandas.DataFrame(columns=columns)
         total_file_count = seriesperwell*len(listoffiles)
         df['Metadata_Plate'] = [platename] * total_file_count
-        df['Metadata_Series'] = range(seriesperwell) * len(listoffiles)
+        df['Metadata_Site'] = range(seriesperwell) * len(listoffiles)
         well_df_list = []
         well_val_df_list = []
         for eachwell in well_list:
@@ -81,7 +81,7 @@ def create_CSV_pipeline2(platename, seriesperwell, path, illum_path,listoffiles,
         df = pandas.DataFrame(columns=columns)
         total_file_count = seriesperwell*len(listoffiles)
         df['Metadata_Plate'] = [platename] * total_file_count
-        df['Metadata_Series'] = range(seriesperwell) * len(listoffiles)
+        df['Metadata_Site'] = range(seriesperwell) * len(listoffiles)
         well_df_list = []
         well_val_df_list = []
         for eachwell in well_list:
@@ -140,7 +140,7 @@ def create_CSV_pipeline3(platename, seriesperwell, path, well_list, range_skip):
     
 def create_CSV_pipeline5(platename, seriesperwell, expected_cycles, path, platedict, one_or_many, fast_or_slow):
     expected_cycles = int(expected_cycles)
-    columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_SBSCycle']
+    columns = ['Metadata_Plate', 'Metadata_Site', 'Metadata_SBSCycle']
     channels = ['OrigT', 'OrigG', 'OrigA', 'OrigC', 'OrigDNA']
     if one_or_many == 'one' and fast_or_slow == 'fast':
         columns_per_channel = ['PathName_','FileName_','Series_','Frame_']
@@ -149,7 +149,7 @@ def create_CSV_pipeline5(platename, seriesperwell, expected_cycles, path, plated
         well_list=platedict[1]
         total_file_count = seriesperwell * len(well_list) * expected_cycles
         df['Metadata_Plate'] = [platename] * total_file_count
-        df['Metadata_Series'] = range(seriesperwell) * len(well_list) * expected_cycles
+        df['Metadata_Site'] = range(seriesperwell) * len(well_list) * expected_cycles
         cycle_list = []
         path_list = []
         A_list = []
@@ -187,7 +187,7 @@ def create_CSV_pipeline5(platename, seriesperwell, expected_cycles, path, plated
         well_list=platedict[1]
         total_file_count = seriesperwell * len(well_list) * expected_cycles
         df['Metadata_Plate'] = [platename] * total_file_count
-        df['Metadata_Series'] = range(seriesperwell) * len(well_list) * expected_cycles
+        df['Metadata_Site'] = range(seriesperwell) * len(well_list) * expected_cycles
         cycle_list = []
         path_list = []
         file_list = []
@@ -269,7 +269,7 @@ def create_CSV_pipeline6(platename, seriesperwell, expected_cycles, path, illum_
             else:
                 df['Frame_'+this_cycle+'OrigG'] = df['Frame_'+this_cycle+'OrigT'] = df['Frame_'+this_cycle+'OrigA'] = df['Frame_'+this_cycle+'OrigC'] = [0] * total_file_count
     elif one_or_many == 'many' and fast_or_slow == 'slow':
-        columns = ['Metadata_Plate', 'Metadata_Series', 'Metadata_Well', 'Metadata_Well_Value']
+        columns = ['Metadata_Plate', 'Metadata_Site', 'Metadata_Well', 'Metadata_Well_Value']
         columns_per_channel = ['PathName_','FileName_','Frame_']
         cycles = ['Cycle%02d_' %x for x in range(1,expected_cycles+1)]
         or_il = ['Orig','Illum']
@@ -279,7 +279,7 @@ def create_CSV_pipeline6(platename, seriesperwell, expected_cycles, path, illum_
         well_list=platedict["1"].keys()
         total_file_count = seriesperwell * len(well_list)
         df['Metadata_Plate'] = [platename] * total_file_count
-        df['Metadata_Series'] = range(seriesperwell) * len(well_list)
+        df['Metadata_Site'] = range(seriesperwell) * len(well_list)
         well_df_list = []
         well_val_df_list = []
         for eachwell in well_list:
