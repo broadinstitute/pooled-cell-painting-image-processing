@@ -42,7 +42,16 @@ def lambda_handler(event, context):
     num_series = int(metadata['barcoding_rows']) * int(metadata['barcoding_columns'])
     expected_cycles = int(metadata['barcoding_cycles'])
     platelist = image_dict.keys()
-    
+
+    pipe_name = pipeline_name
+    if metadata["fast_or_slow_mode"] == 'fast':
+        if 'fast' not in pipe_name:
+            pipe_name = pipe_name[:-7]+'_fast.cppipe'
+    else:
+        if 'slow' not in pipe_name:
+            pipe_name = pipe_name[:-7]+'_slow.cppipe'
+    print(pipe_name)
+
     #First let's check if it seems like the whole thing is done or not
     sqs = boto3.client('sqs')
     
@@ -81,14 +90,7 @@ def lambda_handler(event, context):
         app_name = run_DCP.run_setup(bucket_name,prefix,batch,step)
         
         #make the jobs
-        if metadata["fast_or_slow_mode"] == 'fast':
-            if 'fast' not in pipeline_name:
-                pipeline_name = pipeline_name[:-7]+'_fast.cppipe'
-        else:
-            if 'slow' not in pipeline_name:
-                pipeline_name = pipeline_name[:-7]+'_slow.cppipe'
-                
-        create_batch_jobs.create_batch_jobs_6(image_prefix,batch,pipeline_name,plate_and_well_list, app_name, metadata['one_or_many_files'], num_series)
+        create_batch_jobs.create_batch_jobs_6(image_prefix,batch,pipe_name,plate_and_well_list, app_name, metadata['one_or_many_files'], num_series)
         
         #Start a cluster
         if metadata['one_or_many_files'] == 'one':

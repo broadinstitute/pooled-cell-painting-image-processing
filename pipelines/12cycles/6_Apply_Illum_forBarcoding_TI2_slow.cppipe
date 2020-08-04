@@ -6,14 +6,14 @@ ModuleCount:132
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:\'Unknown\'|variable_revision_number:6|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Input data file location:\xff\xfeD\x00e\x00f\x00a\x00u\x00l\x00t\x00 \x00I\x00n\x00p\x00u\x00t\x00 \x00F\x00o\x00l\x00d\x00e\x00r\x00 \x00s\x00u\x00b\x00-\x00f\x00o\x00l\x00d\x00e\x00r\x00\x7C\x00D\x00o\x00w\x00n\x00l\x00o\x00a\x00d\x00s\x00
-    Name of the file:\xff\xfel\x00o\x00a\x00d\x00_\x00d\x00a\x00t\x00a\x00_\x00p\x00i\x00p\x00e\x00l\x00i\x00n\x00e\x006\x00.\x00c\x00s\x00v\x00
+    Input data file location:\xff\xfeE\x00l\x00s\x00e\x00w\x00h\x00e\x00r\x00e\x00.\x00.\x00.\x00\x7C\x00/\x00U\x00s\x00e\x00r\x00s\x00/\x00b\x00c\x00i\x00m\x00i\x00n\x00i\x00/\x00D\x00o\x00w\x00n\x00l\x00o\x00a\x00d\x00s\x00
+    Name of the file:\xff\xfel\x00o\x00a\x00d\x00_\x00d\x00a\x00t\x00a\x00_\x00p\x00i\x00p\x00e\x00l\x00i\x00n\x00e\x006\x00 \x00(\x002\x00)\x00.\x00c\x00s\x00v\x00
     Load images based on this data?:\xff\xfeY\x00e\x00s\x00
     Base image location:\xff\xfeN\x00o\x00n\x00e\x00\x7C\x00
     Process just a range of rows?:\xff\xfeN\x00o\x00
     Rows to process:\xff\xfe1\x00,\x001\x000\x000\x000\x000\x000\x00
     Group images by metadata?:\xff\xfeY\x00e\x00s\x00
-    Select metadata tags for grouping:\xff\xfeP\x00l\x00a\x00t\x00e\x00,\x00W\x00e\x00l\x00l\x00,\x00A\x00r\x00b\x00i\x00t\x00r\x00a\x00r\x00y\x00G\x00r\x00o\x00u\x00p\x00
+    Select metadata tags for grouping:\xff\xfeP\x00l\x00a\x00t\x00e\x00,\x00S\x00e\x00r\x00i\x00e\x00s\x00,\x00W\x00e\x00l\x00l\x00
     Rescale intensities?:\xff\xfeY\x00e\x00s\x00
 
 MeasureImageQuality:[module_num:2|svn_version:\'Unknown\'|variable_revision_number:5|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
@@ -1267,12 +1267,12 @@ ImageMath:[module_num:62|svn_version:\'Unknown\'|variable_revision_number:4|show
     Ignore the image masks?:\xff\xfeN\x00o\x00
     Name the output image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x001\x00_\x00C\x00_\x00P\x00r\x00e\x00A\x00l\x00i\x00g\x00n\x00e\x00d\x00
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the first image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x001\x00_\x00C\x00o\x00r\x00r\x00C\x00
-    Multiply the first image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x001\x00_\x00C\x00o\x00r\x00r\x00C\x00
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the second image:\xff\xfe
-    Multiply the second image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfe
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
 
 ImageMath:[module_num:63|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
@@ -1285,12 +1285,12 @@ ImageMath:[module_num:63|svn_version:\'Unknown\'|variable_revision_number:4|show
     Ignore the image masks?:\xff\xfeN\x00o\x00
     Name the output image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00D\x00A\x00P\x00I\x00_\x00P\x00r\x00e\x00A\x00l\x00i\x00g\x00n\x00e\x00d\x00
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the first image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00D\x00N\x00A\x00
-    Multiply the first image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00D\x00N\x00A\x00
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the second image:\xff\xfe
-    Multiply the second image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfe
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
 
 ImageMath:[module_num:64|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
@@ -1303,12 +1303,12 @@ ImageMath:[module_num:64|svn_version:\'Unknown\'|variable_revision_number:4|show
     Ignore the image masks?:\xff\xfeN\x00o\x00
     Name the output image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00G\x00_\x00P\x00r\x00e\x00A\x00l\x00i\x00g\x00n\x00e\x00d\x00
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the first image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00G\x00
-    Multiply the first image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00G\x00
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the second image:\xff\xfe
-    Multiply the second image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfe
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
 
 ImageMath:[module_num:65|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
@@ -1321,12 +1321,12 @@ ImageMath:[module_num:65|svn_version:\'Unknown\'|variable_revision_number:4|show
     Ignore the image masks?:\xff\xfeN\x00o\x00
     Name the output image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00T\x00_\x00P\x00r\x00e\x00A\x00l\x00i\x00g\x00n\x00e\x00d\x00
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the first image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00T\x00
-    Multiply the first image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00T\x00
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the second image:\xff\xfe
-    Multiply the second image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfe
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
 
 ImageMath:[module_num:66|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
@@ -1339,12 +1339,12 @@ ImageMath:[module_num:66|svn_version:\'Unknown\'|variable_revision_number:4|show
     Ignore the image masks?:\xff\xfeN\x00o\x00
     Name the output image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00A\x00_\x00P\x00r\x00e\x00A\x00l\x00i\x00g\x00n\x00e\x00d\x00
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the first image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00A\x00
-    Multiply the first image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00A\x00
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the second image:\xff\xfe
-    Multiply the second image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfe
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
 
 ImageMath:[module_num:67|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
@@ -1357,12 +1357,12 @@ ImageMath:[module_num:67|svn_version:\'Unknown\'|variable_revision_number:4|show
     Ignore the image masks?:\xff\xfeN\x00o\x00
     Name the output image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00_\x00P\x00r\x00e\x00A\x00l\x00i\x00g\x00n\x00e\x00d\x00
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the first image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00C\x00
-    Multiply the first image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfeC\x00y\x00c\x00l\x00e\x001\x002\x00_\x00C\x00o\x00r\x00r\x00C\x00
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the second image:\xff\xfe
-    Multiply the second image by:\xff\xfe1\x00.\x000\x00
+    Select the image:\xff\xfe
+    Multiply the image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
 
 Align:[module_num:68|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
