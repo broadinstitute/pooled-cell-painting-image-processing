@@ -21,6 +21,7 @@ metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'preprocessFleet.json'
 prev_step_app_name = '2018_11_20_Periscope_X_ApplyIllumBarcoding'
 prev_step_num = '6'
+duplicate_queue_name = '2018_11_20_Periscope_PreventOverlappingStarts.fifo'
 step = '7'
 
 def lambda_handler(event, context):
@@ -60,10 +61,11 @@ def lambda_handler(event, context):
     expected_len = len(plate_and_well_list) * expected_files_per_well
 
     
-    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs)
+    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, duplicate_queue_name)
     
     if not done:
         print('Still work ongoing')
+        return('Still work ongoing')
     else:
         #Pull the file names we care about, and make the CSV
         for eachplate in platelist:
@@ -91,3 +93,4 @@ def lambda_handler(event, context):
         #Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch,step)
         print('Go run the monitor now')
+        return('Cluster started')

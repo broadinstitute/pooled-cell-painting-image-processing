@@ -2,6 +2,7 @@ import json
 import os
 import re
 import sys
+import time
 
 import pandas
 
@@ -90,9 +91,10 @@ def paginate_a_folder(s3,bucket_name,prefix):
         image_list += [x['Key'] for x in page['Contents']]
     return image_list
 
-def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, filter_in = None, filter_out = None):
+def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, dup_queue_name, filter_in = None, filter_out = None):
     #Step 1- how many files are there in the illum folder?
     image_list = paginate_a_folder(s3, bucket_name, filter_prefix)
+    done = False
     
     if filter_in != None:
         image_list = [x for x in image_list if filter_in in x]
@@ -100,19 +102,28 @@ def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_ap
         image_list = [x for x in image_list if filter_out not in x]
 
     if len(image_list) >= expected_len:
-        return True
+        done = True
     else:
         print('Only ',len(image_list),' output files so far')
     
     #Maybe something died, but everything is done, and you have a monitor on that already cleaned up your queue
     queue_url = check_named_queue(sqs, prev_step_app_name+'Queue')
     if queue_url == None:
-        return True
+        done = True
         
     #Maybe something died, and now your queue is just at 0 jobs
     attributes = sqs.get_queue_attributes(QueueUrl=queue_url,AttributeNames=['ApproximateNumberOfMessages','ApproximateNumberOfMessagesNotVisible'])
     if attributes['Attributes']['ApproximateNumberOfMessages'] + attributes['Attributes']['ApproximateNumberOfMessagesNotVisible'] == 0:
-        return True
+        done = True
+
+    #If indeed we are done, we want to check we're not overlapping and starting the same next job many times
+    if done:
+        nmess = sqs.get_queue_attributes(QueueUrl=dup_queue_name,AttributeNames=['ApproximateNumberOfMessages'])['Attributes']['ApproximateNumberOfMessages']
+        sqs.send_message(QueueUrl=dup_queue_name, MessageBody=prev_step_app_name, MessageGroupId='0')
+        time.sleep(2)
+        nmess2 = sqs.get_queue_attributes(QueueUrl=dup_queue_name,AttributeNames=['ApproximateNumberOfMessages'])['Attributes']['ApproximateNumberOfMessages']
+        if nmess2 != nmess: #aka, if we're the first job to report in as finished
+            return True
         
     #or, we're just not done yet
     return False

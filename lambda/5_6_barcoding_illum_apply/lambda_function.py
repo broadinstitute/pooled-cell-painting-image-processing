@@ -21,6 +21,7 @@ metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'illumFleet.json'
 prev_step_app_name = '2018_11_20_Periscope_X_IllumBarcoding'
 prev_step_num = '5'
+duplicate_queue_name = '2018_11_20_Periscope_PreventOverlappingStarts.fifo'
 step = '6'
 
 def lambda_handler(event, context):
@@ -58,10 +59,11 @@ def lambda_handler(event, context):
     filter_prefix = image_prefix+batch+'/illum'
     expected_len = int(metadata['barcoding_cycles'])*len(platelist)*5
     
-    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, filter_in = 'Cycle')
+    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, duplicate_queue_name, filter_in = 'Cycle')
     
     if not done:
         print('Still work ongoing')
+        return('Still work ongoing')
     else:
         #First thing first, let's make an easier-to-use plate and well list and save it
         plate_and_well_list = []
@@ -102,3 +104,4 @@ def lambda_handler(event, context):
         #Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch,step)
         print('Go run the monitor now')
+        return('Cluster started')
