@@ -37,7 +37,9 @@ if not os.path.exists(downsample_outdir):
 
 stitchedsize=int(rows)*int(size)
 tileperside=int(tileperside)
-upscaledsize=int(stitchedsize*float(scalingstring))
+scale_factor=float(scalingstring)
+rounded_scale_factor=int(round(scale_factor))
+upscaledsize=int(stitchedsize*rounded_scale_factor)
 if upscaledsize > 46340:
         upscaledsize = 46340
 tilesize=int(upscaledsize/tileperside)
@@ -143,8 +145,8 @@ if os.path.isdir(subdir):
 
                         IJ.run("Grid/Collection stitching", copy_grid_instructions)
                         im=IJ.getImage()
-                        width = str(im.width*float(scalingstring))
-                        height = str(im.height*float(scalingstring))
+                        width = str(int(round(im.width*float(scalingstring))))
+                        height = str(int(round(im.height*float(scalingstring))))
                         print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                         IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                         im2=IJ.getImage()
