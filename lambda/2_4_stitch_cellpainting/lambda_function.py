@@ -19,6 +19,7 @@ metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'stitchFleet.json'
 prev_step_app_name = '2018_11_20_Periscope_X_ApplyIllumPainting'
 prev_step_num = '2'
+duplicate_queue_name = '2018_11_20_Periscope_PreventOverlappingStarts.fifo'
 step = '4'
 
 def lambda_handler(event, context):
@@ -58,10 +59,11 @@ def lambda_handler(event, context):
     filter_prefix = image_prefix+batch+'/images_corrected/painting'
     expected_len = len(plate_and_well_list) * expected_files_per_well
     
-    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs)
+    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, duplicate_queue_name)
     
     if not done:
         print('Still work ongoing')
+        return('Still work ongoing')
     else:
         # first let's just try to run the monitor on the last step, in case we haven't yet
         helpful_functions.try_a_shutdown(s3, bucket_name, prefix, batch, prev_step_num, prev_step_app_name)
@@ -78,3 +80,4 @@ def lambda_handler(event, context):
         #Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch,step)
         print('Go run the monitor now')
+        return('Cluster started')

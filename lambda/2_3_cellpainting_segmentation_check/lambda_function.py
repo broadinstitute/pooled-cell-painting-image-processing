@@ -20,6 +20,7 @@ pipeline_name = '3_SegmentationCheck_TI2.cppipe'
 metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'segmentFleet.json'
 prev_step_app_name = '2018_11_20_Periscope_X_ApplyIllumPainting'
+duplicate_queue_name = '2018_11_20_Periscope_PreventOverlappingStarts.fifo'
 step = '3'
 range_skip = 16
 
@@ -57,10 +58,11 @@ def lambda_handler(event, context):
     expected_len = len(plate_and_well_list) * expected_files_per_well
     
     print('Checking if all files are present')
-    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs)
+    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, duplicate_queue_name)
     
     if not done:
         print('Still work ongoing')
+        return('Still work ongoing')
     else:
         print("Checking CSVs for what the upper threshold should be")
         image_csv_list = helpful_functions.paginate_a_folder(s3, bucket_name, os.path.join(image_prefix,batch,'images_corrected/painting'))
@@ -103,6 +105,7 @@ def lambda_handler(event, context):
         #Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch,step)
         print('Go run the monitor now')
+        return('Cluster started')
     
     
 def edit_id_secondary(file_in_name,file_out_name,upper_value):
