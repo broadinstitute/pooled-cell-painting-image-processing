@@ -42,7 +42,16 @@ def lambda_handler(event, context):
     num_series = int(metadata['barcoding_rows']) * int(metadata['barcoding_columns'])
     expected_cycles = int(metadata['barcoding_cycles'])
     platelist = image_dict.keys()
-    
+
+    pipe_name = pipeline_name
+    if metadata["fast_or_slow_mode"] == 'fast':
+        if 'fast' not in pipe_name:
+            pipe_name = pipe_name[:-7]+'_fast.cppipe'
+    else:
+        if 'slow' not in pipe_name:
+            pipe_name = pipe_name[:-7]+'_slow.cppipe'
+    print(pipe_name)
+
     #First let's check if it seems like the whole thing is done or not
     sqs = boto3.client('sqs')
     
@@ -68,7 +77,7 @@ def lambda_handler(event, context):
             platedict = image_dict[eachplate]
             bucket_folder = '/home/ubuntu/bucket/'+image_prefix+batch+'/images/'+eachplate
             illum_folder =  '/home/ubuntu/bucket/'+image_prefix+batch+'/illum/'+eachplate
-            per_plate_csv = create_CSVs.create_CSV_pipeline6(eachplate, num_series, expected_cycles, bucket_folder, illum_folder,platedict)
+            per_plate_csv = create_CSVs.create_CSV_pipeline6(eachplate, num_series, expected_cycles, bucket_folder, illum_folder,platedict,metadata['one_or_many_files'], metadata["fast_or_slow_mode"])
             csv_on_bucket_name = prefix + 'load_data_csv/'+batch+'/'+eachplate+'/load_data_pipeline6.csv'
             print('Created', csv_on_bucket_name)
             with open(per_plate_csv,'rb') as a:
@@ -81,10 +90,14 @@ def lambda_handler(event, context):
         app_name = run_DCP.run_setup(bucket_name,prefix,batch,step)
         
         #make the jobs
-        create_batch_jobs.create_batch_jobs_6(image_prefix,batch,pipeline_name,plate_and_well_list, app_name)
+        create_batch_jobs.create_batch_jobs_6(image_prefix,batch,pipe_name,plate_and_well_list, app_name, metadata['one_or_many_files'], num_series)
         
         #Start a cluster
-        run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, len(plate_and_well_list)*19)  
+        if metadata['one_or_many_files'] == 'one':
+            njobs = len(plate_and_well_list)*19
+        else:
+            njobs = len(plate_and_well_list)*num_series
+        run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, njobs)  
 
         #Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch,step)

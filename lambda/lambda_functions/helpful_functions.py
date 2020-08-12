@@ -27,7 +27,7 @@ def parse_image_names(imlist,filter):
                             image_dict[plate][well][cycle] += [imname]
     return image_dict
     
-def return_full_wells(image_dict,expected_cycles):
+def return_full_wells(image_dict,expected_cycles,one_or_many, files_per_well=1):
     im_dict_out = {}
     expected_cycles = int(expected_cycles)
     platelist = image_dict.keys()
@@ -43,7 +43,7 @@ def return_full_wells(image_dict,expected_cycles):
                 has_all_files = True
                 #let's also make sure each cycle has all its files; for Cycle 1, that's 1, for the rest it's 5
                 for cycle in cycle_list:
-                    if len(platedict[eachwell][cycle]) not in (1,5):
+                    if len(platedict[eachwell][cycle]) not in (files_per_well,files_per_well*5):
                         has_all_files = False
                 if has_all_files:
                     full_wells.append(eachwell)
@@ -59,7 +59,7 @@ def return_full_wells(image_dict,expected_cycles):
                 match = re.search('[-_]c[_-]{0,1}[0-9]{1,2}',cycle)
                 out = match.group(0)
                 cycle_num = int(out[out.index('c')+1:])
-                if cycle_num == 1:
+                if cycle_num == 1 and one_or_many =='one':
                     per_cycle_dict[cycle_num][eachwell]=[cycle,platedict[eachwell][cycle]*5]
                 else:
                     temp_list = platedict[eachwell][cycle]

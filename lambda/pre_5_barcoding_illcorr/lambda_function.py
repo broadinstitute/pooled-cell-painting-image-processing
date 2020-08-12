@@ -45,7 +45,10 @@ def lambda_handler(event, context):
     metadata ['barcoding_file_data'] = image_dict
     print('Parsing the image list')
     #We've saved the previous for looking at/debugging later, but really all we want is the ones with all cycles
-    parsed_image_dict = helpful_functions.return_full_wells(image_dict,expected_cycles)
+    if metadata['one_or_many_files'] == 1:
+        parsed_image_dict = helpful_functions.return_full_wells(image_dict,expected_cycles, metadata['one_or_many_files'])
+    else:
+        parsed_image_dict = helpful_functions.return_full_wells(image_dict,expected_cycles, metadata['one_or_many_files'], files_per_well=num_series)
     metadata['wells_with_all_cycles'] = parsed_image_dict
     helpful_functions.write_metadata_file(s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name)
     
@@ -56,7 +59,7 @@ def lambda_handler(event, context):
         platedict = parsed_image_dict[eachplate]
         well_list = platedict.keys()
         bucket_folder = '/home/ubuntu/bucket/'+image_prefix+batch+'/images/'+eachplate
-        per_plate_csv = create_CSVs.create_CSV_pipeline5(eachplate, num_series, expected_cycles, bucket_folder, platedict)
+        per_plate_csv = create_CSVs.create_CSV_pipeline5(eachplate, num_series, expected_cycles, bucket_folder, platedict, metadata['one_or_many_files'], metadata["fast_or_slow_mode"])
         csv_on_bucket_name = prefix + 'load_data_csv/'+batch+'/'+eachplate+'/load_data_pipeline5.csv'
         with open(per_plate_csv,'rb') as a:
             s3.put_object(Body= a, Bucket = bucket, Key = csv_on_bucket_name )

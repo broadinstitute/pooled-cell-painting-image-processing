@@ -11,8 +11,10 @@ def run_setup(bucket_name,prefix,batch,step,cellprofiler=True):
     #We might sometimes run setup after running cleanup on the step before, so we want to import our configs fresh
     if 'boto3_setup' in sys.modules.keys():
         sys.modules.pop('boto3_setup')
+        print('popped previous boto3_setup')
     if 'config_ours' in sys.modules.keys():
         sys.modules.pop('config_ours')
+        print('popped previous config_ours')
     import boto3_setup
     app_name = boto3_setup.setup(cellprofiler=cellprofiler)
     return app_name
