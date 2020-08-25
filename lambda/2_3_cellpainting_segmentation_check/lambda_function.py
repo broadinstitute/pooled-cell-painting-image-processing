@@ -46,6 +46,10 @@ def lambda_handler(event, context):
     
     image_dict = metadata ['painting_file_data']
     num_series = int(metadata['painting_rows']) * int(metadata['painting_columns'])
+    if "painting_imperwell" in metadata.keys():
+        if metadata["painting_imperwell"] != "":
+            if int(metadata["painting_imperwell"]) != 0:
+                num_series = int(metadata["painting_imperwell"])
     out_range = range(0,num_series,range_skip)
     expected_files_per_well = (num_series*int(metadata['painting_channels']))+6
     platelist = image_dict.keys()

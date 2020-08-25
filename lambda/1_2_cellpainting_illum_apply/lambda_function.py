@@ -40,6 +40,10 @@ def lambda_handler(event, context):
     
     image_dict = metadata ['painting_file_data']
     num_series = int(metadata['painting_rows']) * int(metadata['painting_columns'])
+    if "painting_imperwell" in metadata.keys():
+        if metadata["painting_imperwell"] != "":
+            if int(metadata["painting_imperwell"]) != 0:
+                num_series = int(metadata["painting_imperwell"])
     
     #Pull the file names we care about, and make the CSV
     platelist = image_dict.keys()

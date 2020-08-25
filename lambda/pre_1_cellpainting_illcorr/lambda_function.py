@@ -33,6 +33,11 @@ def lambda_handler(event, context):
     metadata_on_bucket_name = os.path.join(prefix,'metadata',batch,'metadata.json')
     metadata = helpful_functions.download_and_read_metadata_file(s3, bucket, metadata_file_name, metadata_on_bucket_name)
     num_series = int(metadata['painting_rows']) * int(metadata['painting_columns'])
+    if "painting_imperwell" in metadata.keys():
+        if metadata["painting_imperwell"] != "":
+            if int(metadata["painting_imperwell"]) != 0:
+                num_series = int(metadata["painting_imperwell"])
+    
     
     #Get the list of images in this experiment
     image_list_prefix = image_prefix+batch+'/images/'
