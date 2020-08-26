@@ -110,18 +110,20 @@ def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_ap
     queue_url = check_named_queue(sqs, prev_step_app_name+'Queue')
     if queue_url == None:
         done = True
-        
-    #Maybe something died, and now your queue is just at 0 jobs
-    attributes = sqs.get_queue_attributes(QueueUrl=queue_url,AttributeNames=['ApproximateNumberOfMessages','ApproximateNumberOfMessagesNotVisible'])
-    if attributes['Attributes']['ApproximateNumberOfMessages'] + attributes['Attributes']['ApproximateNumberOfMessagesNotVisible'] == 0:
-        done = True
+
+    else:    
+        #Maybe something died, and now your queue is just at 0 jobs
+        attributes = sqs.get_queue_attributes(QueueUrl=queue_url,AttributeNames=['ApproximateNumberOfMessages','ApproximateNumberOfMessagesNotVisible'])
+        if attributes['Attributes']['ApproximateNumberOfMessages'] + attributes['Attributes']['ApproximateNumberOfMessagesNotVisible'] == 0:
+            done = True
 
     #If indeed we are done, we want to check we're not overlapping and starting the same next job many times
     if done:
-        nmess = sqs.get_queue_attributes(QueueUrl=dup_queue_name,AttributeNames=['ApproximateNumberOfMessages'])['Attributes']['ApproximateNumberOfMessages']
-        sqs.send_message(QueueUrl=dup_queue_name, MessageBody=prev_step_app_name, MessageGroupId='0')
+        dup_queue_url=check_named_queue(sqs, dup_queue_name)
+        nmess = sqs.get_queue_attributes(QueueUrl=dup_queue_url,AttributeNames=['ApproximateNumberOfMessages'])['Attributes']['ApproximateNumberOfMessages']
+        sqs.send_message(QueueUrl=dup_queue_url, MessageBody=prev_step_app_name, MessageGroupId='0')
         time.sleep(2)
-        nmess2 = sqs.get_queue_attributes(QueueUrl=dup_queue_name,AttributeNames=['ApproximateNumberOfMessages'])['Attributes']['ApproximateNumberOfMessages']
+        nmess2 = sqs.get_queue_attributes(QueueUrl=dup_queue_url,AttributeNames=['ApproximateNumberOfMessages'])['Attributes']['ApproximateNumberOfMessages']
         if nmess2 != nmess: #aka, if we're the first job to report in as finished
             return True
         
