@@ -246,8 +246,8 @@ ExportToSpreadsheet:[module_num:13|svn_version:\'Unknown\'|variable_revision_num
     Export all measurement types?:\xff\xfeY\x00e\x00s\x00
     Press button to select measurements:\xff\xfe
     Representation of Nan/Inf:\xff\xfeN\x00a\x00N\x00
-    Add a prefix to file names?:\xff\xfeN\x00o\x00
-    Filename prefix:\xff\xfeM\x00y\x00E\x00x\x00p\x00t\x00_\x00
+    Add a prefix to file names?:\xff\xfeY\x00e\x00s\x00
+    Filename prefix:\xff\xfeS\x00e\x00g\x00m\x00e\x00n\x00t\x00a\x00t\x00i\x00o\x00n\x00C\x00h\x00e\x00c\x00k\x00_\x00
     Overwrite existing files without warning?:\xff\xfeN\x00o\x00
     Data to export:\xff\xfeI\x00m\x00a\x00g\x00e\x00
     Combine these object measurements with those of the previous object?:\xff\xfeN\x00o\x00
