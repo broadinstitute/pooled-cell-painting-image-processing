@@ -7,6 +7,9 @@ sys.path.append('/tmp')
 
 def run_setup(bucket_name,prefix,batch,step,cellprofiler=True):
     os.chdir('/tmp')
+    if os.path.exists('/tmp/config_ours.py'):
+        os.remove('/tmp/config_ours.py')
+        print('removed previous config file')
     grab_batch_config(bucket_name,prefix,batch,step)
     #We might sometimes run setup after running cleanup on the step before, so we want to import our configs fresh
     if 'boto3_setup' in sys.modules.keys():
