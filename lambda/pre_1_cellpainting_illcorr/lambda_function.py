@@ -37,12 +37,12 @@ def lambda_handler(event, context):
         if metadata["painting_imperwell"] != "":
             if int(metadata["painting_imperwell"]) != 0:
                 num_series = int(metadata["painting_imperwell"])
-    
-    
+
+
     #Get the list of images in this experiment
     image_list_prefix = image_prefix+batch+'/images/'
     image_list = helpful_functions.paginate_a_folder(s3,bucket,image_list_prefix)
-    image_dict = helpful_functions.parse_image_names(image_list,filter='20X')
+    image_dict = helpful_functions.parse_image_names(image_list, filter_in = '20X', filter_out = 'copy')
     metadata ['painting_file_data'] = image_dict
     helpful_functions.write_metadata_file(s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name)
 
@@ -50,7 +50,7 @@ def lambda_handler(event, context):
         full_well_files = 1
     else:
         full_well_files = num_series
-    
+
     #Pull the file names we care about, and make the CSV
     platelist = image_dict.keys()
     for eachplate in platelist:
@@ -68,22 +68,18 @@ def lambda_handler(event, context):
         csv_on_bucket_name = prefix + 'load_data_csv/'+batch+'/'+eachplate+'/load_data_pipeline1.csv'
         with open(per_plate_csv,'rb') as a:
             s3.put_object(Body= a, Bucket = bucket, Key = csv_on_bucket_name )
-            
+
     #Now it's time to run DCP
     #Replacement for 'fab setup'
     app_name = run_DCP.run_setup(bucket,prefix,batch,step)
     #run_DCP.grab_batch_config(bucket,prefix,batch,step)
-    
+
     #Make a batch
     create_batch_jobs.create_batch_jobs_1(image_prefix,batch,pipeline_name,platelist, app_name)
-    
+
     #Start a cluster
-    run_DCP.run_cluster(bucket,prefix,batch,step, fleet_file_name, len(platelist))  
+    run_DCP.run_cluster(bucket,prefix,batch,step, fleet_file_name, len(platelist))
 
     #Run the monitor
     run_DCP.run_monitor(bucket, prefix, batch,step)
     print('Go run the monitor now')
-    
-
-
-            

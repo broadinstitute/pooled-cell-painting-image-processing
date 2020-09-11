@@ -8,26 +8,27 @@ import pandas
 
 import run_DCP
 
-def parse_image_names(imlist,filter):
+def parse_image_names(imlist,filter_in, filter_out="jibberish"):
     image_dict = {}
     for image in imlist:
         if '.nd2' in image:
-            if filter in image:
-                prePlate,platePlus = image.split('images/')
-                plate,cycle,imname = platePlus.split('/')
-                well = imname[:imname.index('_')]
-                if plate not in image_dict.keys():
-                    image_dict[plate] = {well:{cycle:[imname]}}
-                else:
-                    if well not in image_dict[plate].keys():
-                        image_dict[plate][well] = {cycle:[imname]}
+            if filter_in in image:
+                if filter_out not in image:
+                    prePlate,platePlus = image.split('images/')
+                    plate,cycle,imname = platePlus.split('/')
+                    well = imname[:imname.index('_')]
+                    if plate not in image_dict.keys():
+                        image_dict[plate] = {well:{cycle:[imname]}}
                     else:
-                        if cycle not in image_dict[plate][well].keys():
-                            image_dict[plate][well][cycle] = [imname]
+                        if well not in image_dict[plate].keys():
+                            image_dict[plate][well] = {cycle:[imname]}
                         else:
-                            image_dict[plate][well][cycle] += [imname]
+                            if cycle not in image_dict[plate][well].keys():
+                                image_dict[plate][well][cycle] = [imname]
+                            else:
+                                image_dict[plate][well][cycle] += [imname]
     return image_dict
-    
+
 def return_full_wells(image_dict,expected_cycles,one_or_many, files_per_well=1):
     im_dict_out = {}
     expected_cycles = int(expected_cycles)
@@ -68,20 +69,20 @@ def return_full_wells(image_dict,expected_cycles,one_or_many, files_per_well=1):
                     per_cycle_dict[cycle_num][eachwell]=[cycle,temp_list]
         im_dict_out[eachplate] = per_cycle_dict
     return im_dict_out
-    
+
 def download_and_read_metadata_file(s3, bucket_name, metadata_file_name, metadata_on_bucket_name):
     with open(metadata_file_name, 'wb') as f:
         s3.download_fileobj(bucket_name,  metadata_on_bucket_name, f)
     with open(metadata_file_name, 'r') as input_metadata:
         metadata = json.load(input_metadata)
-    return metadata    
-        
+    return metadata
+
 def write_metadata_file(s3, bucket_name, metadata, metadata_file_name, metadata_on_bucket_name):
     with open(metadata_file_name, 'wb') as f:
         json.dump(metadata, f)
     with open(metadata_file_name, 'r') as metadata:
         s3.put_object(Body = metadata, Bucket = bucket_name, Key = metadata_on_bucket_name)
-        
+
 def paginate_a_folder(s3,bucket_name,prefix):
     paginator = s3.get_paginator('list_objects_v2')
     pages = paginator.paginate(Bucket=bucket_name, Prefix=prefix)
@@ -95,7 +96,7 @@ def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_ap
     #Step 1- how many files are there in the illum folder?
     image_list = paginate_a_folder(s3, bucket_name, filter_prefix)
     done = False
-    
+
     if filter_in != None:
         image_list = [x for x in image_list if filter_in in x]
     if filter_out != None:
@@ -105,13 +106,13 @@ def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_ap
         done = True
     else:
         print('Only ',len(image_list),' output files so far')
-    
+
     #Maybe something died, but everything is done, and you have a monitor on that already cleaned up your queue
     queue_url = check_named_queue(sqs, prev_step_app_name+'Queue')
     if queue_url == None:
         done = True
 
-    else:    
+    else:
         #Maybe something died, and now your queue is just at 0 jobs
         attributes = sqs.get_queue_attributes(QueueUrl=queue_url,AttributeNames=['ApproximateNumberOfMessages','ApproximateNumberOfMessagesNotVisible'])
         if attributes['Attributes']['ApproximateNumberOfMessages'] + attributes['Attributes']['ApproximateNumberOfMessagesNotVisible'] == 0:
@@ -126,7 +127,7 @@ def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_ap
         nmess2 = sqs.get_queue_attributes(QueueUrl=dup_queue_url,AttributeNames=['ApproximateNumberOfMessages'])['Attributes']['ApproximateNumberOfMessages']
         if nmess2 != nmess: #aka, if we're the first job to report in as finished
             return True
-        
+
     #or, we're just not done yet
     return False
 
@@ -137,7 +138,7 @@ def check_named_queue(sqs, SQS_QUEUE_NAME):
             if u.split('/')[-1] == SQS_QUEUE_NAME:
                 return u
     return None
-    
+
 def try_to_run_monitor(s3, bucket_name, prefix, batch, step, prev_step_app_name):
     prev_step_monitor_bucket_name = prefix + 'monitors/'+batch+'/'+step+'/'+prev_step_app_name + 'SpotFleetRequestId.json'
     prev_step_monitor_name = '/tmp/'+prev_step_app_name + 'SpotFleetRequestId.json'
@@ -160,7 +161,7 @@ def try_a_shutdown(s3, bucket_name, prefix, batch, prev_step_number, prev_step_a
     except:
         print('Monitor cleanup of previous step failed with error',sys.exc_info()[0])
         pass
-    
+
 def concat_some_csvs(s3,bucket_name,file_list,csvname):
     tmp_name = os.path.join('/tmp',csvname)
     df_dict={}

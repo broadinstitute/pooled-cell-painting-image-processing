@@ -45,7 +45,7 @@ def lambda_handler(event, context):
     image_list_prefix = image_prefix+batch+'/images/' #the slash here is critical, because we don't want to read images_corrected because it's huge
     image_list = helpful_functions.paginate_a_folder(s3,bucket,image_list_prefix)
     print('Image list retrieved')
-    image_dict = helpful_functions.parse_image_names(image_list,filter='10X')
+    image_dict = helpful_functions.parse_image_names(image_list, filter_in = '10X', filter_out = 'copy')
     metadata ['barcoding_file_data'] = image_dict
     print('Parsing the image list')
     #We've saved the previous for looking at/debugging later, but really all we want is the ones with all cycles
