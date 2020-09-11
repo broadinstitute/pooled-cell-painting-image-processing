@@ -43,4 +43,9 @@ else:
             print('Modifying', to_mod)
             for entry in val_from:
                 replace(to_mod, str(entry),str(subs[entry]))
-
+        elif os.path.isdir(os.path.join(folder,eachfile)):
+            for eachsubfile in os.listdir(os.path.join(folder,eachfile)):
+                to_mod = os.path.join(folder,eachfile,eachsubfile)
+                print('Modifying', to_mod)
+                for entry in val_from:
+                    replace(to_mod, str(entry),str(subs[entry]))
