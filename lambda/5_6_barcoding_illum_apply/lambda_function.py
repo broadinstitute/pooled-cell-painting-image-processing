@@ -33,14 +33,18 @@ def lambda_handler(event, context):
     batch = key.split('/')[-4]
     image_prefix = key.split(batch)[0]
     prefix = os.path.join(image_prefix,'workspace/')
-    
+
     #get the metadata file, so we can add stuff to it
     metadata_on_bucket_name = os.path.join(prefix,'metadata',batch,'metadata.json')
     print('Loading', metadata_on_bucket_name)
     metadata = helpful_functions.download_and_read_metadata_file(s3, bucket_name, metadata_file_name, metadata_on_bucket_name)
-    
+
     image_dict = metadata ['wells_with_all_cycles']
     num_series = int(metadata['barcoding_rows']) * int(metadata['barcoding_columns'])
+    if "barcoding_imperwell" in metadata.keys():
+        if metadata["barcoding_imperwell"] != "":
+            if int(metadata["barcoding_imperwell"]) != 0:
+                num_series = int(metadata["barcoding_imperwell"])
     expected_cycles = int(metadata['barcoding_cycles'])
     platelist = image_dict.keys()
 
@@ -55,12 +59,12 @@ def lambda_handler(event, context):
 
     #First let's check if it seems like the whole thing is done or not
     sqs = boto3.client('sqs')
-    
+
     filter_prefix = image_prefix+batch+'/illum'
     expected_len = int(metadata['barcoding_cycles'])*len(platelist)*5
-    
+
     done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, duplicate_queue_name, filter_in = 'Cycle')
-    
+
     if not done:
         print('Still work ongoing')
         return('Still work ongoing')
@@ -84,22 +88,22 @@ def lambda_handler(event, context):
             print('Created', csv_on_bucket_name)
             with open(per_plate_csv,'rb') as a:
                 s3.put_object(Body= a, Bucket = bucket_name, Key = csv_on_bucket_name)
-                
+
         # first let's just try to run the monitor on the last step, in case we haven't yet
         helpful_functions.try_a_shutdown(s3, bucket_name, prefix, batch, prev_step_num, prev_step_app_name)
-        
+
         #now let's do our stuff!
         app_name = run_DCP.run_setup(bucket_name,prefix,batch,step)
-        
+
         #make the jobs
         create_batch_jobs.create_batch_jobs_6(image_prefix,batch,pipe_name,plate_and_well_list, app_name, metadata['one_or_many_files'], num_series)
-        
+
         #Start a cluster
         if metadata['one_or_many_files'] == 'one':
             njobs = len(plate_and_well_list)*19
         else:
             njobs = len(plate_and_well_list)*num_series
-        run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, njobs)  
+        run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, njobs)
 
         #Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch,step)

@@ -29,30 +29,34 @@ def lambda_handler(event, context):
     batch = key.split('/')[-2]
     image_prefix = key.split('workspace')[0]
     prefix = os.path.join(image_prefix,'workspace/')
-    
+
     print(batch,image_prefix,prefix)
-    
+
     #get the metadata file, so we can add stuff to it
     metadata_on_bucket_name = os.path.join(prefix,'metadata',batch,'metadata.json')
     print('Loading', metadata_on_bucket_name)
     metadata = helpful_functions.download_and_read_metadata_file(s3, bucket_name, metadata_file_name, metadata_on_bucket_name)
-    
+
     plate_and_well_list = metadata['barcoding_plate_and_well_list']
     image_dict = metadata['wells_with_all_cycles']
     expected_cycles = metadata['barcoding_cycles']
     platelist = image_dict.keys()
     num_series = int(metadata['barcoding_rows']) * int(metadata['barcoding_columns'])
+    if "barcoding_imperwell" in metadata.keys():
+        if metadata["barcoding_imperwell"] != "":
+            if int(metadata["barcoding_imperwell"]) != 0:
+                num_series = int(metadata["barcoding_imperwell"])
     expected_files_per_well = (num_series*((int(metadata['barcoding_cycles'])*4)+1))+3
     num_sites = round(len(plate_and_well_list) * num_series/15)
 
     #now let's do our stuff!
     app_name = run_DCP.run_setup(bucket_name,prefix,batch,step)
-    
+
     #make the jobs
     create_batch_jobs.create_batch_jobs_7A(image_prefix,batch,pipeline_name,plate_and_well_list, range(num_series), app_name)
-    
+
     #Start a cluster
-    run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, num_sites)  
+    run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, num_sites)
 
     #Run the monitor
     run_DCP.run_monitor(bucket_name, prefix, batch,step)

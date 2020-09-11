@@ -4,6 +4,7 @@ import json
 import os
 import sys
 import time
+import numpy as np
 
 import boto3
 
@@ -21,6 +22,8 @@ prev_step_app_name = '2018_11_20_Periscope_X_PaintingSegmentationCheck'
 prev_step_num = '3'
 duplicate_queue_name = '2018_11_20_Periscope_PreventOverlappingStarts.fifo'
 step = '4'
+#Make sure that range_skip matches that set in 2_3_cellpainting_segmentation_check lambda function
+range_skip = 16
 
 def lambda_handler(event, context):
     # Log the received event
@@ -42,7 +45,11 @@ def lambda_handler(event, context):
     image_dict = metadata ['painting_file_data']
     print(image_dict)
     num_series = int(metadata['painting_rows']) * int(metadata['painting_columns'])
-    expected_files_per_well = (num_series*int(metadata['painting_channels']))+6
+    if "painting_imperwell" in metadata.keys():
+        if metadata["painting_imperwell"] != "":
+            if int(metadata["painting_imperwell"]) != 0:
+                num_series = int(metadata["painting_imperwell"])
+    expected_files_per_well = np.ceil(float(num_series)/range_skip)
     platelist = image_dict.keys()
     plate_and_well_list = []
     for eachplate in platelist:
@@ -57,7 +64,8 @@ def lambda_handler(event, context):
     sqs = boto3.client('sqs')
 
     filter_prefix = image_prefix+batch+'/images_corrected/painting'
-    expected_len = len(plate_and_well_list) * expected_files_per_well
+    #Because this step is batched per site (not well) don't need anticipate partial loading of jobs
+    expected_len = (len(plate_and_well_list) * expected_files_per_well) + (6*(len(platelist)))
 
     done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, duplicate_queue_name)
 

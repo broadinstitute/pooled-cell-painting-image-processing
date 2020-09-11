@@ -25,7 +25,7 @@ def lambda_handler(event, context):
     # Log the received event
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
-    
+
     prefix, batchAndPipe = key.split('pipelines/')
     image_prefix = prefix.split('workspace')[0]
     batch = batchAndPipe.split(pipeline_name)[0][:-1]
@@ -34,6 +34,10 @@ def lambda_handler(event, context):
     metadata_on_bucket_name = os.path.join(prefix,'metadata',batch,'metadata.json')
     metadata = helpful_functions.download_and_read_metadata_file(s3, bucket, metadata_file_name, metadata_on_bucket_name)
     num_series = int(metadata['barcoding_rows']) * int(metadata['barcoding_columns'])
+    if "barcoding_imperwell" in metadata.keys():
+        if metadata["barcoding_imperwell"] != "":
+            if int(metadata["barcoding_imperwell"]) != 0:
+                num_series = int(metadata["barcoding_imperwell"])
     expected_cycles = int(metadata['barcoding_cycles'])
 
     #Get the list of images in this experiment - this can take a long time for big experiments so let's add some prints
@@ -51,7 +55,7 @@ def lambda_handler(event, context):
         parsed_image_dict = helpful_functions.return_full_wells(image_dict,expected_cycles, metadata['one_or_many_files'], files_per_well=num_series)
     metadata['wells_with_all_cycles'] = parsed_image_dict
     helpful_functions.write_metadata_file(s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name)
-    
+
     #Pull the file names we care about, and make the CSV
     print('Making the CSVs')
     platelist = image_dict.keys()
@@ -63,22 +67,18 @@ def lambda_handler(event, context):
         csv_on_bucket_name = prefix + 'load_data_csv/'+batch+'/'+eachplate+'/load_data_pipeline5.csv'
         with open(per_plate_csv,'rb') as a:
             s3.put_object(Body= a, Bucket = bucket, Key = csv_on_bucket_name )
-            
+
     #Now it's time to run DCP
     #Replacement for 'fab setup'
     app_name = run_DCP.run_setup(bucket,prefix,batch,step)
     #run_DCP.grab_batch_config(bucket,prefix,batch,step)
-    
+
     #Make a batch
     create_batch_jobs.create_batch_jobs_5(image_prefix,batch,pipeline_name,platelist, expected_cycles, app_name)
-    
+
     #Start a cluster
-    run_DCP.run_cluster(bucket,prefix,batch,step, fleet_file_name, len(platelist)*expected_cycles)  
+    run_DCP.run_cluster(bucket,prefix,batch,step, fleet_file_name, len(platelist)*expected_cycles)
 
     #Run the monitor
     run_DCP.run_monitor(bucket, prefix, batch,step)
     print('Go run the monitor now')
-    
-
-
-            
