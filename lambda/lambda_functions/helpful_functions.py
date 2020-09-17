@@ -12,8 +12,8 @@ def parse_image_names(imlist,filter_in, filter_out="jibberish"):
     image_dict = {}
     for image in imlist:
         if '.nd2' in image:
-            if filter_in in image:
-                if filter_out not in image:
+            if filter_in.lower() in image.lower():
+                if filter_out.lower() not in image.lower():
                     prePlate,platePlus = image.split('images/')
                     plate,cycle,imname = platePlus.split('/')
                     well = imname[:imname.index('_')]
@@ -47,6 +47,7 @@ def return_full_wells(image_dict,expected_cycles,one_or_many, files_per_well=1):
                 for cycle in cycle_list:
                     if len(platedict[eachwell][cycle]) not in (files_per_well,files_per_well*5):
                         has_all_files = False
+                        print ("Plate", eachplate, "Well", eachwell, "Cycle", cycle, "only had", len(platedict[eachwell][cycle]), "files")
                 if has_all_files:
                     full_wells.append(eachwell)
 
