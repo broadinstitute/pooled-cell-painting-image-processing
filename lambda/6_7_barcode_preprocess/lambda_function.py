@@ -19,6 +19,7 @@ sqs = boto3.client('sqs')
 pipeline_name = '7_Barcoding_Preprocessing.cppipe'
 metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'preprocessFleet.json'
+current_app_name = '2018_11_20_Periscope_X_PreprocessBarcoding'
 prev_step_app_name = '2018_11_20_Periscope_X_ApplyIllumBarcoding'
 prev_step_num = '6'
 duplicate_queue_name = '2018_11_20_Periscope_PreventOverlappingStarts.fifo'
@@ -65,7 +66,7 @@ def lambda_handler(event, context):
     #Expected length shows that all transfers (i.e. all wells) have at least started
     expected_len = ((len(plate_and_well_list) - 1 )* expected_files_per_well) + 1
 
-    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, duplicate_queue_name)
+    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, current_app_name, prev_step_app_name, sqs, duplicate_queue_name)
 
     if not done:
         print('Still work ongoing')

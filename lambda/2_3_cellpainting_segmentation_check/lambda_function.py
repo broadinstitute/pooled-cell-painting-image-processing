@@ -19,6 +19,7 @@ sqs = boto3.client('sqs')
 pipeline_name = '3_SegmentationCheck_TI2.cppipe'
 metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'segmentFleet.json'
+current_app_name = '2018_11_20_Periscope_X_PaintingSegmentationCheck'
 prev_step_app_name = '2018_11_20_Periscope_X_ApplyIllumPainting'
 duplicate_queue_name = '2018_11_20_Periscope_PreventOverlappingStarts.fifo'
 step = '3'
@@ -64,7 +65,7 @@ def lambda_handler(event, context):
     expected_len = ((len(plate_and_well_list) - 1 )* expected_files_per_well) + 1
 
     print('Checking if all files are present')
-    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, duplicate_queue_name)
+    done = helpful_functions.check_if_run_done(s3, bucket_name, filter_prefix, expected_len, current_app_name, prev_step_app_name, sqs, duplicate_queue_name)
 
     if not done:
         print('Still work ongoing')

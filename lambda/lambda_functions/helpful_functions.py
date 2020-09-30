@@ -93,7 +93,7 @@ def paginate_a_folder(s3,bucket_name,prefix):
         image_list += [x['Key'] for x in page['Contents']]
     return image_list
 
-def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_app_name, sqs, dup_queue_name, filter_in = None, filter_out = None):
+def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, current_app_name, prev_step_app_name, sqs, dup_queue_name, filter_in = None, filter_out = None):
     #Step 1- how many files are there in the illum folder?
     image_list = paginate_a_folder(s3, bucket_name, filter_prefix)
     done = False
@@ -121,6 +121,11 @@ def check_if_run_done(s3, bucket_name, filter_prefix, expected_len, prev_step_ap
 
     #If indeed we are done, we want to check we're not overlapping and starting the same next job many times
     if done:
+        # Check if current queue exists already (job already triggered)
+        current_queue_url = check_named_queue(sqs, current_app_name+'Queue')
+        if current_queue_url != None:
+            return False
+        # Check FIFO queue
         dup_queue_url=check_named_queue(sqs, dup_queue_name)
         nmess = sqs.get_queue_attributes(QueueUrl=dup_queue_url,AttributeNames=['ApproximateNumberOfMessages'])['Attributes']['ApproximateNumberOfMessages']
         sqs.send_message(QueueUrl=dup_queue_url, MessageBody=prev_step_app_name, MessageGroupId='0')
