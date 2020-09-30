@@ -89,7 +89,7 @@ def create_batch_jobs_3B(startpath, batchsuffix, segmentpipename, plate_and_well
         for site in site_list:
             templateMessage_segmentB = {'Metadata': 'Metadata_Plate='+tosegment[0]+',Metadata_Well='+tosegment[1]+',Metadata_Site='+str(site),
                                      'pipeline': posixpath.join(pipelinepath,segmentpipename),'output': segmentoutpath, 'output_structure':'Metadata_Plate',
-                                     'input': pipelinepath, 'data_file':posixpath.join(datafilepath, tosegment[0], 'load_data_pipeline3Bs.csv')}
+                                     'input': pipelinepath, 'data_file':posixpath.join(datafilepath, tosegment[0], 'load_data_pipeline3B.csv')}
 
             segmentBqueue.scheduleBatch(templateMessage_segmentB)
 
