@@ -108,7 +108,7 @@ def create_batch_jobs_4(startpath,batchsuffix,metadata, plate_and_well_list, app
 		    "input_file_location": local_start_path, "scalingstring":"1", "overlap_pct":metadata["overlap_pct"], "size":"1480",
 		    "rows":metadata["painting_rows"], "columns":metadata["painting_columns"], "stitchorder":metadata["stitchorder"],
 		    "channame":"DNA", "tileperside":str(tileperside), "awsdownload":"True", "bucketname":"imaging-platform", "localtemp":"local_temp",
-            "round_or_square":round_or_square, "final_tile_size" = str(final_tile_size)
+            "round_or_square":round_or_square, "final_tile_size":str(final_tile_size)
 		}
 	}
     for tostitch in plate_and_well_list:

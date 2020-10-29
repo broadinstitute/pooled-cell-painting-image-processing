@@ -26,7 +26,7 @@ step = '4'
 #Make sure that range_skip matches that set in 2_3_cellpainting_segmentation_check lambda function
 range_skip = 16
 tileperside = 10
-full_tile_size = 5500
+final_tile_size = 5500
 
 def lambda_handler(event, context):
     # Log the received event
@@ -34,7 +34,7 @@ def lambda_handler(event, context):
     key = event['Records'][0]['s3']['object']['key']
     keys = [x['s3']['object']['key'] for x in event['Records'] ]
     plate = key.split('/')[-2].split('-')[0]
-    batch = key.split('/')[-5]
+    batch = key.split('/')[-4]
     image_prefix = key.split(batch)[0]
     prefix = os.path.join(image_prefix,'workspace/')
 
@@ -46,7 +46,6 @@ def lambda_handler(event, context):
     metadata = helpful_functions.download_and_read_metadata_file(s3, bucket_name, metadata_file_name, metadata_on_bucket_name)
 
     image_dict = metadata ['painting_file_data']
-    print(image_dict)
     num_series = int(metadata['painting_rows']) * int(metadata['painting_columns'])
     if "painting_imperwell" in metadata.keys():
         if metadata["painting_imperwell"] != "":
@@ -83,7 +82,7 @@ def lambda_handler(event, context):
         app_name = run_DCP.run_setup(bucket_name,prefix,batch,step,cellprofiler = False)
 
         #make the jobs
-        create_batch_jobs.create_batch_jobs_4(image_prefix,batch,metadata,plate_and_well_list, app_name, tileperside = tileperside, full_tile_size = full_tile_size)
+        create_batch_jobs.create_batch_jobs_4(image_prefix,batch,metadata,plate_and_well_list, app_name, tileperside = tileperside, final_tile_size = final_tile_size)
 
         #Start a cluster
         run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, len(plate_and_well_list))
