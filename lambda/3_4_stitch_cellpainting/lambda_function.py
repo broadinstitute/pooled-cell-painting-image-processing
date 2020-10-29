@@ -18,13 +18,15 @@ s3 = boto3.client('s3')
 sqs = boto3.client('sqs')
 metadata_file_name = '/tmp/metadata.json'
 fleet_file_name = 'stitchFleet.json'
-current_app_name = '2018_11_20_Periscope_Calico_PaintingStitching'
+current_app_name = '2018_11_20_Periscope_X_PaintingStitching'
 prev_step_app_name = '2018_11_20_Periscope_X_PaintingSegmentationCheck'
 prev_step_num = '3'
 duplicate_queue_name = '2018_11_20_Periscope_PreventOverlappingStarts.fifo'
 step = '4'
 #Make sure that range_skip matches that set in 2_3_cellpainting_segmentation_check lambda function
 range_skip = 16
+tileperside = 10
+full_tile_size = 5500
 
 def lambda_handler(event, context):
     # Log the received event
@@ -81,7 +83,7 @@ def lambda_handler(event, context):
         app_name = run_DCP.run_setup(bucket_name,prefix,batch,step,cellprofiler = False)
 
         #make the jobs
-        create_batch_jobs.create_batch_jobs_4(image_prefix,batch,metadata,plate_and_well_list, app_name)
+        create_batch_jobs.create_batch_jobs_4(image_prefix,batch,metadata,plate_and_well_list, app_name, tileperside = tileperside, full_tile_size = full_tile_size)
 
         #Start a cluster
         run_DCP.run_cluster(bucket_name,prefix,batch,step, fleet_file_name, len(plate_and_well_list))

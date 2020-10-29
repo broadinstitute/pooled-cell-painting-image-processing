@@ -10,5 +10,6 @@
   "overlap_pct":"20",
   "fast_or_slow_mode":"slow",
   "one_or_many_files":"many",
+  "round_or_square":"round",
   "_commentonstitchorder":"Typically should be either 'Grid: snake by rows','Grid: row-by-row', or 'Filename defined position'",
   "stitchorder":"Grid: snake by rows"}

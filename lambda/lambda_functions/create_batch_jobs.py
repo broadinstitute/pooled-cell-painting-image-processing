@@ -95,15 +95,20 @@ def create_batch_jobs_3B(startpath, batchsuffix, segmentpipename, plate_and_well
 
     print('Segment Troubleshoot B job submitted. Check your queue')
 
-def create_batch_jobs_4(startpath,batchsuffix,metadata, plate_and_well_list, app_name):
+def create_batch_jobs_4(startpath,batchsuffix,metadata, plate_and_well_list, app_name,tileperside = 10,final_tile_size=5500):
     local_start_path = posixpath.join("/home/ubuntu/bucket",startpath)
+    if 'round_or_square' in metadata.keys():
+        round_or_square = metadata["round_or_square"]
+    else: #backwards compatibility for old square runs
+        round_or_square = 'square'
     stitchqueue = JobQueue(app_name+'Queue')
     stitchMessage = {'Metadata': '',
 		'output_file_location': posixpath.join(startpath,batchsuffix),
 		'shared_metadata': {
 		    "input_file_location": local_start_path, "scalingstring":"1", "overlap_pct":metadata["overlap_pct"], "size":"1480",
 		    "rows":metadata["painting_rows"], "columns":metadata["painting_columns"], "stitchorder":metadata["stitchorder"],
-		    "channame":"DNA", "tileperside":"10", "awsdownload":"True", "bucketname":"imaging-platform", "localtemp":"local_temp"
+		    "channame":"DNA", "tileperside":str(tileperside), "awsdownload":"True", "bucketname":"imaging-platform", "localtemp":"local_temp",
+            "round_or_square":round_or_square, "final_tile_size" = str(final_tile_size)
 		}
 	}
     for tostitch in plate_and_well_list:
