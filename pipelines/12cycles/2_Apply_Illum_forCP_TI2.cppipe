@@ -120,7 +120,7 @@ ImageMath:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:4|show_
     Ignore the image masks?:\xff\xfeN\x00o\x00
     Name the output image:\xff\xfeC\x00l\x00i\x00p\x00p\x00e\x00d\x00C\x00o\x00r\x00r\x00W\x00G\x00A\x00
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
-    Select the first image:\xff\xfeW\x00G\x00A\x00
+    Select the first image:\xff\xfeC\x00o\x00r\x00r\x00W\x00G\x00A\x00
     Multiply the first image by:\xff\xfe1\x00.\x000\x00
     Measurement:\xff\xfe
     Image or measurement?:\xff\xfeI\x00m\x00a\x00g\x00e\x00
