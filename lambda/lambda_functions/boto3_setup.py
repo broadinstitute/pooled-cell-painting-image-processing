@@ -228,7 +228,7 @@ def loadConfig(configFile):
 
 def killdeadAlarms(fleetId,monitorapp,ec2,cloud):
     todel=[]
-    changes = ec2.describe_spot_fleet_request_history(SpotFleetRequestId=fleetId,StartTime=datetime.datetime.now()-datetime.timedelta(hours=5))
+    changes = ec2.describe_spot_fleet_request_history(SpotFleetRequestId=fleetId,StartTime=((datetime.datetime.now()-datetime.timedelta(hours=5)).replace(microsecond=0))
     for eachevent in changes['HistoryRecords']:
         if eachevent['EventType']=='instanceChange':
             if eachevent['EventInformation']['EventSubType']=='terminated':
@@ -588,10 +588,10 @@ def monitor():
     logs=boto3.client('logs')
 
     print('Transfer of CellProfiler logs to S3 initiated')
-    export_logs(logs, loggroupId, starttime, bucketId, loggroupId)
+    export_logs(logs, loggroupId, starttime, bucketId)
 
     print('Transfer of per-instance to S3 initiated')
-    export_logs(logs, loggroupId+'_perInstance', starttime, bucketId, loggroupId)
+    export_logs(logs, loggroupId+'_perInstance', starttime, bucketId)
 
     print('All export tasks done')
 
