@@ -18,13 +18,13 @@ def parse_image_names(imlist, filter_in, filter_out="jibberish"):
                     prePlate, platePlus = image.split("images/")
                     plate, cycle, imname = platePlus.split("/")
                     well = imname[: imname.index("_")]
-                    if plate not in image_dict.keys():
+                    if plate not in list(image_dict.keys()):
                         image_dict[plate] = {well: {cycle: [imname]}}
                     else:
-                        if well not in image_dict[plate].keys():
+                        if well not in list(image_dict[plate].keys()):
                             image_dict[plate][well] = {cycle: [imname]}
                         else:
-                            if cycle not in image_dict[plate][well].keys():
+                            if cycle not in list(image_dict[plate][well].keys()):
                                 image_dict[plate][well][cycle] = [imname]
                             else:
                                 image_dict[plate][well][cycle] += [imname]
@@ -34,15 +34,15 @@ def parse_image_names(imlist, filter_in, filter_out="jibberish"):
 def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1):
     im_dict_out = {}
     expected_cycles = int(expected_cycles)
-    platelist = image_dict.keys()
+    platelist = list(image_dict.keys())
     for eachplate in platelist:
-        print("Checking compeleteness of plate", eachplate)
+        print(("Checking compeleteness of plate", eachplate))
         platedict = image_dict[eachplate]
-        well_list = platedict.keys()
+        well_list = list(platedict.keys())
         # first let's see how many wells have every cycle
         full_wells = []
         for eachwell in well_list:
-            cycle_list = platedict[eachwell].keys()
+            cycle_list = list(platedict[eachwell].keys())
             if len(cycle_list) == expected_cycles:
                 has_all_files = True
                 # let's also make sure each cycle has all its files; for Cycle 1, that's 1, for the rest it's 5
@@ -52,7 +52,7 @@ def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1
                         files_per_well * 5,
                     ):
                         has_all_files = False
-                        print(
+                        print((
                             "Plate",
                             eachplate,
                             "Well",
@@ -62,19 +62,19 @@ def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1
                             "only had",
                             len(platedict[eachwell][cycle]),
                             "files",
-                        )
+                        ))
                 if has_all_files:
                     full_wells.append(eachwell)
 
         # Initialize our output dictionary for the plate
-        print(
+        print((
             "Writing out the output for plate", eachplate, "has full wells", full_wells
-        )
+        ))
         per_cycle_dict = {}
         for cycle in range(1, expected_cycles + 1):
             per_cycle_dict[cycle] = {}
         for eachwell in full_wells:
-            cycle_list = platedict[eachwell].keys()
+            cycle_list = list(platedict[eachwell].keys())
             for cycle in cycle_list:
                 match = re.search("[-_]c[_-]{0,1}[0-9]{1,2}", cycle)
                 out = match.group(0)
@@ -145,7 +145,7 @@ def check_if_run_done(
     if len(image_list) >= expected_len:
         done = True
     else:
-        print("Only ", len(image_list), " output files so far")
+        print(("Only ", len(image_list), " output files so far"))
 
     # Maybe something died, but everything is done, and you have a monitor on that already cleaned up your queue
     queue_url = check_named_queue(sqs, prev_step_app_name + "Queue")
@@ -195,7 +195,7 @@ def check_if_run_done(
 
 def check_named_queue(sqs, SQS_QUEUE_NAME):
     result = sqs.list_queues()
-    if "QueueUrls" in result.keys():
+    if "QueueUrls" in list(result.keys()):
         for u in result["QueueUrls"]:
             if u.split("/")[-1] == SQS_QUEUE_NAME:
                 return u
@@ -214,10 +214,10 @@ def try_to_run_monitor(s3, bucket_name, prefix, batch, step, prev_step_app_name)
         + "SpotFleetRequestId.json"
     )
     prev_step_monitor_name = "/tmp/" + prev_step_app_name + "SpotFleetRequestId.json"
-    print("Trying to shut down ", prev_step_monitor_bucket_name)
+    print(("Trying to shut down ", prev_step_monitor_bucket_name))
     with open(prev_step_monitor_name, "wb") as f:
         s3.download_fileobj(bucket_name, prev_step_monitor_bucket_name, f)
-    print("Grabbing config for batch", batch, "step", step)
+    print(("Grabbing config for batch", batch, "step", step))
     run_DCP.grab_batch_config(bucket_name, prefix, batch, step)
     import boto3_setup
 
@@ -235,12 +235,12 @@ def try_a_shutdown(
             s3, bucket_name, prefix, batch, str(prev_step_number), prev_step_app_name
         )
     except botocore.exceptions.ClientError as error:
-        print("Monitor cleanup of previous step failed with error: ", error)
+        print(("Monitor cleanup of previous step failed with error: ", error))
         print(
             "Usually this is no existing queue by that name, maybe a previous monitor cleaned up"
         )
     except:
-        print("Monitor cleanup of previous step failed with error", sys.exc_info()[0])
+        print(("Monitor cleanup of previous step failed with error", sys.exc_info()[0]))
         pass
 
 

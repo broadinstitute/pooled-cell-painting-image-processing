@@ -126,9 +126,9 @@ def get_or_create_cluster(ecs):
     if len(cluster) == 0:
         ecs.create_cluster(clusterName=ECS_CLUSTER)
         time.sleep(WAIT_TIME)
-        print("Cluster " + ECS_CLUSTER + " created")
+        print(("Cluster " + ECS_CLUSTER + " created"))
     else:
-        print("Cluster " + ECS_CLUSTER + " exists")
+        print(("Cluster " + ECS_CLUSTER + " exists"))
 
 
 def create_or_update_ecs_service(ecs, ECS_SERVICE_NAME, ECS_TASK_NAME):
@@ -138,7 +138,7 @@ def create_or_update_ecs_service(ecs, ECS_SERVICE_NAME, ECS_TASK_NAME):
     if len(service) > 0:
         print("Service exists. Removing")
         ecs.delete_service(cluster=ECS_CLUSTER, service=ECS_SERVICE_NAME)
-        print("Removed service " + ECS_SERVICE_NAME)
+        print(("Removed service " + ECS_SERVICE_NAME))
         time.sleep(WAIT_TIME)
 
     print("Creating new service")
@@ -153,7 +153,7 @@ def create_or_update_ecs_service(ecs, ECS_SERVICE_NAME, ECS_TASK_NAME):
 
 def get_queue_url(sqs):
     result = sqs.list_queues()
-    if "QueueUrls" in result.keys():
+    if "QueueUrls" in list(result.keys()):
         for u in result["QueueUrls"]:
             if u.split("/")[-1] == SQS_QUEUE_NAME:
                 return u
@@ -191,7 +191,7 @@ def killdeadAlarms(fleetId, monitorapp, ec2, cloud):
         monitorname = monitorapp+'_'+eachmachine
         if monitorname in existing_alarms:
             cloud.delete_alarms(AlarmNames=[monitorname])
-            print('Deleted', monitorname, 'if it existed')
+            print(('Deleted', monitorname, 'if it existed'))
             time.sleep(3)
 
     print('Old alarms deleted')
@@ -306,7 +306,7 @@ def export_logs(logs, loggroupId, starttime, bucketId):
         result = describe_export_tasks(taskId=logExportId)
         if result["exportTasks"][0]["status"]["code"] != "PENDING":
             if result["exportTasks"][0]["status"]["code"] != "RUNNING":
-                print(result["exportTasks"][0]["status"]["code"])
+                print((result["exportTasks"][0]["status"]["code"]))
                 break
         time.sleep(30)
 
@@ -329,7 +329,7 @@ class JobQueue:
     def scheduleBatch(self, data):
         msg = json.dumps(data)
         response = self.queue.send_message(MessageBody=msg)
-        print("Batch sent. Message ID:", response.get("MessageId"))
+        print(("Batch sent. Message ID:", response.get("MessageId")))
 
     def pendingLoad(self):
         self.queue.load()
@@ -339,7 +339,7 @@ class JobQueue:
             self.pending = visible
             self.inProcess = nonVis
             d = datetime.datetime.now()
-            print(d, "In process:", nonVis, "Pending", visible)
+            print((d, "In process:", nonVis, "Pending", visible))
         if visible + nonVis > 0:
             return True
         else:
@@ -358,7 +358,7 @@ class JobQueue:
 
 
 def setup(cellprofiler):
-    print(APP_NAME, "setup started")
+    print((APP_NAME, "setup started"))
     ECS_TASK_NAME = APP_NAME + "Task"
     ECS_SERVICE_NAME = APP_NAME + "Service"
     sqs = boto3.client("sqs")
@@ -382,7 +382,7 @@ def submitJob():
 
     # Step 1: Read the job configuration file
     jobInfo = loadConfig(sys.argv[2])
-    if "output_structure" not in jobInfo.keys():  # backwards compatibility for 1.0.0
+    if "output_structure" not in list(jobInfo.keys()):  # backwards compatibility for 1.0.0
         jobInfo["output_structure"] = ""
     templateMessage = {
         "Metadata": "",
@@ -414,7 +414,7 @@ def submitJob():
 
 def startCluster(fleetfile, njobs):
 
-    print(njobs, "jobs to do")
+    print((njobs, "jobs to do"))
 
     try:
         DOCKER_CORES = float(DOCKER_CORES)
@@ -424,7 +424,7 @@ def startCluster(fleetfile, njobs):
         200, int(numpy.ceil(float(njobs) / (DOCKER_CORES * TASKS_PER_MACHINE)))
     )
 
-    print(nmachines, "machines being started to run them")
+    print((nmachines, "machines being started to run them"))
 
     # Step 1: set up the configuration files
     s3client = boto3.client("s3")
@@ -453,7 +453,7 @@ def startCluster(fleetfile, njobs):
     ec2client = boto3.client("ec2")
     requestInfo = ec2client.request_spot_fleet(SpotFleetRequestConfig=spotfleetConfig)
     print("Request in process. Wait until your machines are available in the cluster.")
-    print("SpotFleetRequestId", requestInfo["SpotFleetRequestId"])
+    print(("SpotFleetRequestId", requestInfo["SpotFleetRequestId"]))
 
     # Step 3: Make the monitor
     starttime = str(int(time.time() * 1000))
@@ -498,7 +498,7 @@ def startCluster(fleetfile, njobs):
     )
     while len(status["ActiveInstances"]) < CLUSTER_MACHINES:
         # First check to make sure there's not a problem
-        print(datetime.datetime.now().replace(microsecond=0))
+        print((datetime.datetime.now().replace(microsecond=0)))
         # hackery to deal with time zones
         errorcheck = ec2client.describe_spot_fleet_request_history(
             SpotFleetRequestId=requestInfo["SpotFleetRequestId"],
@@ -512,11 +512,11 @@ def startCluster(fleetfile, njobs):
                 "Your spot fleet request is causing an error and is now being cancelled.  Please check your configuration and try again"
             )
             for eacherror in errorcheck["HistoryRecords"]:
-                print(
+                print((
                     eacherror["EventInformation"]["EventSubType"]
                     + " : "
                     + eacherror["EventInformation"]["EventDescription"]
-                )
+                ))
             ec2client.cancel_spot_fleet_requests(
                 SpotFleetRequestIds=[requestInfo["SpotFleetRequestId"]],
                 TerminateInstances=True,
@@ -614,7 +614,7 @@ def monitor():
         pass
 
     # Step 4: Read spot fleet id and terminate all EC2 instances
-    print("Shutting down spot fleet", fleetId)
+    print(("Shutting down spot fleet", fleetId))
     ec2.cancel_spot_fleet_requests(
         SpotFleetRequestIds=[fleetId], TerminateInstances=True
     )

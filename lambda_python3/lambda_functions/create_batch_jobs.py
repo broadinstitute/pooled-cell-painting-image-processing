@@ -15,7 +15,7 @@ class JobQueue:
     def scheduleBatch(self, data):
         msg = json.dumps(data)
         response = self.queue.send_message(MessageBody=msg)
-        print("Batch sent. Message ID:", response.get("MessageId"))
+        print(("Batch sent. Message ID:", response.get("MessageId")))
 
 
 def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_name):
@@ -191,7 +191,7 @@ def create_batch_jobs_4(
     final_tile_size=5500,
 ):
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
-    if "round_or_square" in metadata.keys():
+    if "round_or_square" in list(metadata.keys()):
         round_or_square = metadata["round_or_square"]
     else:  # backwards compatibility for old square runs
         round_or_square = "square"
@@ -412,7 +412,7 @@ def create_batch_jobs_7A(
     startpath, batchsuffix, pipename, plate_and_well_list, site_list, app_name, skip
 ):
     # startpath=posixpath.join('projects',topdirname)
-    site_list = range(0, max(site_list), skip)
+    site_list = list(range(0, max(site_list), skip))
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )

@@ -316,7 +316,7 @@ def create_CSV_pipeline6(
             for channel in channels
         ]
         df = pandas.DataFrame(columns=columns)
-        well_list = platedict["1"].keys()
+        well_list = list(platedict["1"].keys())
         total_file_count = seriesperwell * len(well_list)
         df["Metadata_Plate"] = [platename] * total_file_count
         df["Metadata_Series"] = list(range(seriesperwell)) * len(well_list)
@@ -349,7 +349,7 @@ def create_CSV_pipeline6(
                 C_list += [platedict[str(cycle)][eachwell][1][3]] * seriesperwell
                 DNA_list += [platedict[str(cycle)][eachwell][1][4]] * seriesperwell
             for chan in channels:
-                df["Series_" + this_cycle + "Orig" + chan] = range(seriesperwell) * len(
+                df["Series_" + this_cycle + "Orig" + chan] = list(range(seriesperwell)) * len(
                     well_list
                 )
                 df["PathName_" + this_cycle + "Orig" + chan] = path_list
@@ -400,7 +400,7 @@ def create_CSV_pipeline6(
             for channel in channels
         ]
         df = pandas.DataFrame(columns=columns)
-        well_list = platedict["1"].keys()
+        well_list = list(platedict["1"].keys())
         total_file_count = seriesperwell * len(well_list)
         df["Metadata_Plate"] = [platename] * total_file_count
         df["Metadata_Site"] = list(range(seriesperwell)) * len(well_list)

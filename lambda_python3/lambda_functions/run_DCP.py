@@ -13,10 +13,10 @@ def run_setup(bucket_name, prefix, batch, step, cellprofiler=True):
         print("removed previous config file")
     grab_batch_config(bucket_name, prefix, batch, step)
     # We might sometimes run setup after running cleanup on the step before, so we want to import our configs fresh
-    if "boto3_setup" in sys.modules.keys():
+    if "boto3_setup" in list(sys.modules.keys()):
         sys.modules.pop("boto3_setup")
         print("popped previous boto3_setup")
-    if "config_ours" in sys.modules.keys():
+    if "config_ours" in list(sys.modules.keys()):
         sys.modules.pop("config_ours")
         print("popped previous config_ours")
     import boto3_setup
