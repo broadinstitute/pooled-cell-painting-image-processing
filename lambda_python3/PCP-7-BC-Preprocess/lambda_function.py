@@ -43,14 +43,14 @@ def lambda_handler(event, context):
 
     # Check that the barcodes.csv is present
     barcodepath = os.path.join(prefix, "metadata", batch)
-     if os.path.exists(barcodepath) and if not any(fname.endswith('.csv') for fname in os.listdir(barcodepath)):
+    if os.path.exists(barcodepath) and if not any(fname.endswith('.csv') for fname in os.listdir(barcodepath)):
         return("Barcodes .csv is missing")
     if not os.path.exists(barcodepath):
         return "Metadata folder is missing so your barcodes .csv is as well"
 
     # get the metadata file, so we can add stuff to it
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
-    print("Loading", metadata_on_bucket_name)
+    print(("Loading", metadata_on_bucket_name))
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
@@ -58,9 +58,9 @@ def lambda_handler(event, context):
     plate_and_well_list = metadata["barcoding_plate_and_well_list"]
     image_dict = metadata["wells_with_all_cycles"]
     expected_cycles = metadata["barcoding_cycles"]
-    platelist = image_dict.keys()
+    platelist = list(image_dict.keys())
     num_series = int(metadata["barcoding_rows"]) * int(metadata["barcoding_columns"])
-    if "barcoding_imperwell" in metadata.keys():
+    if "barcoding_imperwell" in list(metadata.keys()):
         if metadata["barcoding_imperwell"] != "":
             if int(metadata["barcoding_imperwell"]) != 0:
                 num_series = int(metadata["barcoding_imperwell"])
@@ -94,7 +94,7 @@ def lambda_handler(event, context):
         # Pull the file names we care about, and make the CSV
         for eachplate in platelist:
             platedict = image_dict[eachplate]
-            well_list = platedict["1"].keys()
+            well_list = list(platedict["1"].keys())
             bucket_folder = (
                 "/home/ubuntu/bucket/"
                 + image_prefix
@@ -112,7 +112,7 @@ def lambda_handler(event, context):
                 + eachplate
                 + "/load_data_pipeline7.csv"
             )
-            print("Created", csv_on_bucket_name)
+            print(("Created", csv_on_bucket_name))
             with open(per_plate_csv, "rb") as a:
                 s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
@@ -125,7 +125,7 @@ def lambda_handler(event, context):
             batch,
             pipeline_name,
             plate_and_well_list,
-            range(num_series),
+            list(range(num_series)),
             app_name,
         )
 

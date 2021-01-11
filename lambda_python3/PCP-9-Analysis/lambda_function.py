@@ -37,11 +37,11 @@ def lambda_handler(event, context):
         image_prefix = key.split("workspace")[0]
     prefix = os.path.join(image_prefix, "workspace/")
 
-    print(batch, image_prefix, prefix)
+    print((batch, image_prefix, prefix))
 
     # get the metadata file, so we can add stuff to it
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
-    print("Loading", metadata_on_bucket_name)
+    print(("Loading", metadata_on_bucket_name))
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
@@ -49,7 +49,7 @@ def lambda_handler(event, context):
     plate_and_well_list = metadata["barcoding_plate_and_well_list"]
     image_dict = metadata["wells_with_all_cycles"]
     expected_cycles = metadata["barcoding_cycles"]
-    platelist = image_dict.keys()
+    platelist = list(image_dict.keys())
     num_sites = int(num_tiles)
 
     # This step is manually triggered so we don't check completion of previous steps
@@ -57,7 +57,7 @@ def lambda_handler(event, context):
     # Pull the file names we care about, and make the CSV
     for eachplate in platelist:
         platedict = image_dict[eachplate]
-        well_list = platedict["1"].keys()
+        well_list = list(platedict["1"].keys())
         bucket_folder = (
             "/home/ubuntu/bucket/" + image_prefix + batch + "/images_corrected_cropped"
         )
@@ -72,7 +72,7 @@ def lambda_handler(event, context):
             + eachplate
             + "/load_data_pipeline9.csv"
         )
-        print("Created", csv_on_bucket_name)
+        print(("Created", csv_on_bucket_name))
         with open(per_plate_csv, "rb") as a:
             s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
@@ -85,7 +85,7 @@ def lambda_handler(event, context):
         batch,
         pipeline_name,
         plate_and_well_list,
-        range(num_series),
+        list(range(num_series)),
         app_name,
     )
 
