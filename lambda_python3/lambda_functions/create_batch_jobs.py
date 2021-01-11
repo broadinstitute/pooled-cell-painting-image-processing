@@ -321,7 +321,7 @@ def create_batch_jobs_6(
                     + str(series),
                     "pipeline": posixpath.join(pipelinepath, illumpipename),
                     "output": illumoutpath,
-                    "output_structure": "Metadata_Plate-Metadata_Well",
+                    "output_structure": "Metadata_Plate-Metadata_Well-Metadata_Site",
                     "input": pipelinepath,
                     "data_file": posixpath.join(
                         datafilepath, toillum[0], "load_data_pipeline6.csv"
