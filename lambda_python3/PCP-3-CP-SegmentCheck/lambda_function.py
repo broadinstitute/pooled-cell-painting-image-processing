@@ -15,7 +15,7 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "3_SegmentationCheck_TI2.cppipe"
+pipeline_name = "3_CP_SegmentationCheck.cppipe"
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "segmentFleet.json"
 current_app_name = "2018_11_20_Periscope_X_PaintingSegmentationCheck"

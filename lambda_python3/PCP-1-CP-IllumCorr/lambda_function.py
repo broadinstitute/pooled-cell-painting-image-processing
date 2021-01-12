@@ -13,7 +13,7 @@ import helpful_functions
 print("Loading function")
 
 s3 = boto3.client("s3")
-pipeline_name = "1_Illum_forCP_TI2.cppipe"
+pipeline_name = "1_CP_Illum.cppipe"
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "illumFleet.json"
 step = "1"

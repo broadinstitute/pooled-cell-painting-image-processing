@@ -14,7 +14,7 @@ import helpful_functions
 print("Loading function")
 
 s3 = boto3.client("s3")
-pipeline_name = "5_Illum_forBarcoding_TI2.cppipe"
+pipeline_name = "5_BC_Illum.cppipe"
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "illumFleet.json"
 step = "5"

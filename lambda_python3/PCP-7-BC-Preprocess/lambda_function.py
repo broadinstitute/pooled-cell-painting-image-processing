@@ -14,7 +14,7 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "7_Barcoding_Preprocessing.cppipe"
+pipeline_name = "7_BC_Preprocess.cppipe"
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "preprocessFleet.json"
 current_app_name = "2018_11_20_Periscope_X_PreprocessBarcoding"

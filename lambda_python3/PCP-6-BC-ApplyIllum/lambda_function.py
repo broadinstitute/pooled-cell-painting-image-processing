@@ -14,7 +14,7 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "6_Apply_Illum_forBarcoding_TI2.cppipe"
+pipeline_name = "6_BC_Apply_Illum.cppipe"
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "illumFleet.json"
 current_app_name = "2018_11_20_Periscope_X_ApplyIllumBarcoding"

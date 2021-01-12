@@ -14,7 +14,7 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "2_Apply_Illum_forCP_TI2.cppipe"
+pipeline_name = "2_CP_Apply_Illum.cppipe"
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "illumFleet.json"
 prev_step_num = "1"
