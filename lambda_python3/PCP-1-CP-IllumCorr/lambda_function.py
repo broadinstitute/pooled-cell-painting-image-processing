@@ -44,7 +44,7 @@ def lambda_handler(event, context):
     image_list_prefix = image_prefix + batch + "/images/"
     image_list = helpful_functions.paginate_a_folder(s3, bucket, image_list_prefix)
     image_dict = helpful_functions.parse_image_names(
-        image_list, filter_in="20X", filter_out="copy"
+        image_list, filter_in="20X_CP_", filter_out="copy"
     )
     metadata["painting_file_data"] = image_dict
     helpful_functions.write_metadata_file(
