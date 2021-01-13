@@ -3,9 +3,7 @@ import os
 import re
 import sys
 import time
-
 import pandas
-
 import run_DCP
 
 
@@ -16,7 +14,11 @@ def parse_image_names(imlist, filter_in, filter_out="jibberish"):
             if filter_in.lower() in image.lower():
                 if filter_out.lower() not in image.lower():
                     prePlate, platePlus = image.split("images/")
-                    plate, cycle, imname = platePlus.split("/")
+                    try:
+                        plate, cycle, imname = platePlus.split("/")
+                    except ValueError:
+                        print ("Images are not in standard folder organization in s3.")
+                        return
                     well = imname[: imname.index("_")]
                     if plate not in list(image_dict.keys()):
                         image_dict[plate] = {well: {cycle: [imname]}}
