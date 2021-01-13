@@ -96,7 +96,11 @@ def download_and_read_metadata_file(
     s3, bucket_name, metadata_file_name, metadata_on_bucket_name
 ):
     with open(metadata_file_name, "wb") as f:
-        s3.download_fileobj(bucket_name, metadata_on_bucket_name, f)
+        try:
+            s3.download_fileobj(bucket_name, metadata_on_bucket_name, f)
+        except ClientError:
+            print ("Metadata file missing. Upload metadata.json.")
+            return
     with open(metadata_file_name, "r") as input_metadata:
         metadata = json.load(input_metadata)
     return metadata
