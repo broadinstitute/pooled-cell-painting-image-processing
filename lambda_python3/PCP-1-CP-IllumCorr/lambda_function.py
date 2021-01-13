@@ -27,12 +27,14 @@ def lambda_handler(event, context):
     image_prefix = prefix.split("workspace")[0]
     batch = batchAndPipe.split(pipeline_name)[0][:-1]
 
-    # get the metadata file, so we can add stuff to it
+    # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket, metadata_file_name, metadata_on_bucket_name
     )
+    # Calculate number of images from rows and columns in metadata
     num_series = int(metadata["painting_rows"]) * int(metadata["painting_columns"])
+    # Overwrite rows x columns number series if images per well set in metadata
     if "painting_imperwell" in list(metadata.keys()):
         if metadata["painting_imperwell"] != "":
             if int(metadata["painting_imperwell"]) != 0:
