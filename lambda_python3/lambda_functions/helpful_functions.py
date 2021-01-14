@@ -111,10 +111,11 @@ def download_and_read_metadata_file(
 def write_metadata_file(
     s3, bucket_name, metadata, metadata_file_name, metadata_on_bucket_name
 ):
-    with open(metadata_file_name, "wb") as f:
+    with open(metadata_file_name, "w") as f:
         json.dump(metadata, f)
-    with open(metadata_file_name, "r") as metadata:
-        s3.put_object(Body=metadata, Bucket=bucket_name, Key=metadata_on_bucket_name)
+    with open(metadata_file_name, "rb") as metadatafile:
+        print(metadatafile)
+        s3.put_object(Body=metadatafile, Bucket=bucket_name, Key=metadata_on_bucket_name)
 
 
 def paginate_a_folder(s3, bucket_name, prefix):
