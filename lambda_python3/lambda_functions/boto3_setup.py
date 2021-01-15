@@ -60,7 +60,6 @@ SQS_DEFINITION = {
 # AUXILIARY FUNCTIONS
 #################################
 
-
 def generate_task_definition():
     task_definition = TASK_DEFINITION.copy()
     sqs = boto3.client("sqs")
@@ -82,6 +81,8 @@ def generate_task_definition():
         {"name": "SECONDS_TO_START", "value": str(SECONDS_TO_START)},
         {"name": "MIN_FILE_SIZE_BYTES", "value": str(MIN_FILE_SIZE_BYTES)},
         {"name": "USE_PLUGINS", "value": "True"},
+        {"name": "NECESSARY_STRING", "value": NECESSARY_STRING},
+        {"name": "DOWNLOAD_FILES", "value": DOWNLOAD_FILES}
     ]
     return task_definition
 
