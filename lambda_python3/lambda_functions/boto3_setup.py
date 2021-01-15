@@ -216,7 +216,8 @@ def generateUserData(ecsConfigFile, dockerBaseSize):
     pre_user_data.attach(boothook)
     pre_user_data.attach(config)
 
-    return b64encode(pre_user_data.as_string())
+    pre_user_data_string = pre_user_data.as_string()
+    return b64encode(pre_user_data_string.encode('utf-8')).decode('utf-8')
 
 
 def removequeue(queueName):
