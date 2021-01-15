@@ -17,7 +17,7 @@ CLUSTER_MACHINES = 1
 TASKS_PER_MACHINE = 1
 MACHINE_TYPE = ['m4.xlarge']
 MACHINE_PRICE = 0.10
-EBS_VOL_SIZE = 200                       # In GB.  Minimum allowed is 22.
+EBS_VOL_SIZE = 22                       # In GB.  Minimum allowed is 22.
 DOWNLOAD_FILES = 'False'
 
 # DOCKER INSTANCE RUNNING ENVIRONMENT:
