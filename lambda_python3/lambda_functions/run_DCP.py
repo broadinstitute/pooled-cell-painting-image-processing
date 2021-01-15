@@ -34,10 +34,11 @@ def run_monitor(bucket_name, prefix, batch, step):
 def grab_batch_config(bucket_name, prefix, batch, step):
     s3 = boto3.client("s3")
     our_config = prefix + "lambda/" + batch + "/" + str(step) + "/config_ours.py"
+    import botocore
     try:
         with open("/tmp/config_ours.py", "wb") as f:
             s3.download_fileobj(bucket_name, our_config, f)
-    except ClientError:
+    except botocore.exceptions.ClientError as error:
         print ("Config files for this batch haven't been uploaded to S3.")
         return
 
