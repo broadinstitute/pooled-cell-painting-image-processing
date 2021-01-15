@@ -123,9 +123,12 @@ def paginate_a_folder(s3, bucket_name, prefix):
     paginator = s3.get_paginator("list_objects_v2")
     pages = paginator.paginate(Bucket=bucket_name, Prefix=prefix)
     image_list = []
-    # image_list = s3.list_objects_v2(Bucket=bucket_name,Prefix=)['Contents']
-    for page in pages:
-        image_list += [x["Key"] for x in page["Contents"]]
+    try:
+        for page in pages:
+            image_list += [x["Key"] for x in page["Contents"]]
+    except KeyError:
+        print ("No images in folder. Check batch name matches between pipeline and images.")
+        return
     return image_list
 
 
