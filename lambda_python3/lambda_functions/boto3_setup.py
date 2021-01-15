@@ -176,27 +176,6 @@ def loadConfig(configFile):
         data = json.load(conf)
     return data
 
-
-def killdeadAlarms(fleetId, monitorapp, ec2, cloud):
-    todel = []
-    changes = ec2.describe_spot_fleet_request_history(SpotFleetRequestId=fleetId,StartTime=((datetime.datetime.now()-datetime.timedelta(hours=5)).replace(microsecond=0))
-    for eachevent in changes['HistoryRecords']:
-        if eachevent['EventType']=='instanceChange':
-            if eachevent['EventInformation']['EventSubType']=='terminated':
-                todel.append(eachevent['EventInformation']['InstanceId'])
-
-    existing_alarms = [x['AlarmName'] for x in cloud.describe_alarms(AlarmNamePrefix=monitorapp)['MetricAlarms']]
-
-    for eachmachine in todel:
-        monitorname = monitorapp+'_'+eachmachine
-        if monitorname in existing_alarms:
-            cloud.delete_alarms(AlarmNames=[monitorname])
-            print(('Deleted', monitorname, 'if it existed'))
-            time.sleep(3)
-
-    print('Old alarms deleted')
-
-
 def generateECSconfig(ECS_CLUSTER, APP_NAME, AWS_BUCKET, s3client):
     configfile = open("/tmp/configtemp.config", "w")
     configfile.write("ECS_CLUSTER=" + ECS_CLUSTER + "\n")
