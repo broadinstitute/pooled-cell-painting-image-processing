@@ -16,7 +16,7 @@ ECS_CLUSTER = 'default_cluster'
 CLUSTER_MACHINES = 1
 TASKS_PER_MACHINE = 1
 MACHINE_TYPE = ['m4.2xlarge']
-MACHINE_PRICE = 0.20
+MACHINE_PRICE = 0.25
 EBS_VOL_SIZE = 350                       # In GB.  Minimum allowed is 22.
 DOWNLOAD_FILES = 'False'
 
