@@ -64,7 +64,9 @@ def lambda_handler(event, context):
         if len(per_well) == full_well_files:  # only keep full wells
             per_well_im_list.append(per_well)
             full_well_list.append(eachwell)
-            print(("Added well", eachwell))
+            print("Added well", eachwell)
+        else:
+            print (f"Discarded well {eachwell}. Missing images.")
     bucket_folder = (
         "/home/ubuntu/bucket/"
         + image_prefix
