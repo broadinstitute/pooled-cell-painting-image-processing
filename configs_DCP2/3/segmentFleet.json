@@ -1,0 +1,44 @@
+{
+  "IamFleetRole": "arn:aws:iam::XXXXXXXXXXXX:role/aws-ec2-spot-fleet-role",
+  "AllocationStrategy": "lowestPrice",
+  "TerminateInstancesWithExpiration": true,
+  "LaunchSpecifications": [
+    {
+      "ImageId": "ami-fad25980",
+      "KeyName": "CellProfiler",
+      "IamInstanceProfile": {
+        "Arn": "arn:aws:iam::XXXXXXXXXXXX:instance-profile/ecsInstanceRole"
+      },
+      "BlockDeviceMappings": [
+       {
+            "DeviceName": "/dev/xvda",
+            "Ebs": {
+            "DeleteOnTermination": true,
+            "VolumeType": "gp2",
+            "VolumeSize": 8,
+            "SnapshotId": "snap-04007a196c0f3f398"
+          }
+        },
+        {
+          "DeviceName": "/dev/xvdcz",
+          "Ebs": {
+            "DeleteOnTermination": true,
+            "VolumeType": "gp2"
+          }
+        }
+      ],
+      "NetworkInterfaces": [
+        {
+          "DeviceIndex": 0,
+          "SubnetId": "subnet-YYYYYYYY",
+          "DeleteOnTermination": true,
+          "AssociatePublicIpAddress": true,
+          "Groups": [
+            "sg-ZZZZZZZZ"
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "maintain"
+}
