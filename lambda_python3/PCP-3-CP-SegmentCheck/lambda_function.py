@@ -22,7 +22,10 @@ current_app_name = "2018_11_20_Periscope_X_PaintingSegmentationCheck"
 prev_step_app_name = "2018_11_20_Periscope_X_ApplyIllumPainting"
 duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
 step = "3"
-# If you change range_skip, you must also change it in 3_4_stitch_cellpainting lambda function
+# Default percentiles are 10 and 90. Change only to troubleshoot troublesome datasets.
+upper_percentile = 90
+lower_percentile = 10
+# If you change range_skip, you must also change it in PCP-4-CP lambda function
 range_skip = 16
 
 
@@ -82,7 +85,7 @@ def lambda_handler(event, context):
         print("Still work ongoing")
         return "Still work ongoing"
     else:
-        print("Checking CSVs for what the upper threshold should be")
+        print("Checking CSVs for thresholds")
         image_csv_list = helpful_functions.paginate_a_folder(
             s3,
             bucket_name,
@@ -93,12 +96,19 @@ def lambda_handler(event, context):
             s3, bucket_name, image_csv_list, "Image.csv"
         )
         threshes = image_df["Threshold_FinalThreshold_Cells"]
-        percentile = numpy.percentile(threshes, 90)
+        calc_upper_percentile = numpy.percentile(threshes, upper_percentile)
         print(
             "In ",
             len(image_csv_list) * num_series,
-            "images, the 90th percentile was",
-            percentile,
+            f"images, the {upper_percentile} percentile was",
+            calc_upper_percentile,
+        )
+        calc_lower_percentile = numpy.percentile(threshes, lower_percentile)
+        print(
+            "In ",
+            len(image_csv_list) * num_series,
+            f"images, the {lower_percentile} percentile was",
+            calc_lower_percentile,
         )
 
         pipeline_on_bucket_name = os.path.join(
@@ -110,7 +120,7 @@ def lambda_handler(event, context):
         )
         with open(local_pipeline_name, "wb") as f:
             s3.download_fileobj(bucket_name, pipeline_on_bucket_name, f)
-        edit_id_secondary(local_pipeline_name, local_temp_pipeline_name, percentile)
+        edit_id_secondary(local_pipeline_name, local_temp_pipeline_name, calc_lower_percentile, calc_upper_percentile)
         with open(local_temp_pipeline_name, "rb") as pipeline:
             s3.put_object(
                 Body=pipeline, Bucket=bucket_name, Key=pipeline_on_bucket_name
@@ -166,25 +176,15 @@ def lambda_handler(event, context):
         return "Cluster started"
 
 
-def edit_id_secondary(file_in_name, file_out_name, upper_value):
-    with open(file_in_name, "rb") as infile:
-        with open(file_out_name, "wb") as outfile:
+def edit_id_secondary(file_in_name, file_out_name, lower_value, upper_value):
+    with open(file_in_name, "rt") as infile:
+        with open(file_out_name, "wt") as outfile:
             IDSecond = False
             for line in infile:
                 if "IdentifySecondaryObjects" in line:
                     IDSecond = True
                 if "Lower and upper bounds on" in line and IDSecond == True:
                     prompt, answer = line.split(":")
-                    decoded_answer = answer.decode("string_escape")[:-1].decode(
-                        "utf-16"
-                    )
-                    decoded_answer = decoded_answer[
-                        : decoded_answer.index(",") + 1
-                    ] + str(upper_value)
-                    line = (
-                        prompt
-                        + ":"
-                        + decoded_answer.encode("utf16").encode("string_escape")
-                        + "\n"
-                    )
+                    new_answer = str(lower_value) + "," + str(upper_value)
+                    line = prompt + ":" + new_answer +"\n"
                 outfile.write(line)
