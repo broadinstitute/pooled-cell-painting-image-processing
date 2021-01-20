@@ -53,17 +53,7 @@ def lambda_handler(event, context):
             if int(metadata["painting_imperwell"]) != 0:
                 num_series = int(metadata["painting_imperwell"])
     expected_files_per_well = np.ceil(float(num_series) / range_skip)
-    platelist = list(image_dict.keys())
-    plate_and_well_list = []
-    for eachplate in platelist:
-        platedict = image_dict[eachplate]
-        well_list = list(platedict.keys())
-        for eachwell in well_list:
-            plate_and_well_list.append((eachplate, eachwell))
-    metadata["painting_plate_and_well_list"] = plate_and_well_list
-    helpful_functions.write_metadata_file(
-        s3, bucket_name, metadata, metadata_file_name, metadata_on_bucket_name
-    )
+    plate_and_well_list = metadata["painting_plate_and_well_list"]
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
