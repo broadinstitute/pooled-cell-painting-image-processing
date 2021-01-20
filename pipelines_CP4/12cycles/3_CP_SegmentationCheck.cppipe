@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
 DateRevision:407
 GitHash:
-ModuleCount:14
+ModuleCount:13
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -70,26 +70,7 @@ MaskImage:[module_num:4|svn_version:'Unknown'|variable_revision_number:3|show_wi
     Select image for mask:None
     Invert the mask?:Yes
 
-ImageMath:[module_num:5|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Operation:None
-    Raise the power of the result by:.25
-    Multiply the result by:1.0
-    Add to result:0.0
-    Set values less than 0 equal to 0?:Yes
-    Set values greater than 1 equal to 1?:No
-    Replace invalid values with 0?:Yes
-    Ignore the image masks?:No
-    Name the output image:SqrtSqrtMaskedDAPI
-    Image or measurement?:Image
-    Select the first image:MaskedDAPI
-    Multiply the first image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the second image:
-    Multiply the second image by:1.0
-    Measurement:
-
-IdentifyPrimaryObjects:[module_num:6|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:MaskedDAPI
     Name the primary objects to be identified:Nuclei
     Typical diameter of objects, in pixel units (Min,Max):10,80
@@ -127,11 +108,11 @@ IdentifyPrimaryObjects:[module_num:6|svn_version:'Unknown'|variable_revision_num
     # of deviations:2.0
     Thresholding method:Otsu
 
-IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['Upper bound set on threshold based on site thresholds across the whole well from CP074A and CP074B']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifySecondaryObjects:[module_num:6|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Nuclei
     Name the objects to be identified:Cells
-    Select the method to identify the secondary objects:Propagation
-    Select the input image:SqrtSqrtMaskedDAPI
+    Select the method to identify the secondary objects:Watershed - Image
+    Select the input image:MaskedAGP
     Number of pixels by which to expand the primary objects:10
     Regularization factor:0.0001
     Discard secondary objects touching the border of the image?:No
@@ -143,7 +124,7 @@ IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_n
     Thresholding method:Minimum Cross-Entropy
     Threshold smoothing scale:2
     Threshold correction factor:0.7
-    Lower and upper bounds on threshold:0.275,0.325
+    Lower and upper bounds on threshold:.000001,1
     Manual threshold:0.0
     Select the measurement to threshold with:None
     Two-class or three-class thresholding?:Three classes
@@ -157,7 +138,7 @@ IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_n
     # of deviations:2.0
     Thresholding method:Otsu
 
-RescaleIntensity:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+RescaleIntensity:[module_num:7|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Select the input image:DNA
     Name the output image:RescaleDAPIPaintingForVis
     Rescaling method:Stretch each image to use the full intensity range
@@ -171,7 +152,7 @@ RescaleIntensity:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|
     Divisor value:1.0
     Divisor measurement:None
 
-RescaleIntensity:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RescaleIntensity:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Phalloidin
     Name the output image:RescalePhalloidinForVis
     Rescaling method:Stretch each image to use the full intensity range
@@ -185,7 +166,7 @@ RescaleIntensity:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|
     Divisor value:1.0
     Divisor measurement:None
 
-GrayToColor:[module_num:10|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+GrayToColor:[module_num:9|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select a color scheme:RGB
     Rescale intensity:No
     Select the image to be colored red:RescaleDAPIPaintingForVis
@@ -208,7 +189,7 @@ GrayToColor:[module_num:10|svn_version:'Unknown'|variable_revision_number:4|show
     Color:#ff0000
     Weight:1.0
 
-OverlayOutlines:[module_num:11|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:10|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:ColorImage
     Name the output image:OrigOverlay
@@ -222,7 +203,7 @@ OverlayOutlines:[module_num:11|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:#FF8000
     Select objects to display:ConfluentRegions
 
-SaveImages:[module_num:12|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:11|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:OrigOverlay
     Select method for constructing file names:From image filename
@@ -241,7 +222,7 @@ SaveImages:[module_num:12|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-ExportToSpreadsheet:[module_num:13|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+ExportToSpreadsheet:[module_num:12|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:Yes
     Add image file and folder names to your object data file?:No
@@ -281,7 +262,7 @@ ExportToSpreadsheet:[module_num:13|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-CreateBatchFiles:[module_num:14|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+CreateBatchFiles:[module_num:13|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Store batch files in default output folder?:Yes
     Output folder path:/home/ubuntu/bucket/projects/2018_11_20_Periscope_Calico/workspace/batchfiles/20190919_6W_CP074A/analysis
     Are the cluster computers running Windows?:No
