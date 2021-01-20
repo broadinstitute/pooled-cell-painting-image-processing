@@ -2,7 +2,6 @@ import json
 import os
 import sys
 import time
-
 import boto3
 
 sys.path.append("/opt/pooled-cell-painting-lambda")
@@ -50,14 +49,12 @@ def lambda_handler(event, context):
     expected_cycles = int(metadata["barcoding_cycles"])
     platelist = list(image_dict.keys())
 
+    # Default pipeline is slow. If images acquired in fast mode, pulls alternate pipeline.
     pipe_name = pipeline_name
     if metadata["fast_or_slow_mode"] == "fast":
         if "fast" not in pipe_name:
             pipe_name = pipe_name[:-7] + "_fast.cppipe"
-    else:
-        if "slow" not in pipe_name:
-            pipe_name = pipe_name[:-7] + "_slow.cppipe"
-    print(pipe_name)
+    print(f"Pipeline name is {pipe_name}")
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
