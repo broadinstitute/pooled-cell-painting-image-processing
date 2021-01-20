@@ -123,11 +123,6 @@ def lambda_handler(event, context):
             with open(per_plate_csv, "rb") as a:
                 s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
-        # first let's just try to run the monitor on the last step, in case we haven't yet
-        helpful_functions.try_a_shutdown(
-            s3, bucket_name, prefix, batch, prev_step_num, prev_step_app_name
-        )
-
         # now let's do our stuff!
         app_name = run_DCP.run_setup(bucket_name, prefix, batch, step)
 
