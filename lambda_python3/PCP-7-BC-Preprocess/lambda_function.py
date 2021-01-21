@@ -43,10 +43,13 @@ def lambda_handler(event, context):
 
     # Check that the barcodes.csv is present
     barcodepath = os.path.join(prefix, "metadata", batch)
-    if os.path.exists(barcodepath) and if not any(fname.endswith('.csv') for fname in os.listdir(barcodepath)):
-        return("Barcodes .csv is missing")
-    if not os.path.exists(barcodepath):
-        return "Metadata folder is missing so your barcodes .csv is as well"
+    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=barcodepath)
+    filelist = []
+    for obj in response.get('Contents', []):
+        filelist += obj
+    if ".csv" not in filelist:
+        print (f"No Barcodes.csv in {barcodepath}")
+        return("Barcodes.csv is missing")
 
     # get the metadata file, so we can add stuff to it
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
