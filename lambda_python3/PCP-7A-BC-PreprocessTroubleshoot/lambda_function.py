@@ -14,7 +14,7 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "7A_BarcodePreprocessing_Troubleshooting.cppipe"
+pipeline_name = "7A_BC_PreprocessTroubleshoot.cppipe"
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "preprocessFleet.json"
 step = "7A"
