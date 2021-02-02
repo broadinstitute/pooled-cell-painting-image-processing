@@ -1,10 +1,6 @@
 {
   "IamFleetRole": "arn:aws:iam::XXXXXXXXXXXX:role/aws-ec2-spot-fleet-role",
   "AllocationStrategy": "lowestPrice",
-  "TargetCapacity": 4,
-  "SpotPrice": "0.20",
-  "ValidFrom": "2019-07-20T20:28:54Z",
-  "ValidUntil": "2020-07-20T20:28:54Z",
   "TerminateInstancesWithExpiration": true,
   "LaunchSpecifications": [
     {
@@ -35,7 +31,7 @@
       "NetworkInterfaces": [
         {
           "DeviceIndex": 0,
-          "SubnetId": "subnet-YYYYYYYY", 
+          "SubnetId": "subnet-YYYYYYYY",
           "DeleteOnTermination": true,
           "AssociatePublicIpAddress": true,
           "Groups": [

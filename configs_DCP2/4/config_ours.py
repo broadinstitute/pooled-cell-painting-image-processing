@@ -3,7 +3,7 @@
 APP_NAME = '2018_11_20_Periscope_X_PaintingStitching'                # Used to generate derivative names unique to the application.
 
 # DOCKER REGISTRY INFORMATION:
-DOCKERHUB_TAG = 'bethcimini/distributed-fiji:latest'
+DOCKERHUB_TAG = 'cellprofiler/distributed-fiji:latest'
 
 # AWS GENERAL SETTINGS:
 AWS_REGION = 'us-east-1'
@@ -18,6 +18,7 @@ TASKS_PER_MACHINE = 1
 MACHINE_TYPE = ['m4.2xlarge']
 MACHINE_PRICE = 0.20
 EBS_VOL_SIZE = 400                       # In GB.  Minimum allowed is 22.  Docker will get this - 2 GB
+DOWNLOAD_FILES = 'False'
 
 # DOCKER INSTANCE RUNNING ENVIRONMENT:
 MEMORY = 31000                           # Memory assigned to the docker container in MB
@@ -29,8 +30,9 @@ SQS_MESSAGE_VISIBILITY = 180*60           # Timeout (secs) for messages in fligh
 SQS_DEAD_LETTER_QUEUE = 'arn:aws:sqs:us-east-1:XXXXXXXXXXXX:DeadMessages'
 
 # LOG GROUP INFORMATION:
-LOG_GROUP_NAME = APP_NAME 
+LOG_GROUP_NAME = APP_NAME
 
 # REDUNDANCY CHECKS
 EXPECTED_NUMBER_FILES = 510    #What is the number of files that trigger that a job completed successfully?
 MIN_FILE_SIZE_BYTES = 1      #What is the minimal number of bytes an object should be to "count"?
+NECESSARY_STRING = ''        #Is there any string that should be in the file name to "count"?
