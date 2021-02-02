@@ -206,6 +206,7 @@ def create_batch_jobs_4(
             "size": "1480",
             "rows": metadata["painting_rows"],
             "columns": metadata["painting_columns"],
+            "imperwell":metadata["painting_imperwell"],
             "stitchorder": metadata["stitchorder"],
             "channame": "DNA",
             "tileperside": str(tileperside),

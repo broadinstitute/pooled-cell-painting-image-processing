@@ -21,7 +21,7 @@ prev_step_app_name = "2018_11_20_Periscope_X_PaintingSegmentationCheck"
 prev_step_num = "3"
 duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
 step = "4"
-# Make sure that range_skip matches that set in 2_3_cellpainting_segmentation_check lambda function
+# Make sure that range_skip matches that set in PCP-3-CP-SegmentCheck lambda function
 range_skip = 16
 tileperside = 10
 final_tile_size = 5500
@@ -59,10 +59,8 @@ def lambda_handler(event, context):
     sqs = boto3.client("sqs")
 
     filter_prefix = image_prefix + batch + "/images_corrected/painting"
-    # Because this step is batched per site (not well) don't need anticipate partial loading of jobs
-    expected_len = (len(plate_and_well_list) * expected_files_per_well) + (
-        6 * (len(platelist))
-    )
+    # Because this step is batched per site (not well) don't need to anticipate partial loading of jobs
+    expected_len = (len(plate_and_well_list) * expected_files_per_well + 5)
 
     done = helpful_functions.check_if_run_done(
         s3,
@@ -79,11 +77,6 @@ def lambda_handler(event, context):
         print("Still work ongoing")
         return "Still work ongoing"
     else:
-        # first let's just try to run the monitor on the last step, in case we haven't yet
-        helpful_functions.try_a_shutdown(
-            s3, bucket_name, prefix, batch, prev_step_num, prev_step_app_name
-        )
-
         # now let's do our stuff!
         app_name = run_DCP.run_setup(
             bucket_name, prefix, batch, step, cellprofiler=False
