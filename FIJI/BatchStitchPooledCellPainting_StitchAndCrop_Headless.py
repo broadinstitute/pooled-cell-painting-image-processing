@@ -171,10 +171,10 @@ if os.path.isdir(subdir):
                                 IJ.run("Close All")
         elif round_or_square == 'round':
                 print(int(rows),'rows',int(columns),'columns')
-                if int(rows) not in [21,42]:
+                if int(rows) not in [20,21,40,42]:
                         print("unknown row shape, only 21 rows + 20 columns or 42 rows + columns currently supported")
                         sys.exit()
-                elif int(columns) not in [20,42]:
+                elif int(columns) not in [20,40,42]:
                         print("unknown column shape, only 21 rows + 20 columns or 42 rows + columns currently supported")
                         sys.exit()
                 else:
@@ -185,13 +185,25 @@ if os.path.isdir(subdir):
                                 42,42,42,42,40,40,40,
                                 38,38,36,36,34,34,32,
                                 30,28,26,22,18,14,8]
+                        if int(rows) == 40 and int(columns) == 40:
+                                row_widths = [14,18,22,26,28,30,
+                                32,34,34,36,36,38,38,
+                                40,40,40,40,40,40,40,
+                                40,40,40,40,40,40,40,
+                                38,38,36,36,34,34,32,
+                                30,28,26,22,18,14]
                         elif int(rows) == 21 and int(columns) == 20:
                                 row_widths = [4, 8, 12, 14, 16,
                                 18, 18, 20, 20, 20, 
                                 20, 20, 20, 20, 18,
                                 18, 16, 14, 12, 8, 4]
+                        elif int(rows) == 20 and int(columns) == 20:
+                                row_widths = [6, 10, 14, 16, 16,
+                                18, 18, 20, 20, 20, 
+                                20, 20, 20, 18, 18,
+                                16, 16, 14, 10, 6]
                         else:
-                              print("unknown column/row shape combination, only 21 rows + 20 columns or 42 rows + columns currently supported")
+                              print("unknown column/row shape combination, only 21 rows + 20 columns, 20 rows + columns, 40 rows + columns, or 42 rows + columns currently supported")
                               sys.exit()
 
                         top_rows = str(int(rows)/2)
