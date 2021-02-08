@@ -17,7 +17,6 @@ pipeline_name = "7A_BC_PreprocessTroubleshoot.cppipe"
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "preprocessFleet.json"
 step = "7A"
-config_step = "7"
 skip = 15  # Must match skip set in config file
 
 
@@ -51,7 +50,7 @@ def lambda_handler(event, context):
     num_sites = round(len(plate_and_well_list) * num_series / skip)
 
     # Setup DCP
-    app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_step)
+    app_name = run_DCP.run_setup(bucket_name, prefix, batch, step)
 
     # Make the jobs
     create_batch_jobs.create_batch_jobs_7A(
@@ -65,7 +64,7 @@ def lambda_handler(event, context):
     )
 
     # Start a cluster
-    run_DCP.run_cluster(bucket_name, prefix, batch, config_step, fleet_file_name, num_sites)
+    run_DCP.run_cluster(bucket_name, prefix, batch, step, fleet_file_name, num_sites)
 
     # Run the monitor
     run_DCP.run_monitor(bucket_name, prefix, batch, step)
