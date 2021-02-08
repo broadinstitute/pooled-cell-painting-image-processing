@@ -1,6 +1,6 @@
 # Constants (User configurable)
 
-APP_NAME = '2018_11_20_Periscope_X_PaintingStitching'                # Used to generate derivative names unique to the application.
+APP_NAME = '2018_11_20_Periscope_X_BarcodingStitching'                # Used to generate derivative names unique to the application.
 
 # DOCKER REGISTRY INFORMATION:
 DOCKERHUB_TAG = 'cellprofiler/distributed-fiji:latest'
