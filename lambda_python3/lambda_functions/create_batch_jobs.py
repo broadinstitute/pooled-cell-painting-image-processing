@@ -479,3 +479,59 @@ def create_batch_jobs_9(
             correctqueue.scheduleBatch(templateMessage_analysis)
 
     print("Analysis job submitted. Check your queue")
+
+def create_batch_jobs_8(
+    startpath,
+    batchsuffix,
+    metadata,
+    plate_and_well_list,
+    app_name,
+    tileperside=10,
+    final_tile_size=5500,
+):
+    local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
+    if "round_or_square" in list(metadata.keys()):
+        round_or_square = metadata["round_or_square"]
+    else:  # backwards compatibility for old square runs
+        round_or_square = "square"
+    stitchqueue = JobQueue(app_name + "Queue")
+    stitchMessage = {
+        "Metadata": "",
+        "output_file_location": posixpath.join(startpath, batchsuffix),
+        "shared_metadata": {
+            "input_file_location": local_start_path,
+            "scalingstring": "1",
+            "overlap_pct": metadata["overlap_pct"],
+            "size": "1480",
+            "rows": metadata["barcoding_rows"],
+            "columns": metadata["barcoding_columns"],
+            "imperwell":metadata["barcoding_imperwell"],
+            "stitchorder": metadata["stitchorder"],
+            "channame": "DNA",
+            "tileperside": str(tileperside),
+            "awsdownload": "True",
+            "bucketname": "imaging-platform",
+            "localtemp": "local_temp",
+            "round_or_square": round_or_square,
+            "final_tile_size": str(final_tile_size),
+        },
+    }
+    for tostitch in plate_and_well_list:
+        if "_" not in tostitch[1]:
+            well = "Well_" + tostitch[1][4:]
+        else:
+            well = tostitch[1]
+        stitchMessage["Metadata"] = {
+            "subdir": posixpath.join(
+                batchsuffix,
+                "images_corrected",
+                "barcoding",
+                tostitch[0] + "-" + tostitch[1],
+            ),
+            "out_subdir_tag": tostitch[0] + "_" + tostitch[1],
+            "filterstring": well,
+            "downloadfilter": "*" + well + "*",
+        }
+        stitchqueue.scheduleBatch(stitchMessage)
+
+    print("Stitching job submitted. Check your queue")
