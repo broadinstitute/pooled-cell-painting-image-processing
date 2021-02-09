@@ -196,7 +196,7 @@ if os.path.isdir(subdir):
                         20, 20, 20, 18, 18,
                         16, 16, 14, 10, 6]
                 else:
-                        print(f"{imperwell} images/well for a round well is not currently supported")
+                        print(imperwell, "images/well for a round well is not currently supported")
                         sys.exit()
 
                 top_rows = str(int(rows)/2)
