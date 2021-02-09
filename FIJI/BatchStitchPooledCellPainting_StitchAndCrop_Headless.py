@@ -171,26 +171,26 @@ if os.path.isdir(subdir):
                                                 IJ.saveAs(im_tile, "Tiff",os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'))
                                 IJ.run("Close All")
         elif round_or_square == 'round':
-                if imperwell == 1364:
+                if imperwell == '1364':
                         row_widths = [8,14,18,22,26,28,30,
                         32,34,34,36,36,38,38,
                         40,40,40,42,42,42,42,
                         42,42,42,42,40,40,40,
                         38,38,36,36,34,34,32,
                         30,28,26,22,18,14,8]
-                elif imperwell == 1332:
+                elif imperwell == '1332':
                         row_widths = [14,18,22,26,28,30,
                         32,34,34,36,36,38,38,
                         40,40,40,40,40,40,40,
                         40,40,40,40,40,40,40,
                         38,38,36,36,34,34,32,
                         30,28,26,22,18,14]
-                elif imperwell == 320:
+                elif imperwell == '320':
                         row_widths = [4, 8, 12, 14, 16,
                         18, 18, 20, 20, 20,
                         20, 20, 20, 20, 18,
                         18, 16, 14, 12, 8, 4]
-                elif imperwell == 316:
+                elif imperwell == '316':
                         row_widths = [6, 10, 14, 16, 16,
                         18, 18, 20, 20, 20,
                         20, 20, 20, 18, 18,
