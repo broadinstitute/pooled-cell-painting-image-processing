@@ -2,12 +2,12 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
 DateRevision:407
 GitHash:
-ModuleCount:73
+ModuleCount:77
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Input data file location:Default Input Folder|Downloads
-    Name of the file:load_data_pipeline7.csv
+    Input data file location:Elsewhere...|/Users/bcimini/Downloads/PCPTroubleshooting
+    Name of the file:load_data_pipeline7_checkseg.csv
     Load images based on this data?:Yes
     Base image location:None|
     Process just a range of rows?:No
@@ -204,7 +204,7 @@ ImageMath:[module_num:5|svn_version:'Unknown'|variable_revision_number:5|show_wi
     Multiply the ninth image by:1.0
     Measurement:
 
-CorrectIlluminationCalculate:[module_num:6|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CorrectIlluminationCalculate:[module_num:6|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:MeanOfAllACycles
     Name the output image:IllumMeanA
     Select how the illumination function is calculated:Background
@@ -464,8 +464,8 @@ CorrectIlluminationApply:[module_num:13|svn_version:'Unknown'|variable_revision_
     Set output image values less than 0 equal to 0?:Yes
     Set output image values greater than 1 equal to 1?:Yes
 
-ImageMath:[module_num:14|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['A bleeds bad into C, T bleeds bad into G, C and G don\x92t bleed too badly']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Operation:Maximum
+ImageMath:[module_num:14|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Standard Deviation
     Raise the power of the result by:1.0
     Multiply the result by:1.0
     Add to result:0.0
@@ -473,153 +473,213 @@ ImageMath:[module_num:14|svn_version:'Unknown'|variable_revision_number:5|show_w
     Set values greater than 1 equal to 1?:Yes
     Replace invalid values with 0?:Yes
     Ignore the image masks?:No
-    Name the output image:MaxOfAllBackSubCycles
+    Name the output image:StDevOfAllACycles
     Image or measurement?:Image
-    Select the first image:Cycle01_A_BackSub
+    Select the first image:Cycle01_A
     Multiply the first image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the second image:Cycle01_C_BackSub
+    Select the second image:Cycle02_A
     Multiply the second image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the third image:Cycle01_G_BackSub
+    Select the third image:Cycle03_A
     Multiply the third image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the fourth image:Cycle01_T_BackSub
+    Select the fourth image:Cycle04_A
     Multiply the fourth image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the fifth image:Cycle02_A_BackSub
+    Select the fifth image:Cycle05_A
     Multiply the fifth image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the sixth image:Cycle02_C_BackSub
+    Select the sixth image:Cycle06_A
     Multiply the sixth image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the seventh image:Cycle02_G_BackSub
+    Select the seventh image:Cycle07_A
     Multiply the seventh image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the eighth image:Cycle02_T_BackSub
+    Select the eighth image:Cycle08_A
     Multiply the eighth image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the ninth image:Cycle03_A_BackSub
+    Select the ninth image:Cycle09_A
     Multiply the ninth image by:1.0
     Measurement:
+
+ImageMath:[module_num:15|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Standard Deviation
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:StDevOfAllCCycles
     Image or measurement?:Image
-    Select the tenth image:Cycle03_C_BackSub
-    Multiply the tenth image by:1.0
+    Select the first image:Cycle01_C
+    Multiply the first image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the eleventh image:Cycle03_G_BackSub
-    Multiply the eleventh image by:1.0
+    Select the second image:Cycle02_C
+    Multiply the second image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the twelfth image:Cycle03_T_BackSub
-    Multiply the twelfth image by:1.0
+    Select the third image:Cycle03_C
+    Multiply the third image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the thirteenth image:Cycle04_A_BackSub
-    Multiply the thirteenth image by:1.0
+    Select the fourth image:Cycle04_C
+    Multiply the fourth image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the fourteenth image:Cycle04_C_BackSub
-    Multiply the fourteenth image by:1.0
+    Select the fifth image:Cycle05_C
+    Multiply the fifth image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the fifteenth image:Cycle04_G_BackSub
-    Multiply the fifteenth image by:1.0
+    Select the sixth image:Cycle06_C
+    Multiply the sixth image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the sixteenth image:Cycle04_T_BackSub
-    Multiply the sixteenth image by:1.0
+    Select the seventh image:Cycle07_C
+    Multiply the seventh image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the seventeenth image:Cycle05_A_BackSub
-    Multiply the seventeenth image by:1.0
+    Select the eighth image:Cycle08_C
+    Multiply the eighth image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the eighteenth image:Cycle05_C_BackSub
-    Multiply the eighteenth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the nineteenth image:Cycle05_G_BackSub
-    Multiply the nineteenth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twentieth image:Cycle05_T_BackSub
-    Multiply the twentieth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twenty-first image:Cycle06_A_BackSub
-    Multiply the twenty-first image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twenty-second image:Cycle06_C_BackSub
-    Multiply the twenty-second image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twenty-third image:Cycle06_G_BackSub
-    Multiply the twenty-third image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twenty-fourth image:Cycle06_T_BackSub
-    Multiply the twenty-fourth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twenty-fifth image:Cycle07_A_BackSub
-    Multiply the twenty-fifth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twenty-sixth image:Cycle07_C_BackSub
-    Multiply the twenty-sixth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twenty-seventh image:Cycle07_G_BackSub
-    Multiply the twenty-seventh image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twenty-eighth image:Cycle07_T_BackSub
-    Multiply the twenty-eighth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the twenty-ninth image:Cycle08_A_BackSub
-    Multiply the twenty-ninth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the thirtieth image:Cycle08_C_BackSub
-    Multiply the thirtieth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the thirty-first image:Cycle08_G_BackSub
-    Multiply the thirty-first image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the thirty-second image:Cycle08_T_BackSub
-    Multiply the thirty-second image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the thirty-third image:Cycle09_A_BackSub
-    Multiply the thirty-third image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the thirty-fourth image:Cycle09_C_BackSub
-    Multiply the thirty-fourth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the thirty-fifth image:Cycle09_G_BackSub
-    Multiply the thirty-fifth image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the thirty-sixth image:Cycle09_T_BackSub
-    Multiply the thirty-sixth image by:1.0
+    Select the ninth image:Cycle09_C
+    Multiply the ninth image by:1.0
     Measurement:
 
-IdentifyPrimaryObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+ImageMath:[module_num:16|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Standard Deviation
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:StDevOfAllGCycles
+    Image or measurement?:Image
+    Select the first image:Cycle01_G
+    Multiply the first image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:Cycle02_G
+    Multiply the second image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the third image:Cycle03_G
+    Multiply the third image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the fourth image:Cycle04_G
+    Multiply the fourth image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the fifth image:Cycle05_G
+    Multiply the fifth image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the sixth image:Cycle06_G
+    Multiply the sixth image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the seventh image:Cycle07_G
+    Multiply the seventh image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the eighth image:Cycle08_G
+    Multiply the eighth image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the ninth image:Cycle09_G
+    Multiply the ninth image by:1.0
+    Measurement:
+
+ImageMath:[module_num:17|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Standard Deviation
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:StDevOfAllTCycles
+    Image or measurement?:Image
+    Select the first image:Cycle01_T
+    Multiply the first image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:Cycle02_T
+    Multiply the second image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the third image:Cycle03_T
+    Multiply the third image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the fourth image:Cycle04_T
+    Multiply the fourth image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the fifth image:Cycle05_T
+    Multiply the fifth image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the sixth image:Cycle06_T
+    Multiply the sixth image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the seventh image:Cycle07_T
+    Multiply the seventh image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the eighth image:Cycle08_T
+    Multiply the eighth image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the ninth image:Cycle09_T
+    Multiply the ninth image by:1.0
+    Measurement:
+
+ImageMath:[module_num:18|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Average
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:MeanOfAllStDevs
+    Image or measurement?:Image
+    Select the first image:StDevOfAllACycles
+    Multiply the first image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:StDevOfAllCCycles
+    Multiply the second image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the third image:StDevOfAllGCycles
+    Multiply the third image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the fourth image:StDevOfAllTCycles
+    Multiply the fourth image by:1.0
+    Measurement:
+
+IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Cycle01_DAPI
     Name the primary objects to be identified:Nuclei
     Typical diameter of objects, in pixel units (Min,Max):6,25
@@ -657,7 +717,7 @@ IdentifyPrimaryObjects:[module_num:15|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2.0
     Thresholding method:Otsu
 
-IdentifySecondaryObjects:[module_num:16|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifySecondaryObjects:[module_num:20|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Nuclei
     Name the objects to be identified:Cells
     Select the method to identify the secondary objects:Propagation
@@ -673,7 +733,7 @@ IdentifySecondaryObjects:[module_num:16|svn_version:'Unknown'|variable_revision_
     Thresholding method:Otsu
     Threshold smoothing scale:0.0
     Threshold correction factor:.9
-    Lower and upper bounds on threshold:0.002,0.05
+    Lower and upper bounds on threshold:0.002,0.02
     Manual threshold:0.000000000001
     Select the measurement to threshold with:None
     Two-class or three-class thresholding?:Three classes
@@ -687,8 +747,8 @@ IdentifySecondaryObjects:[module_num:16|svn_version:'Unknown'|variable_revision_
     # of deviations:2.0
     Thresholding method:Otsu
 
-EnhanceOrSuppressFeatures:[module_num:17|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:MaxOfAllBackSubCycles
+EnhanceOrSuppressFeatures:[module_num:21|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+    Select the input image:MeanOfAllStDevs
     Name the output image:EnhanceOrSuppressFeatures
     Select the operation:Enhance
     Feature size:5
@@ -701,7 +761,7 @@ EnhanceOrSuppressFeatures:[module_num:17|svn_version:'Unknown'|variable_revision
     Speed and accuracy:Fast
     Rescale result image:Yes
 
-IdentifyPrimaryObjects:[module_num:18|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:EnhanceOrSuppressFeatures
     Name the primary objects to be identified:Foci
     Typical diameter of objects, in pixel units (Min,Max):2,10
@@ -725,7 +785,7 @@ IdentifyPrimaryObjects:[module_num:18|svn_version:'Unknown'|variable_revision_nu
     Thresholding method:Robust Background
     Threshold smoothing scale:1.3488
     Threshold correction factor:1.0
-    Lower and upper bounds on threshold:0.0015,1.0
+    Lower and upper bounds on threshold:0.0008,1.0
     Manual threshold:0.0
     Select the measurement to threshold with:None
     Two-class or three-class thresholding?:Three classes
@@ -739,45 +799,25 @@ IdentifyPrimaryObjects:[module_num:18|svn_version:'Unknown'|variable_revision_nu
     # of deviations:4
     Thresholding method:Otsu
 
-IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:EnhanceOrSuppressFeatures
-    Name the primary objects to be identified:BarcodeFoci
-    Typical diameter of objects, in pixel units (Min,Max):2,10
-    Discard objects outside the diameter range?:Yes
-    Discard objects touching the border of the image?:Yes
-    Method to distinguish clumped objects:Intensity
-    Method to draw dividing lines between clumped objects:Intensity
-    Size of smoothing filter:10
-    Suppress local maxima that are closer than this minimum allowed distance:7.0
-    Speed up by using lower-resolution image to find local maxima?:Yes
-    Fill holes in identified objects?:After both thresholding and declumping
-    Automatically calculate size of smoothing filter for declumping?:Yes
-    Automatically calculate minimum allowed distance between local maxima?:Yes
-    Handling of objects if excessive number of objects identified:Continue
-    Maximum number of objects:500
-    Display accepted local maxima?:No
-    Select maxima color:Blue
-    Use advanced settings?:Yes
-    Threshold setting version:12
-    Threshold strategy:Global
-    Thresholding method:Robust Background
-    Threshold smoothing scale:1.3488
-    Threshold correction factor:1.0
-    Lower and upper bounds on threshold:0.0015,1.0
-    Manual threshold:0.0
-    Select the measurement to threshold with:None
-    Two-class or three-class thresholding?:Three classes
-    Log transform before thresholding?:No
-    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
-    Size of adaptive window:50
-    Lower outlier fraction:0.025
-    Upper outlier fraction:0.05
-    Averaging method:Mean
-    Variance method:Standard deviation
-    # of deviations:4
-    Thresholding method:Otsu
+FilterObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:Foci
+    Name the output objects:BarcodeFoci
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Select the measurement to filter by:Number_Object_Number
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.5
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
 
-CompensateColors:[module_num:20|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Hidden:36
     Hidden:1
     Select an image to measure:Cycle01_A_BackSub
@@ -892,21 +932,28 @@ CompensateColors:[module_num:20|svn_version:'Unknown'|variable_revision_number:1
     Select an object to perform compensation within:Foci
     Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
     Should images be rescaled 0-1 before compensating but after masking to objects?:No
-    Should histogram matching be performed between the image groups?:No
-    What compensation class should serve as the template histogram?:1
+    Should histogram matching be performed between the image groups?:Yes, post-masking to objects
+    What compensation class should serve as the template histogram?:4
     Should images be rescaled 0-1 after compensating?:No
     Should the images be divided by a scalar based on group percentiles:No
     What percentile should be used for multiplication:99.9
+    Should the images have a tophat filter applied before correction?:No
+    What size radius should be used for the tophat filter?:3
+    Should the images have a Laplacian of Gaussian filter applied before correction?:Yes
+    What size radius should be used for the LoG filter?:1
+    Should the images have a Difference of Gaussians filter applied before correction?:No
+    What size sigma should be used for the DoG low sigma?:3
+    What size radius should be used for the DoG low sigma?:5
 
-MeasureObjectIntensity:[module_num:21|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:25|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:CorrCycle01_A, CorrCycle01_C, CorrCycle01_G, CorrCycle01_T, CorrCycle02_A, CorrCycle02_C, CorrCycle02_G, CorrCycle02_T, CorrCycle03_A, CorrCycle03_C, CorrCycle03_G, CorrCycle03_T, CorrCycle04_A, CorrCycle04_C, CorrCycle04_G, CorrCycle04_T, CorrCycle05_A, CorrCycle05_C, CorrCycle05_G, CorrCycle05_T, CorrCycle06_A, CorrCycle06_C, CorrCycle06_G, CorrCycle06_T, CorrCycle07_A, CorrCycle07_C, CorrCycle07_G, CorrCycle07_T, CorrCycle08_A, CorrCycle08_C, CorrCycle08_G, CorrCycle08_T, CorrCycle09_A, CorrCycle09_C, CorrCycle09_G, CorrCycle09_T
     Select objects to measure:Foci
 
-CallBarcodes:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CallBarcodes:[module_num:26|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Number of cycles:9
     Input object name:Foci
     Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A
-    Input data file location:Default Input Folder|Desktop\metadata00211_6W_CP151A1
+    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
     Name of the file:Barcodes.csv
     Select the column of barcodes to match against:sgRNA
     Select the column with gene/transcript barcode names:gene_symbol
@@ -915,7 +962,7 @@ CallBarcodes:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues
 
-ImageMath:[module_num:23|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:27|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:None
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -934,7 +981,7 @@ ImageMath:[module_num:23|svn_version:'Unknown'|variable_revision_number:5|show_w
     Multiply the second image by:1.0
     Measurement:
 
-ImageMath:[module_num:24|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:28|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:None
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -953,11 +1000,11 @@ ImageMath:[module_num:24|svn_version:'Unknown'|variable_revision_number:5|show_w
     Multiply the second image by:1.0
     Measurement:
 
-MeasureObjectIntensity:[module_num:25|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:29|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:Barcodes_Scores, Barcodes_Barcodes
     Select objects to measure:BarcodeFoci
 
-RelateObjects:[module_num:26|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:30|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Cells
     Child objects:BarcodeFoci
     Calculate child-parent distances?:None
@@ -1030,8 +1077,18 @@ RelateObjects:[module_num:26|svn_version:'Unknown'|variable_revision_number:5|sh
     Parent name:None
     Parent name:None
     Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
 
-SaveImages:[module_num:27|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:31|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:Cycle01_DAPI
     Select method for constructing file names:Single name
@@ -1050,7 +1107,7 @@ SaveImages:[module_num:27|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:28|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:32|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle01_A
     Select method for constructing file names:Single name
@@ -1069,7 +1126,7 @@ SaveImages:[module_num:28|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:29|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:33|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle01_C
     Select method for constructing file names:Single name
@@ -1088,7 +1145,7 @@ SaveImages:[module_num:29|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:30|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:34|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle01_G
     Select method for constructing file names:Single name
@@ -1107,7 +1164,7 @@ SaveImages:[module_num:30|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:31|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:35|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle01_T
     Select method for constructing file names:Single name
@@ -1126,7 +1183,7 @@ SaveImages:[module_num:31|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:32|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:36|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle02_A
     Select method for constructing file names:Single name
@@ -1145,7 +1202,7 @@ SaveImages:[module_num:32|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:33|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:37|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle02_C
     Select method for constructing file names:Single name
@@ -1164,7 +1221,7 @@ SaveImages:[module_num:33|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:34|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:38|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle02_G
     Select method for constructing file names:Single name
@@ -1183,7 +1240,7 @@ SaveImages:[module_num:34|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:35|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:39|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle02_T
     Select method for constructing file names:Single name
@@ -1202,7 +1259,7 @@ SaveImages:[module_num:35|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:36|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:40|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle03_A
     Select method for constructing file names:Single name
@@ -1221,7 +1278,7 @@ SaveImages:[module_num:36|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:37|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:41|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle03_C
     Select method for constructing file names:Single name
@@ -1240,7 +1297,7 @@ SaveImages:[module_num:37|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:38|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:42|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle03_G
     Select method for constructing file names:Single name
@@ -1259,7 +1316,7 @@ SaveImages:[module_num:38|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:39|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:43|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle03_T
     Select method for constructing file names:Single name
@@ -1278,7 +1335,7 @@ SaveImages:[module_num:39|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:40|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:44|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle04_A
     Select method for constructing file names:Single name
@@ -1297,7 +1354,7 @@ SaveImages:[module_num:40|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:41|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:45|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle04_C
     Select method for constructing file names:Single name
@@ -1316,7 +1373,7 @@ SaveImages:[module_num:41|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:42|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:46|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle04_G
     Select method for constructing file names:Single name
@@ -1335,7 +1392,7 @@ SaveImages:[module_num:42|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:43|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:47|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle04_T
     Select method for constructing file names:Single name
@@ -1354,7 +1411,7 @@ SaveImages:[module_num:43|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:44|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:48|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle05_A
     Select method for constructing file names:Single name
@@ -1373,7 +1430,7 @@ SaveImages:[module_num:44|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:45|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:49|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle05_C
     Select method for constructing file names:Single name
@@ -1392,7 +1449,7 @@ SaveImages:[module_num:45|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:46|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:50|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle05_G
     Select method for constructing file names:Single name
@@ -1411,7 +1468,7 @@ SaveImages:[module_num:46|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:47|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:51|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle05_T
     Select method for constructing file names:Single name
@@ -1430,7 +1487,7 @@ SaveImages:[module_num:47|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:48|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:52|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle06_A
     Select method for constructing file names:Single name
@@ -1449,7 +1506,7 @@ SaveImages:[module_num:48|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:49|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:53|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle06_C
     Select method for constructing file names:Single name
@@ -1468,7 +1525,7 @@ SaveImages:[module_num:49|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:50|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:54|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle06_G
     Select method for constructing file names:Single name
@@ -1487,7 +1544,7 @@ SaveImages:[module_num:50|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:51|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:55|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle06_T
     Select method for constructing file names:Single name
@@ -1506,7 +1563,7 @@ SaveImages:[module_num:51|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:52|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:56|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle07_A
     Select method for constructing file names:Single name
@@ -1525,7 +1582,7 @@ SaveImages:[module_num:52|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:53|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:57|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle07_C
     Select method for constructing file names:Single name
@@ -1544,7 +1601,7 @@ SaveImages:[module_num:53|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:54|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:58|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle07_G
     Select method for constructing file names:Single name
@@ -1563,7 +1620,7 @@ SaveImages:[module_num:54|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:55|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:59|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle07_T
     Select method for constructing file names:Single name
@@ -1582,7 +1639,7 @@ SaveImages:[module_num:55|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:56|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:60|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle08_A
     Select method for constructing file names:Single name
@@ -1601,7 +1658,7 @@ SaveImages:[module_num:56|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:57|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:61|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle08_C
     Select method for constructing file names:Single name
@@ -1620,7 +1677,7 @@ SaveImages:[module_num:57|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:58|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:62|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle08_G
     Select method for constructing file names:Single name
@@ -1639,7 +1696,7 @@ SaveImages:[module_num:58|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:59|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:63|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle08_T
     Select method for constructing file names:Single name
@@ -1658,7 +1715,7 @@ SaveImages:[module_num:59|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:60|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:64|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle09_A
     Select method for constructing file names:Single name
@@ -1677,7 +1734,7 @@ SaveImages:[module_num:60|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:61|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:65|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle09_C
     Select method for constructing file names:Single name
@@ -1696,7 +1753,7 @@ SaveImages:[module_num:61|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:62|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:66|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle09_G
     Select method for constructing file names:Single name
@@ -1715,7 +1772,7 @@ SaveImages:[module_num:62|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:63|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:67|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrCycle09_T
     Select method for constructing file names:Single name
@@ -1734,7 +1791,7 @@ SaveImages:[module_num:63|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-ExportToSpreadsheet:[module_num:64|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ExportToSpreadsheet:[module_num:68|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:Yes
     Add image file and folder names to your object data file?:No
@@ -1758,7 +1815,7 @@ ExportToSpreadsheet:[module_num:64|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-CalculateMath:[module_num:65|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:69|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Divide20
     Operation:None
     Select the numerator measurement type:Image
@@ -1782,7 +1839,7 @@ CalculateMath:[module_num:65|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-CalculateMath:[module_num:66|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:70|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Divide20floor
     Operation:None
     Select the numerator measurement type:Image
@@ -1799,14 +1856,14 @@ CalculateMath:[module_num:66|svn_version:'Unknown'|variable_revision_number:3|sh
     Multiply the result by:1.0
     Raise the power of result by:1.0
     Add to the result:0.0
-    How should the output value be rounded?:Not rounded
+    How should the output value be rounded?:Rounded down to the next-lowest integer
     Enter how many decimal places the value should be rounded to:0.0
     Constrain the result to a lower bound?:Not rounded
     Enter the lower bound:0.0
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-CalculateMath:[module_num:67|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:71|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Divide20diff
     Operation:Subtract
     Select the minuend measurement type:Image
@@ -1830,7 +1887,7 @@ CalculateMath:[module_num:67|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-FlagImage:[module_num:68|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FlagImage:[module_num:72|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:1
     Hidden:1
     Name the flag's category:Divide20
@@ -1849,7 +1906,7 @@ FlagImage:[module_num:68|svn_version:'Unknown'|variable_revision_number:4|show_w
     Class number:
     Ignore flag skips on last cycle?:No
 
-ImageMath:[module_num:69|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:73|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:None
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -1858,9 +1915,9 @@ ImageMath:[module_num:69|svn_version:'Unknown'|variable_revision_number:5|show_w
     Set values greater than 1 equal to 1?:Yes
     Replace invalid values with 0?:Yes
     Ignore the image masks?:No
-    Name the output image:MaxSqRt
+    Name the output image:StdSqRt
     Image or measurement?:Image
-    Select the first image:MaxOfAllBackSubCycles
+    Select the first image:MeanOfAllStDevs
     Multiply the first image by:1.0
     Measurement:
     Image or measurement?:Image
@@ -1868,8 +1925,8 @@ ImageMath:[module_num:69|svn_version:'Unknown'|variable_revision_number:5|show_w
     Multiply the second image by:1.0
     Measurement:
 
-RescaleIntensity:[module_num:70|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:MaxSqRt
+RescaleIntensity:[module_num:74|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:StdSqRt
     Name the output image:RescaleIntensity
     Rescaling method:Stretch each image to use the full intensity range
     Method to calculate the minimum intensity:Custom
@@ -1882,10 +1939,10 @@ RescaleIntensity:[module_num:70|svn_version:'Unknown'|variable_revision_number:3
     Divisor value:1.0
     Divisor measurement:None
 
-OverlayOutlines:[module_num:71|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:75|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:RescaleIntensity
-    Name the output image:Max_Overlay
+    Name the output image:StDev_Overlay
     Outline display mode:Color
     Select method to determine brightness of outlines:Max of image
     How to outline:Inner
@@ -1894,12 +1951,12 @@ OverlayOutlines:[module_num:71|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:#0080FF
     Select objects to display:Cells
 
-SaveImages:[module_num:72|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:76|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:Max_Overlay
+    Select the image to save:StDev_Overlay
     Select method for constructing file names:Single name
     Select image name for file prefix:None
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Max_Overlay
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_StDev_Overlay
     Number of digits:4
     Append a suffix to the image file name?:No
     Text to append to the image name:
@@ -1913,12 +1970,12 @@ SaveImages:[module_num:72|svn_version:'Unknown'|variable_revision_number:15|show
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
 
-SaveImages:[module_num:73|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:77|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:Max_Overlay
+    Select the image to save:StDev_Overlay
     Select method for constructing file names:Single name
     Select image name for file prefix:None
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Max_Overlay
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_StDev_Overlay
     Number of digits:4
     Append a suffix to the image file name?:No
     Text to append to the image name:
