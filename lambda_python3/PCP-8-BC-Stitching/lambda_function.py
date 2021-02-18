@@ -15,8 +15,8 @@ s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "stitchFleet.json"
-current_app_name = "2018_11_20_Periscope_X_BarcodingStitching"
-prev_step_app_name = "2018_11_20_Periscope_X_PreprocessBarcoding"
+current_app_name = "2018_11_20_Periscope_Calico_BarcodingStitching"
+prev_step_app_name = "2018_11_20_Periscope_Calico_PreprocessBarcoding"
 prev_step_num = "7"
 duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
 step = "8"
@@ -43,21 +43,22 @@ def lambda_handler(event, context):
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
 
-    image_dict = metadata["painting_file_data"]
-    num_series = int(metadata["painting_rows"]) * int(metadata["painting_columns"])
-    if "painting_imperwell" in list(metadata.keys()):
-        if metadata["painting_imperwell"] != "":
-            if int(metadata["painting_imperwell"]) != 0:
-                num_series = int(metadata["painting_imperwell"])
-    expected_files_per_well = np.ceil(float(num_series) / range_skip)
-    plate_and_well_list = metadata["painting_plate_and_well_list"]
+    image_dict = metadata["barcoding_file_data"]
+    num_series = int(metadata["barcoding_rows"]) * int(metadata["barcoding_columns"])
+    if "barcoding_imperwell" in list(metadata.keys()):
+        if metadata["barcoding_imperwell"] != "":
+            if int(metadata["barcoding_imperwell"]) != 0:
+                num_series = int(metadata["barcoding_imperwell"])
+    # number of site * 4 channels barcoding * number of cycles. doesn't include 1 DAPI/site
+    expected_files_per_well = num_series * 4 * metadata["barcoding_cycles"]
+    plate_and_well_list = metadata["barcoding_plate_and_well_list"]
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
 
     filter_prefix = image_prefix + batch + "/images_corrected/barcoding"
     # Because this step is batched per site (not well) don't need to anticipate partial loading of jobs
-    expected_len = (len(plate_and_well_list) * expected_files_per_well + 5)
+    expected_len = (int(len(plate_and_well_list)) * int(expected_files_per_well) + 5)
 
     done = helpful_functions.check_if_run_done(
         s3,
