@@ -199,6 +199,9 @@ if os.path.isdir(subdir):
                         print(imperwell, "images/well for a round well is not currently supported")
                         sys.exit()
 
+                rows = str(len(row_widths))
+                columns = str(max(row_widths))
+
                 top_rows = str(int(rows)/2)
                 left_columns = str(int(columns)/2)
                 bot_rows = str(int(rows)-int(top_rows))
@@ -252,7 +255,9 @@ if os.path.isdir(subdir):
                                                         except:
                                                                 pass
                                 print("Renamed all files for prefix "+thisprefix+" and suffix "+thissuffix+" in well "+eachwell)
-
+                        imagelist = os.listdir(subdir)
+                        print(len(imagelist), 'files in subdir')
+                        print(imagelist[:10])
                         #top left quarter
                         print('Running top left')
                         #Change per quarter
@@ -262,7 +267,9 @@ if os.path.isdir(subdir):
                         filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
                         #Change per quarter
                         fileoutname='StitchedTopLeft'+filename.replace("{xx}","").replace("{yy}","")
-                        IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
+                        instructions = standard_grid_instructions[0] + filename + standard_grid_instructions[1]
+                        print(instructions)
+                        IJ.run("Grid/Collection stitching", instructions)
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
                         IJ.saveAs(im,'tiff',os.path.join(out_subdir,fileoutname))
