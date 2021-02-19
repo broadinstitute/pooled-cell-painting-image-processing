@@ -483,20 +483,15 @@ def create_batch_jobs_8(
         },
     }
     for tostitch in plate_and_well_list:
-        if "_" not in tostitch[1]:
-            well = "Well_" + tostitch[1][4:]
-        else:
-            well = tostitch[1]
         stitchMessage["Metadata"] = {
             "subdir": posixpath.join(
                 batchsuffix,
                 "images_corrected",
                 "barcoding",
-                tostitch[0] + "-" + tostitch[1],
             ),
             "out_subdir_tag": tostitch[0] + "_" + tostitch[1],
-            "filterstring": well,
-            "downloadfilter": "*" + well + "*",
+            "filterstring": tostitch[1],
+            "downloadfilter": tostitch[0] + "-" + tostitch[1] + "*",
         }
         stitchqueue.scheduleBatch(stitchMessage)
 

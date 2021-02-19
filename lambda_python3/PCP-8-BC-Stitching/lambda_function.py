@@ -15,8 +15,8 @@ s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
 metadata_file_name = "/tmp/metadata.json"
 fleet_file_name = "stitchFleet.json"
-current_app_name = "2018_11_20_Periscope_Calico_BarcodingStitching"
-prev_step_app_name = "2018_11_20_Periscope_Calico_PreprocessBarcoding"
+current_app_name = "2018_11_20_Periscope_X_BarcodingStitching"
+prev_step_app_name = "2018_11_20_Periscope_X_PreprocessBarcoding"
 prev_step_num = "7"
 duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
 step = "8"
@@ -50,7 +50,7 @@ def lambda_handler(event, context):
             if int(metadata["barcoding_imperwell"]) != 0:
                 num_series = int(metadata["barcoding_imperwell"])
     # number of site * 4 channels barcoding * number of cycles. doesn't include 1 DAPI/site
-    expected_files_per_well = num_series * 4 * metadata["barcoding_cycles"]
+    expected_files_per_well = int(num_series) * 4 * int(metadata["barcoding_cycles"])
     plate_and_well_list = metadata["barcoding_plate_and_well_list"]
 
     # First let's check if it seems like the whole thing is done or not
