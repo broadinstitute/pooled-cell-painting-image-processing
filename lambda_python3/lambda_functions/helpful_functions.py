@@ -38,7 +38,7 @@ def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1
     expected_cycles = int(expected_cycles)
     platelist = list(image_dict.keys())
     for eachplate in platelist:
-        print(("Checking compeleteness of plate", eachplate))
+        print("Checking compeleteness of plate", eachplate)
         platedict = image_dict[eachplate]
         well_list = list(platedict.keys())
         # first let's see how many wells have every cycle
@@ -54,7 +54,7 @@ def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1
                         files_per_well * 5,
                     ):
                         has_all_files = False
-                        print((
+                        print(
                             "Plate",
                             eachplate,
                             "Well",
@@ -64,14 +64,14 @@ def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1
                             "only had",
                             len(platedict[eachwell][cycle]),
                             "files",
-                        ))
+                        )
                 if has_all_files:
                     full_wells.append(eachwell)
 
         # Initialize our output dictionary for the plate
-        print((
+        print(
             "Writing out the output for plate", eachplate, "has full wells", full_wells
-        ))
+        )
         per_cycle_dict = {}
         for cycle in range(1, expected_cycles + 1):
             per_cycle_dict[cycle] = {}
@@ -144,7 +144,7 @@ def check_if_run_done(
     filter_in=None,
     filter_out=None,
 ):
-    # Step 1- how many files are there in the illum folder?
+    # Check output folder from previous step to ensure sufficient files created
     image_list = paginate_a_folder(s3, bucket_name, filter_prefix)
     done = False
 
@@ -155,14 +155,15 @@ def check_if_run_done(
 
     if len(image_list) >= expected_len:
         done = True
+        print ("Sufficient output files found from previous step.")
     else:
-        print(("Only ", len(image_list), " output files so far"))
+        print("Only ", len(image_list), " output files so far")
 
     # Maybe something died, but everything is done, and you have a monitor on that already cleaned up your queue
     queue_url = check_named_queue(sqs, prev_step_app_name + "Queue")
     if queue_url == None:
         done = True
-
+        print ("Queue from previous step does not still exist.")
     else:
         # Maybe something died, and now your queue is just at 0 jobs
         attributes = sqs.get_queue_attributes(
@@ -178,12 +179,14 @@ def check_if_run_done(
             == 0
         ):
             done = True
+            print ("Queue from previous step exists but is at 0.")
 
     # If indeed we are done, we want to check we're not overlapping and starting the same next job many times
     if done:
         # Check if current queue exists already (job already triggered)
         current_queue_url = check_named_queue(sqs, current_app_name + "Queue")
         if current_queue_url != None:
+            print ("Current step queue already exists.")
             return False
         # Check FIFO queue
         dup_queue_url = check_named_queue(sqs, dup_queue_name)
@@ -199,6 +202,9 @@ def check_if_run_done(
         )["Attributes"]["ApproximateNumberOfMessages"]
         if nmess2 != nmess:  # aka, if we're the first job to report in as finished
             return True
+        else:
+            print ("Trigger already exists in FIFO queue.")
+            return False
 
     # or, we're just not done yet
     return False
@@ -225,10 +231,10 @@ def try_to_run_monitor(s3, bucket_name, prefix, batch, step, prev_step_app_name)
         + "SpotFleetRequestId.json"
     )
     prev_step_monitor_name = "/tmp/" + prev_step_app_name + "SpotFleetRequestId.json"
-    print(("Trying to shut down ", prev_step_monitor_bucket_name))
+    print("Trying to shut down ", prev_step_monitor_bucket_name)
     with open(prev_step_monitor_name, "wb") as f:
         s3.download_fileobj(bucket_name, prev_step_monitor_bucket_name, f)
-    print(("Grabbing config for batch", batch, "step", step))
+    print("Grabbing config for batch", batch, "step", step)
     run_DCP.grab_batch_config(bucket_name, prefix, batch, step)
     import boto3_setup
 
@@ -246,12 +252,12 @@ def try_a_shutdown(
             s3, bucket_name, prefix, batch, str(prev_step_number), prev_step_app_name
         )
     except botocore.exceptions.ClientError as error:
-        print(("Monitor cleanup of previous step failed with error: ", error))
+        print("Monitor cleanup of previous step failed with error: ", error)
         print(
             "Usually this is no existing queue by that name, maybe a previous monitor cleaned up"
         )
     except:
-        print(("Monitor cleanup of previous step failed with error", sys.exc_info()[0]))
+        print("Monitor cleanup of previous step failed with error", sys.exc_info()[0])
         pass
 
 
