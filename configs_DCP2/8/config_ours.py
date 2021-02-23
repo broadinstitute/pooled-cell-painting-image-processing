@@ -33,6 +33,7 @@ SQS_DEAD_LETTER_QUEUE = 'arn:aws:sqs:us-east-1:XXXXXXXXXXXX:DeadMessages'
 LOG_GROUP_NAME = APP_NAME
 
 # REDUNDANCY CHECKS
-EXPECTED_NUMBER_FILES = 510    #What is the number of files that trigger that a job completed successfully?
+# EXPECTED_NUMBER_FILES = 3996 for circle, 9 cycles
+EXPECTED_NUMBER_FILES = 3996    #What is the number of files that trigger that a job completed successfully?
 MIN_FILE_SIZE_BYTES = 1      #What is the minimal number of bytes an object should be to "count"?
 NECESSARY_STRING = ''        #Is there any string that should be in the file name to "count"?
