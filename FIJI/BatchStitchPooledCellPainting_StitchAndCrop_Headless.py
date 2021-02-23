@@ -28,6 +28,7 @@ top_outfolder = 'output'
 if not os.path.exists(top_outfolder):
         os.mkdir(top_outfolder)
 
+# Define and create the parent folders where the images will be output
 outfolder=os.path.join(top_outfolder,'images_corrected_stitched')
 tile_outdir = os.path.join(top_outfolder,'images_corrected_cropped')
 downsample_outdir = os.path.join(top_outfolder,'images_corrected_stitched_10X')
@@ -38,6 +39,7 @@ if not os.path.exists(tile_outdir):
 if not os.path.exists(downsample_outdir):
         os.mkdir(downsample_outdir)
 
+# Define and create the batch-specific subfolders where the images will be output
 out_subdir=os.path.join(outfolder, out_subdir_tag)
 tile_subdir=os.path.join(tile_outdir, out_subdir_tag)
 downsample_subdir=os.path.join(downsample_outdir, out_subdir_tag)
@@ -64,16 +66,19 @@ if awsdownload == 'True':
                         break
                 if output:
                         print(output.strip())
+        # Examine all downloaded files and make a list of the tifs
         tiflist=[]
         for root, dirs, files in os.walk(localtemp):
                 for name in files:
                         if '.tif' in name:
-                                tiflist.append([root,name])
+                                if 'Overlay' not in name:
+                                        tiflist.append([root,name])
         print(len(tiflist), 'tifs found')
         for eachtif in tiflist:
+                # If the tif is in a subfolder
                 if eachtif[0]!=localtemp:
                         os.rename(os.path.join(eachtif[0],eachtif[1]),os.path.join(localtemp,eachtif[1]))
-
+                        print ("Successfully moved", os.path.join(localtemp,eachtif[1]))
         subdir = localtemp
 
 

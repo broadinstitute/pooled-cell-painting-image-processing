@@ -5,7 +5,6 @@
   "LaunchSpecifications": [
     {
       "ImageId": "ami-03562b14",
-      "InstanceType": "m4.2xlarge",
       "KeyName": "CellProfiler",
       "IamInstanceProfile": {
         "Arn": "arn:aws:iam::XXXXXXXXXXXX:instance-profile/ecsInstanceRole"

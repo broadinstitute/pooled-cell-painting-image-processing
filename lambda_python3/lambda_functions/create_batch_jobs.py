@@ -19,7 +19,6 @@ class JobQueue:
 
 
 def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_name):
-    # startpath=posixpath.join('projects',topdirname)
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
@@ -38,16 +37,13 @@ def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_na
                 datafilepath, toillum, "load_data_pipeline1.csv"
             ),
         }
-
         illumqueue.scheduleBatch(templateMessage_illum)
-
     print("Illum job submitted. Check your queue")
 
 
 def create_batch_jobs_2(
     startpath, batchsuffix, illumpipename, platelist, well_list, app_name
 ):
-    # startpath=posixpath.join('projects',topdirname)
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
@@ -69,16 +65,13 @@ def create_batch_jobs_2(
                     datafilepath, toillum, "load_data_pipeline2.csv"
                 ),
             }
-
             illumqueue.scheduleBatch(templateMessage_illum)
-
     print("Illum job submitted. Check your queue")
 
 
 def create_batch_jobs_3(
     startpath, batchsuffix, segmentpipename, plate_and_well_list, site_list, app_name
 ):
-    # startpath=posixpath.join('projects',topdirname)
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
@@ -106,9 +99,7 @@ def create_batch_jobs_3(
                     datafilepath, tosegment[0], "load_data_pipeline3.csv"
                 ),
             }
-
             segmentqueue.scheduleBatch(templateMessage_segment)
-
     print("Segment check job submitted. Check your queue")
 
 
@@ -139,9 +130,7 @@ def create_batch_jobs_3A(
                     datafilepath, totroubleshoot, "load_data_pipeline3A.csv"
                 ),
             }
-
             segmentAqueue.scheduleBatch(templateMessage_segmentA)
-
     print("Segment Troubleshoot A job submitted. Check your queue")
 
 
@@ -175,9 +164,7 @@ def create_batch_jobs_3B(
                     datafilepath, tosegment[0], "load_data_pipeline3B.csv"
                 ),
             }
-
             segmentBqueue.scheduleBatch(templateMessage_segmentB)
-
     print("Segment Troubleshoot B job submitted. Check your queue")
 
 
@@ -193,7 +180,7 @@ def create_batch_jobs_4(
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
         round_or_square = metadata["round_or_square"]
-    else:  # backwards compatibility for old square runs
+    else:  # Backwards compatibility for old square runs
         round_or_square = "square"
     stitchqueue = JobQueue(app_name + "Queue")
     stitchMessage = {
@@ -234,14 +221,12 @@ def create_batch_jobs_4(
             "downloadfilter": "*" + well + "*",
         }
         stitchqueue.scheduleBatch(stitchMessage)
-
     print("Stitching job submitted. Check your queue")
 
 
 def create_batch_jobs_5(
     startpath, batchsuffix, illumpipename, platelist, expected_cycles, app_name
 ):
-    # startpath=posixpath.join('projects',topdirname)
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
@@ -265,9 +250,7 @@ def create_batch_jobs_5(
                     datafilepath, toillum, "load_data_pipeline5.csv"
                 ),
             }
-
             illumqueue.scheduleBatch(templateMessage_illum)
-
     print("Illum job submitted. Check your queue")
 
 
@@ -280,7 +263,6 @@ def create_batch_jobs_6(
     one_or_many,
     num_series,
 ):
-    # startpath=posixpath.join('projects',topdirname)
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
@@ -309,7 +291,6 @@ def create_batch_jobs_6(
                         datafilepath, toillum[0], "load_data_pipeline6.csv"
                     ),
                 }
-
                 illumqueue.scheduleBatch(templateMessage_illum)
         else:
             for series in range(int(num_series)):
@@ -328,16 +309,13 @@ def create_batch_jobs_6(
                         datafilepath, toillum[0], "load_data_pipeline6.csv"
                     ),
                 }
-
                 illumqueue.scheduleBatch(templateMessage_illum)
-
     print("Illum job submitted. Check your queue")
 
 
 def create_batch_jobs_6A(
     startpath, batchsuffix, pipeline_name_list, plate_and_well_list, app_name
 ):
-    # startpath=posixpath.join('projects',topdirname)
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
@@ -366,16 +344,13 @@ def create_batch_jobs_6A(
                         datafilepath, toillum[0], "load_data_pipeline6.csv"
                     ),
                 }
-
                 illumqueue.scheduleBatch(templateMessage_illum)
-
     print("Illum job submitted. Check your queue")
 
 
 def create_batch_jobs_7(
     startpath, batchsuffix, pipename, plate_and_well_list, site_list, app_name
 ):
-    # startpath=posixpath.join('projects',topdirname)
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
@@ -403,16 +378,13 @@ def create_batch_jobs_7(
                     datafilepath, tocorrect[0], "load_data_pipeline7.csv"
                 ),
             }
-
             correctqueue.scheduleBatch(templateMessage_correct)
-
     print("Correction job submitted. Check your queue")
 
 
 def create_batch_jobs_7A(
     startpath, batchsuffix, pipename, plate_and_well_list, site_list, app_name, skip
 ):
-    # startpath=posixpath.join('projects',topdirname)
     site_list = list(range(0, max(site_list), skip))
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
@@ -441,9 +413,7 @@ def create_batch_jobs_7A(
                     datafilepath, tocorrect[0], "load_data_pipeline7.csv"
                 ),
             }
-
             correctqueue.scheduleBatch(templateMessage_correct)
-
     print("Correction job submitted. Check your queue")
 
 def create_batch_jobs_8(
@@ -458,7 +428,7 @@ def create_batch_jobs_8(
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
         round_or_square = metadata["round_or_square"]
-    else:  # backwards compatibility for old square runs
+    else:  # Backwards compatibility for old square runs
         round_or_square = "square"
     stitchqueue = JobQueue(app_name + "Queue")
     stitchMessage = {
@@ -466,14 +436,14 @@ def create_batch_jobs_8(
         "output_file_location": posixpath.join(startpath, batchsuffix),
         "shared_metadata": {
             "input_file_location": local_start_path,
-            "scalingstring": "1",
+            "scalingstring": "1.99",
             "overlap_pct": metadata["overlap_pct"],
             "size": "1480",
             "rows": metadata["barcoding_rows"],
             "columns": metadata["barcoding_columns"],
             "imperwell":metadata["barcoding_imperwell"],
             "stitchorder": metadata["stitchorder"],
-            "channame": "DNA",
+            "channame": "DAPI",
             "tileperside": str(tileperside),
             "awsdownload": "True",
             "bucketname": "imaging-platform",
@@ -483,6 +453,10 @@ def create_batch_jobs_8(
         },
     }
     for tostitch in plate_and_well_list:
+        if "_" not in tostitch[1]:
+            well = "Well_" + tostitch[1][4:]
+        else:
+            well = tostitch[1]
         stitchMessage["Metadata"] = {
             "subdir": posixpath.join(
                 batchsuffix,
@@ -490,11 +464,10 @@ def create_batch_jobs_8(
                 "barcoding",
             ),
             "out_subdir_tag": tostitch[0] + "_" + tostitch[1],
-            "filterstring": tostitch[1],
+            "filterstring": well,
             "downloadfilter": tostitch[0] + "-" + tostitch[1] + "*",
         }
         stitchqueue.scheduleBatch(stitchMessage)
-
     print("Stitching job submitted. Check your queue")
 
 def create_batch_jobs_9(
@@ -522,10 +495,8 @@ def create_batch_jobs_9(
                 "output": outpath,
                 "input": inpath,
                 "data_file": posixpath.join(
-                    datafilepath, tocorrect[0], "load_data_pipeline7.csv"
+                    datafilepath, tocorrect[0], "load_data_pipeline9.csv"
                 ),
             }
-
             correctqueue.scheduleBatch(templateMessage_analysis)
-
     print("Analysis job submitted. Check your queue")
