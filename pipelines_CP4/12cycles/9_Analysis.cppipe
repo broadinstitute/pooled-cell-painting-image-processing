@@ -220,7 +220,7 @@ IdentifyTertiaryObjects:[module_num:13|svn_version:'Unknown'|variable_revision_n
     Name the tertiary objects to be identified:Cytoplasm
     Shrink smaller object prior to subtraction?:Yes
 
-ImageMath:[module_num:14|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['A bleeds bad into C, T bleeds bad into G, C and G don’t bleed too badly']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:14|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['A bleeds bad into C, T bleeds bad into G, C and G donï¿½t bleed too badly']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:Maximum
     Raise the power of the result by:1.0
     Multiply the result by:1.0

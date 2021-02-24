@@ -21,27 +21,16 @@ current_app_name = "2018_11_20_Periscope_X_Analysis"
 step = "9"
 num_tiles = 100  # set in steps 4 and 8
 
-
 def lambda_handler(event, context):
-    # Log the received event
-    bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
-    key = event["Records"][0]["s3"]["object"]["key"]
-    keys = [x["s3"]["object"]["key"] for x in event["Records"]]
-    if ".cppipe" not in key:
-        plate = key.split("/")[-2].split("_")[0]
-        batch = key.split("/")[-5]
-        image_prefix = key.split(batch)[0]
-        print(plate)
-    else:
-        batch = key.split("/")[-2]
-        image_prefix = key.split("workspace")[0]
-    prefix = os.path.join(image_prefix, "workspace/")
-
-    print((batch, image_prefix, prefix))
+    # Manual trigger
+    batch = '20210124_6W_CP228/'
+    image_prefix = '2018_11_20_Periscope_X'
+    prefix = '2018_11_20_Periscope_X/workspace'
+    bucket_name = 'imaging-platform'
 
     # get the metadata file, so we can add stuff to it
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
-    print(("Loading", metadata_on_bucket_name))
+    print("Loading", metadata_on_bucket_name)
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
@@ -51,8 +40,6 @@ def lambda_handler(event, context):
     expected_cycles = metadata["barcoding_cycles"]
     platelist = list(image_dict.keys())
     num_sites = int(num_tiles)
-
-    # This step is manually triggered so we don't check completion of previous steps
 
     # Pull the file names we care about, and make the CSV
     for eachplate in platelist:
@@ -72,7 +59,7 @@ def lambda_handler(event, context):
             + eachplate
             + "/load_data_pipeline9.csv"
         )
-        print(("Created", csv_on_bucket_name))
+        print("Created", csv_on_bucket_name)
         with open(per_plate_csv, "rb") as a:
             s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
