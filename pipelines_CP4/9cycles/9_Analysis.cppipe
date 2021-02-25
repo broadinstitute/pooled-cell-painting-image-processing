@@ -617,7 +617,7 @@ CallBarcodes:[module_num:31|svn_version:'Unknown'|variable_revision_number:1|sho
     Number of cycles:9
     Input object name:Foci
     Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_Cycle01_A
-    Input data file location:Elsewhere...|C:\Users\Administrator\Desktop\metadata\20200805_A549_WG_Screen
+    Input data file location:Default Input Folder|C:\Users\Administrator\Desktop\metadata\20200805_A549_WG_Screen
     Name of the file:Barcodes.csv
     Select the column of barcodes to match against:sgRNA
     Select the column with gene/transcript barcode names:gene_symbol
@@ -1094,6 +1094,8 @@ RelateObjects:[module_num:66|svn_version:'Unknown'|variable_revision_number:5|sh
     Calculate distances to other parents?:No
     Do you want to save the children with parents as a new object set?:Yes
     Name the output object:RelateObjects
+    Parent name:None
+    Parent name:None
     Parent name:None
     Parent name:None
     Parent name:None

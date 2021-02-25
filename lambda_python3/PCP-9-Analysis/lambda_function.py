@@ -72,7 +72,7 @@ def lambda_handler(event, context):
         batch,
         pipeline_name,
         plate_and_well_list,
-        list(range(num_series)),
+        list(range(1, num_sites + 1)),
         app_name,
     )
 
