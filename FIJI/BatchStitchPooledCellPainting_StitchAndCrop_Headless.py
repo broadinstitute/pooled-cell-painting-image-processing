@@ -30,7 +30,7 @@ from loci.plugins.out import Exporter
 from loci.plugins import LociExporter
 plugin = LociExporter()
 
-def tiffextend(imname)
+def tiffextend(imname):
         if '.tif' in imname:
                 return imname
         if '.' in imname:
