@@ -53,6 +53,17 @@ def lambda_handler(event, context):
     expected_files_per_well = int(num_series) * 4 * int(metadata["barcoding_cycles"])
     plate_and_well_list = metadata["barcoding_plate_and_well_list"]
 
+    if "barcoding_xoffset_tiles" in list(metadata.keys()):
+        barcoding_xoffset_tiles = metadata["barcoding_xoffset_tiles"]
+        barcoding_yoffset_tiles = metadata["barcoding_yoffset_tiles"]
+    else:
+        barcoding_xoffset_tiles = barcoding_yoffset_tiles = "0"
+
+    if "compress" in list(metadata.keys()):
+        compress = metadata["compress"]
+    else:
+        compress = "False"
+
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
 
@@ -89,6 +100,9 @@ def lambda_handler(event, context):
             app_name,
             tileperside=tileperside,
             final_tile_size=final_tile_size,
+            xoffset_tiles=barcoding_xoffset_tiles,
+            yoffset_tiles=barcoding_yoffset_tiles,
+            compress=compress,
         )
 
         # Start a cluster

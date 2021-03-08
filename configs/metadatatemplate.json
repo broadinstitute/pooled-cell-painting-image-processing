@@ -11,5 +11,10 @@
   "fast_or_slow_mode":"slow",
   "one_or_many_files":"many",
   "round_or_square":"round",
+  "barcoding_xoffset_tiles":"0",
+  "barcoding_yoffset_tiles":"0",
+  "painting_xoffset_tiles":"0",
+  "painting_yoffset_tiles":"0",
+  "compress":"True",
   "_commentonstitchorder":"Typically should be either 'Grid: snake by rows','Grid: row-by-row', or 'Filename defined position'",
   "stitchorder":"Grid: snake by rows"}

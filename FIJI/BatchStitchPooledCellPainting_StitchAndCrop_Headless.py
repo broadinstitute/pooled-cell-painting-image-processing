@@ -17,11 +17,35 @@
 #@String downloadfilter
 #@String round_or_square
 #@String final_tile_size
+#@String xoffset_tiles
+#@String yoffset_tiles
+#@String compress
 
 from ij import IJ, WindowManager
 import os
 import string
 import sys
+
+from loci.plugins.out import Exporter
+from loci.plugins import LociExporter
+plugin = LociExporter()
+
+def tiffextend(imname)
+        if '.tif' in imname:
+                return imname
+        if '.' in imname:
+                return imname[:imname.index('.')]+'.tiff'
+        else:
+                return imname+'.tiff'
+
+def savefile(im,imname,plugin,compress='false'):
+        imname = tiffextend(imname)
+        if compress.lower()!='true':
+                IJ.saveAs(im, "tiff",imname)
+        else:
+                plugin.arg="outfile="+imname+" windowless=true compression=LZW saveROI=false"
+                exporter = Exporter(plugin, im)
+                exporter.run()
 
 top_outfolder = 'output'
 
@@ -130,7 +154,7 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives is a chance for an early checkpoint
-                        IJ.saveAs(im,'tiff',os.path.join(out_subdir,fileoutname))
+                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -159,12 +183,12 @@ if os.path.isdir(subdir):
                                 print("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
                                 im3=IJ.getImage()
-                                IJ.saveAs(im3,'tiff',os.path.join(out_subdir,fileoutname))
+                                savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
                                 print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.getImage()
-                                IJ.saveAs(im_10,"Tiff",os.path.join(downsample_subdir,fileoutname))
+                                savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
                                 IJ.run("Close All")
                                 im=IJ.open(os.path.join(out_subdir,fileoutname))
                                 im = IJ.getImage()
@@ -173,7 +197,7 @@ if os.path.isdir(subdir):
                                                 each_tile_num = eachxtile*tileperside + eachytile + 1
                                                 IJ.makeRectangle(eachxtile*tilesize, eachytile*tilesize,tilesize,tilesize)
                                                 im_tile=im.crop()
-                                                IJ.saveAs(im_tile, "Tiff",os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'))
+                                                savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
                                 IJ.run("Close All")
         elif round_or_square == 'round':
                 if imperwell == '1364':
@@ -207,8 +231,10 @@ if os.path.isdir(subdir):
                 rows = str(len(row_widths))
                 columns = str(max(row_widths))
 
-                top_rows = str(int(rows)/2)
-                left_columns = str(int(columns)/2)
+                # xoffset_tiles and yoffset_tiles can be used if you need to adjust the "where to draw the line between quarters" 
+                # by a whole tile. You may want to add more padding if you do this
+                top_rows = str((int(rows)/2)+int(yoffset_tiles))
+                left_columns = str((int(columns)/2)+int(xoffset_tiles))
                 bot_rows = str(int(rows)-int(top_rows))
                 right_columns = str(int(columns)-int(left_columns))
                 scale_factor=float(scalingstring)
@@ -277,7 +303,7 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", instructions)
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        IJ.saveAs(im,'tiff',os.path.join(out_subdir,fileoutname))
+                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -317,12 +343,12 @@ if os.path.isdir(subdir):
                                 print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Right zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Right zero")
                                 im3=IJ.getImage()
-                                IJ.saveAs(im3,'tiff',os.path.join(out_subdir,fileoutname))
+                                savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
                                 print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.getImage()
-                                IJ.saveAs(im_10,"Tiff",os.path.join(downsample_subdir,fileoutname))
+                                savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
                                 IJ.run("Close All")
                                 im=IJ.open(os.path.join(out_subdir,fileoutname))
                                 im = IJ.getImage()
@@ -334,7 +360,7 @@ if os.path.isdir(subdir):
                                                 #Change per quarter
                                                 IJ.makeRectangle((eachxtile*tilesize)+tile_offset, (eachytile*tilesize)+tile_offset,tilesize,tilesize)
                                                 im_tile=im.crop()
-                                                IJ.saveAs(im_tile, "Tiff",os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'))
+                                                savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
                                 IJ.run("Close All")
 
                         #top right quarter
@@ -349,7 +375,7 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        IJ.saveAs(im,'tiff',os.path.join(out_subdir,fileoutname))
+                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -389,12 +415,12 @@ if os.path.isdir(subdir):
                                 print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Left zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Left zero")
                                 im3=IJ.getImage()
-                                IJ.saveAs(im3,'tiff',os.path.join(out_subdir,fileoutname))
+                                savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
                                 print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.getImage()
-                                IJ.saveAs(im_10,"Tiff",os.path.join(downsample_subdir,fileoutname))
+                                savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
                                 IJ.run("Close All")
                                 im=IJ.open(os.path.join(out_subdir,fileoutname))
                                 im = IJ.getImage()
@@ -406,7 +432,7 @@ if os.path.isdir(subdir):
                                                 #Change per quarter
                                                 IJ.makeRectangle((eachxtile*tilesize), (eachytile*tilesize)+tile_offset,tilesize,tilesize)
                                                 im_tile=im.crop()
-                                                IJ.saveAs(im_tile, "Tiff",os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'))
+                                                savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
                                 IJ.run("Close All")
 
                         #bottom left quarter
@@ -421,7 +447,7 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        IJ.saveAs(im,'tiff',os.path.join(out_subdir,fileoutname))
+                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -461,12 +487,12 @@ if os.path.isdir(subdir):
                                 print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Right zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Right zero")
                                 im3=IJ.getImage()
-                                IJ.saveAs(im3,'tiff',os.path.join(out_subdir,fileoutname))
+                                savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
                                 print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.getImage()
-                                IJ.saveAs(im_10,"Tiff",os.path.join(downsample_subdir,fileoutname))
+                                savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
                                 IJ.run("Close All")
                                 im=IJ.open(os.path.join(out_subdir,fileoutname))
                                 im = IJ.getImage()
@@ -478,7 +504,7 @@ if os.path.isdir(subdir):
                                                 #Change per quarter
                                                 IJ.makeRectangle((eachxtile*tilesize)+tile_offset, (eachytile*tilesize),tilesize,tilesize)
                                                 im_tile=im.crop()
-                                                IJ.saveAs(im_tile, "Tiff",os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'))
+                                                savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
                                 IJ.run("Close All")
 
                         #bottom right quarter
@@ -493,7 +519,7 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        IJ.saveAs(im,'tiff',os.path.join(out_subdir,fileoutname))
+                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -533,12 +559,12 @@ if os.path.isdir(subdir):
                                 print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
                                 im3=IJ.getImage()
-                                IJ.saveAs(im3,'tiff',os.path.join(out_subdir,fileoutname))
+                                savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
                                 print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.getImage()
-                                IJ.saveAs(im_10,"Tiff",os.path.join(downsample_subdir,fileoutname))
+                                savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
                                 IJ.run("Close All")
                                 im=IJ.open(os.path.join(out_subdir,fileoutname))
                                 im = IJ.getImage()
@@ -550,7 +576,7 @@ if os.path.isdir(subdir):
                                                 #Change per quarter
                                                 IJ.makeRectangle((eachxtile*tilesize), (eachytile*tilesize),tilesize,tilesize)
                                                 im_tile=im.crop()
-                                                IJ.saveAs(im_tile, "Tiff",os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'))
+                                                savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
                                 IJ.run("Close All")
 
         else:
