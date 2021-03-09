@@ -25,6 +25,7 @@ from ij import IJ, WindowManager
 import os
 import string
 import sys
+import time
 
 from loci.plugins.out import Exporter
 from loci.plugins import LociExporter
@@ -179,9 +180,11 @@ if os.path.isdir(subdir):
                                 height = str(int(round(im.height*float(scalingstring))))
                                 print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                                 IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                time.sleep(15)
                                 im2=IJ.getImage()
                                 print("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
+                                time.sleep(15)
                                 im3=IJ.getImage()
                                 savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
@@ -338,10 +341,12 @@ if os.path.isdir(subdir):
                                 height = str(int(round(im1.height*float(scalingstring))))
                                 print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                                 IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                time.sleep(15)
                                 im2=IJ.getImage()
                                 #Chnage per quarter
                                 print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Right zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Right zero")
+                                time.sleep(15)
                                 im3=IJ.getImage()
                                 savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
@@ -410,10 +415,12 @@ if os.path.isdir(subdir):
                                 height = str(int(round(im1.height*float(scalingstring))))
                                 print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                                 IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                time.sleep(15)
                                 im2=IJ.getImage()
                                 #Chnage per quarter
                                 print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Left zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Left zero")
+                                time.sleep(15)
                                 im3=IJ.getImage()
                                 savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
@@ -482,10 +489,12 @@ if os.path.isdir(subdir):
                                 height = str(int(round(im1.height*float(scalingstring))))
                                 print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                                 IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                time.sleep(15)
                                 im2=IJ.getImage()
                                 #Chnage per quarter
                                 print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Right zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Right zero")
+                                time.sleep(15)
                                 im3=IJ.getImage()
                                 savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
@@ -554,10 +563,12 @@ if os.path.isdir(subdir):
                                 height = str(int(round(im1.height*float(scalingstring))))
                                 print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                                 IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                time.sleep(15)
                                 im2=IJ.getImage()
                                 #Chnage per quarter
                                 print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
+                                time.sleep(15)
                                 im3=IJ.getImage()
                                 savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
