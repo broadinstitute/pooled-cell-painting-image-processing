@@ -40,13 +40,22 @@ def tiffextend(imname):
                 return imname+'.tiff'
 
 def savefile(im,imname,plugin,compress='false'):
+        attemptcount = 0
         imname = tiffextend(imname)
+        print('Saving ',imname,im.width,im.height)
         if compress.lower()!='true':
                 IJ.saveAs(im, "tiff",imname)
         else:
-                plugin.arg="outfile="+imname+" windowless=true compression=LZW saveROI=false"
-                exporter = Exporter(plugin, im)
-                exporter.run()
+                while attemptcount <5:
+                        try:
+                                plugin.arg="outfile="+imname+" windowless=true compression=LZW saveROI=false"
+                                exporter = Exporter(plugin, im)
+                                exporter.run()
+                                print('Succeeded after attempt ',attemptcount)
+                                return
+                        except:
+                                attemptcount +=1
+                print('failed 5 times at saving')
 
 top_outfolder = 'output'
 
@@ -155,7 +164,9 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives is a chance for an early checkpoint
-                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                        #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                        if compress.lower()!='true':
+                                savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -306,7 +317,9 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", instructions)
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                        #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                        if compress.lower()!='true':
+                                savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -380,7 +393,9 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                        #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                        if compress.lower()!='true':
+                                savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -454,7 +469,9 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                        #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                        if compress.lower()!='true':
+                                savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -528,7 +545,9 @@ if os.path.isdir(subdir):
                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                         im=IJ.getImage()
                         #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                        #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                        if compress.lower()!='true':
+                                savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
