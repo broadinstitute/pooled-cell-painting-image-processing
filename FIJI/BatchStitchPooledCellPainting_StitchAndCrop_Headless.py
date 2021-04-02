@@ -290,7 +290,8 @@ if os.path.isdir(subdir):
                                                         in_name = thisprefix+'_Well_'+eachwell+'_Site_'+str(series)+'_'+thissuffix
                                                         IJ.open(os.path.join(subdir,in_name))
                                                 else:
-                                                        IJ.newImage("Untitled", "8-bit black",int(size),int(size), 1)
+                                                        IJ.newImage("Untitled", "16-bit noise",int(size),int(size), 1)
+                                                        IJ.run("Divide...", "value=300") #get the noise value below the real camera noise level
                                                 im = IJ.getImage()
                                                 IJ.saveAs(im,'tiff',os.path.join(subdir, out_name))
                                                 IJ.run("Close All")
