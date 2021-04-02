@@ -176,6 +176,9 @@ def create_batch_jobs_4(
     app_name,
     tileperside=10,
     final_tile_size=5500,
+    xoffset_tiles=0,
+    yoffset_tiles=0,
+    compress='False',
 ):
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
@@ -202,6 +205,9 @@ def create_batch_jobs_4(
             "localtemp": "local_temp",
             "round_or_square": round_or_square,
             "final_tile_size": str(final_tile_size),
+            "xoffset_tiles": str(xoffset_tiles),
+            "yoffset_tiles": str(yoffset_tiles),
+            "compress": compress,
         },
     }
     for tostitch in plate_and_well_list:
@@ -424,6 +430,9 @@ def create_batch_jobs_8(
     app_name,
     tileperside=10,
     final_tile_size=5500,
+    xoffset_tiles=0,
+    yoffset_tiles=0,
+    compress='False',
 ):
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
@@ -450,6 +459,9 @@ def create_batch_jobs_8(
             "localtemp": "local_temp",
             "round_or_square": round_or_square,
             "final_tile_size": str(final_tile_size),
+            "xoffset_tiles": str(xoffset_tiles),
+            "yoffset_tiles": str(yoffset_tiles),
+            "compress": compress,
         },
     }
     for tostitch in plate_and_well_list:
