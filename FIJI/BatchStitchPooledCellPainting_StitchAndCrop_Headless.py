@@ -245,7 +245,7 @@ if os.path.isdir(subdir):
                 rows = str(len(row_widths))
                 columns = str(max(row_widths))
 
-                # xoffset_tiles and yoffset_tiles can be used if you need to adjust the "where to draw the line between quarters" 
+                # xoffset_tiles and yoffset_tiles can be used if you need to adjust the "where to draw the line between quarters"
                 # by a whole tile. You may want to add more padding if you do this
                 top_rows = str((int(rows)/2)+int(yoffset_tiles))
                 left_columns = str((int(columns)/2)+int(xoffset_tiles))
@@ -293,13 +293,13 @@ if os.path.isdir(subdir):
                                                         IJ.newImage("Untitled", "16-bit noise",int(size),int(size), 1)
                                                         IJ.run("Divide...", "value=300") #get the noise value below the real camera noise level
                                 im = IJ.getImage()
-                                                IJ.saveAs(im,'tiff',os.path.join(subdir, out_name))
-                                                IJ.run("Close All")
-                                                if (x,y) in filled_positions:
-                                                        try: #try to clean up after yourself, but don't die if you can't
-                                                                os.remove(os.path.join(subdir,in_name))
-                                                        except:
-                                                                pass
+                                IJ.saveAs(im,'tiff',os.path.join(subdir, out_name))
+                                IJ.run("Close All")
+                                if (x,y) in filled_positions:
+                                        try: #try to clean up after yourself, but don't die if you can't
+                                                os.remove(os.path.join(subdir,in_name))
+                                        except:
+                                                pass
                                 print("Renamed all files for prefix "+thisprefix+" and suffix "+thissuffix+" in well "+eachwell)
                         imagelist = os.listdir(subdir)
                         print(len(imagelist), 'files in subdir')
