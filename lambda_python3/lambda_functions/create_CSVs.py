@@ -43,7 +43,7 @@ def create_CSV_pipeline1(platename, seriesperwell, path, listoffiles, one_or_man
     df.to_csv(file_out_name, index=False)
     return file_out_name
 
-def create_CSV_pipeline1_SABER(platename, seriesperwell, path, listoffiles, one_or_many, SABERdict):
+def create_CSV_pipeline1_SABER(platename, seriesperwell, path, platedict, one_or_many, SABERdict):
     if one_or_many == "one":
         print ("CSV creation not enabled for SABER for one file/well")
         return
@@ -52,26 +52,31 @@ def create_CSV_pipeline1_SABER(platename, seriesperwell, path, listoffiles, one_
         columns = ["Metadata_Plate", "Metadata_Series"]
         channels = []
         SABERdict = ast.literal_eval(SABERdict)
+        rounddict = {}
         SABERrounds = list(SABERdict.keys())
         for eachround in SABERrounds:
             templist = []
             templist += SABERdict[eachround].values()
             channels += list(i[0] for i in templist)
-        columns += [col + chan for col in columns_per_channel for chan in channels]
+            rounddict[eachround] = list(i[0] for i in templist)
         df = pandas.DataFrame(columns=columns)
-        total_file_count = seriesperwell * len(listoffiles)
-        df["Metadata_Plate"] = [platename] * total_file_count
-        df["Metadata_Series"] = list(range(seriesperwell)) * len(listoffiles)
+        for chan in channels:
+            listoffiles = []
+            for round in rounddict.keys():
+                if chan in rounddict[round]:
+                    for well in platedict.keys():
+                        listoffiles.append(platedict[well][round])
+            listoffiles = [x for l in listoffiles for x in l]
+            df["FileName_Orig" + chan] = listoffiles
+        df["Metadata_Plate"] = [platename] * len(listoffiles)
+        df["Metadata_Series"] = list(range(seriesperwell)) * len(platedict.keys())
         for eachround in SABERrounds:
             pathperround = path + eachround + '/'
             for chan in channels:
                 for i in list(SABERdict[eachround].values()):
                     if chan == i[0]:
-                        df["PathName_" + chan] = pathperround
-                        df["Frame_" + chan] = i[1]
-        file_list = [x for well in listoffiles for x in well]
-        for chan in channels:
-            df["FileName_" + chan] = file_list
+                        df["PathName_Orig" + chan] = pathperround
+                        df["Frame_Orig" + chan] = i[1]
     file_out_name = "/tmp/" + str(platename) + ".csv"
     df.to_csv(file_out_name, index=False)
     return file_out_name

@@ -122,15 +122,16 @@ def lambda_handler(event, context):
             SABERrounds = list(SABERdict.keys())
             # Only keep full wells
             print (f"{full_well_files} expect files per well and round for {eachplate}")
-            per_well_im_list = []
+            incomplete_wells = []
             for eachwell in well_list:
                 for eachround in SABERrounds:
                     per_well = platedict[eachwell][eachround]
-                    per_well.sort()
-                    if len(per_well) == full_well_files:
-                        per_well_im_list.append(per_well)
-                    else:
+                    if len(per_well) != full_well_files:
+                        incomplete_wells.append(eachwell)
                         print (f"{eachwell} {eachround} doesn't have full well files. {len(per_well)} files found.")
+            if incomplete_wells:
+                for well in incomplete_wells:
+                    del platedict[well]
             bucket_folder = (
                 "/home/ubuntu/bucket/"
                 + image_prefix
@@ -143,7 +144,7 @@ def lambda_handler(event, context):
                 eachplate,
                 num_series,
                 bucket_folder,
-                per_well_im_list,
+                platedict,
                 metadata["one_or_many_files"],
                 metadata["SABERdict"],
             )
