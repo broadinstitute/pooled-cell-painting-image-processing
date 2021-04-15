@@ -22,7 +22,7 @@ DOWNLOAD_FILES = 'False'
 
 # DOCKER INSTANCE RUNNING ENVIRONMENT:
 MEMORY = 31000                           # Memory assigned to the docker container in MB
-SCRIPT_DOWNLOAD_URL = 'https://dummybucket.s3.amazonaws.com/projects/2018_11_20_Periscope_X/workspace/software/BatchStitchPooledCellPainting_StitchAndCrop_Headless.py'
+SCRIPT_DOWNLOAD_URL = 'https://raw.githubusercontent.com/broadinstitute/pooled-cell-painting-image-processing/master/FIJI/BatchStitchPooledCellPainting_StitchAndCrop_Headless.py'
 
 # SQS QUEUE INFORMATION:
 SQS_QUEUE_NAME = APP_NAME + 'Queue'
