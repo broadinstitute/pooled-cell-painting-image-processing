@@ -30,7 +30,7 @@ def lambda_handler(event, context):
     key = event["Records"][0]["s3"]["object"]["key"]
     keys = [x["s3"]["object"]["key"] for x in event["Records"]]
     plate = key.split("/")[-2].split("-")[0]
-    batch = key.split("/")[-4]
+    batch = key.split("/")[-5]
     image_prefix = key.split(batch)[0]
     prefix = os.path.join(image_prefix, "workspace/")
 
