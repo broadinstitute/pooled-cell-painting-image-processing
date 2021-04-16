@@ -157,8 +157,8 @@ if os.path.isdir(subdir):
 
                 for eachwell in welllist:
                         standard_grid_instructions=["type=["+stitchorder+"] order=[Right & Down                ] grid_size_x="+rows+" grid_size_y="+columns+" tile_overlap="+overlap_pct+" first_file_index_i=0 directory="+subdir+" file_names=",
-                        " output_textfile_name=TileConfiguration.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
-                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                        " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
                         filename=permprefix+'_Well_'+eachwell+'_Site_{i}_'+permsuffix
                         fileoutname='Stitched'+filename.replace("{i}","")
                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
@@ -308,8 +308,8 @@ if os.path.isdir(subdir):
                         print('Running top left')
                         #Change per quarter
                         standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(left_columns)+" grid_size_y="+top_rows+" tile_overlap="+overlap_pct+" first_file_index_x=0 first_file_index_y=0 directory="+subdir+" file_names=",
-                        " output_textfile_name=TileConfiguration.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
-                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                        " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
                         filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
                         #Change per quarter
                         fileoutname='StitchedTopLeft'+filename.replace("{xx}","").replace("{yy}","")
@@ -386,8 +386,8 @@ if os.path.isdir(subdir):
                         print('Running top right')
                         #Change per quarter
                         standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(right_columns)+" grid_size_y="+top_rows+" tile_overlap="+overlap_pct+" first_file_index_x="+str(left_columns)+" first_file_index_y=0 directory="+subdir+" file_names=",
-                        " output_textfile_name=TileConfiguration.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
-                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                        " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
                         filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
                         #Change per quarter
                         fileoutname='StitchedTopRight'+filename.replace("{xx}","").replace("{yy}","")
@@ -462,8 +462,8 @@ if os.path.isdir(subdir):
                         print('Running bottom left')
                         #Change per quarter
                         standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(left_columns)+" grid_size_y="+bot_rows+" tile_overlap="+overlap_pct+" first_file_index_x=0 first_file_index_y="+top_rows+" directory="+subdir+" file_names=",
-                        " output_textfile_name=TileConfiguration.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
-                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                        " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
                         filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
                         #Change per quarter
                         fileoutname='StitchedBottomLeft'+filename.replace("{xx}","").replace("{yy}","")
@@ -538,8 +538,8 @@ if os.path.isdir(subdir):
                         print('Running bottom right')
                         #Change per quarter
                         standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(right_columns)+" grid_size_y="+bot_rows+" tile_overlap="+overlap_pct+" first_file_index_x="+str(left_columns)+" first_file_index_y="+top_rows+" directory="+subdir+" file_names=",
-                        " output_textfile_name=TileConfiguration.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
-                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Max. Intensity] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                        " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
                         filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
                         #Change per quarter
                         fileoutname='StitchedBottomRight'+filename.replace("{xx}","").replace("{yy}","")
