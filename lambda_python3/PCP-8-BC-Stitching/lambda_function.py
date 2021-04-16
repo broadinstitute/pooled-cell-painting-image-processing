@@ -62,7 +62,7 @@ def lambda_handler(event, context):
     if "compress" in list(metadata.keys()):
         compress = metadata["compress"]
     else:
-        compress = "False"
+        compress = "True"
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
