@@ -169,6 +169,7 @@ def create_batch_jobs_3B(
 
 
 def create_batch_jobs_4(
+    bucket_name,
     startpath,
     batchsuffix,
     metadata,
@@ -201,7 +202,7 @@ def create_batch_jobs_4(
             "channame": "DNA",
             "tileperside": str(tileperside),
             "awsdownload": "True",
-            "bucketname": "imaging-platform",
+            "bucketname": bucket_name,
             "localtemp": "local_temp",
             "round_or_square": round_or_square,
             "final_tile_size": str(final_tile_size),
@@ -423,6 +424,7 @@ def create_batch_jobs_7A(
     print("Correction job submitted. Check your queue")
 
 def create_batch_jobs_8(
+    bucket_name,
     startpath,
     batchsuffix,
     metadata,
@@ -455,7 +457,7 @@ def create_batch_jobs_8(
             "channame": "DAPI",
             "tileperside": str(tileperside),
             "awsdownload": "True",
-            "bucketname": "imaging-platform",
+            "bucketname": bucket_name,
             "localtemp": "local_temp",
             "round_or_square": round_or_square,
             "final_tile_size": str(final_tile_size),

@@ -93,6 +93,7 @@ def lambda_handler(event, context):
 
         # make the jobs
         create_batch_jobs.create_batch_jobs_8(
+            bucket_name,
             image_prefix,
             batch,
             metadata,
