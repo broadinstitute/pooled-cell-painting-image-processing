@@ -35,15 +35,15 @@ def lambda_handler(event, context):
     # Standard vs. SABER configs
     if "SABERdict" not in list(metadata.keys()):
         SABER = False
-        print ("Not a SABER experiment")
+        print("Not a SABER experiment")
     if "SABERdict" in list(metadata.keys()):
         if not metadata["SABERdict"]:
             SABER = False
-            print ("Not a SABER experiment")
+            print("Not a SABER experiment")
     if "SABERdict" in list(metadata.keys()):
         if metadata["SABERdict"]:
             SABER = True
-            print ("SABER experiment")
+            print("SABER experiment")
 
     # Calculate number of images from rows and columns in metadata
     num_series = int(metadata["painting_rows"]) * int(metadata["painting_columns"])
@@ -55,9 +55,9 @@ def lambda_handler(event, context):
 
     # Get the list of images in this experiment
     if not SABER:
-        parse_name_filter="20X_CP_"
+        parse_name_filter = "20X_CP_"
     if SABER:
-        parse_name_filter=""
+        parse_name_filter = ""
     image_list_prefix = image_prefix + batch + "/images/"
     image_list = helpful_functions.paginate_a_folder(s3, bucket, image_list_prefix)
     image_dict = helpful_functions.parse_image_names(
@@ -97,10 +97,14 @@ def lambda_handler(event, context):
                 + "/"
                 + paint_cycle_name
             )
-            per_plate_csv = create_CSVs.create_CSV_pipeline1(
+            illum_folder = (
+                "/home/ubuntu/bucket/" + image_prefix + batch + "/illum/" + eachplate
+            )
+            per_plate_csv, per_plate_csv_2 = create_CSVs.create_CSV_pipeline1(
                 eachplate,
                 num_series,
                 bucket_folder,
+                illum_folder,
                 per_well_im_list,
                 metadata["one_or_many_files"],
             )
@@ -112,8 +116,18 @@ def lambda_handler(event, context):
                 + eachplate
                 + "/load_data_pipeline1.csv"
             )
+            csv_on_bucket_name_2 = (
+                prefix
+                + "load_data_csv/"
+                + batch
+                + "/"
+                + eachplate
+                + "/load_data_pipeline2.csv"
+            )
             with open(per_plate_csv, "rb") as a:
                 s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
+            with open(per_plate_csv_2, "rb") as a:
+                s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
     if SABER:
         for eachplate in platelist:
             platedict = image_dict[eachplate]
@@ -121,14 +135,16 @@ def lambda_handler(event, context):
             SABERdict = ast.literal_eval(metadata["SABERdict"])
             SABERrounds = list(SABERdict.keys())
             # Only keep full wells
-            print (f"{full_well_files} expect files per well and round for {eachplate}")
+            print(f"{full_well_files} expect files per well and round for {eachplate}")
             incomplete_wells = []
             for eachwell in well_list:
                 for eachround in SABERrounds:
                     per_well = platedict[eachwell][eachround]
                     if len(per_well) != full_well_files:
                         incomplete_wells.append(eachwell)
-                        print (f"{eachwell} {eachround} doesn't have full well files. {len(per_well)} files found.")
+                        print(
+                            f"{eachwell} {eachround} doesn't have full well files. {len(per_well)} files found."
+                        )
             if incomplete_wells:
                 for well in incomplete_wells:
                     del platedict[well]
@@ -140,10 +156,14 @@ def lambda_handler(event, context):
                 + eachplate
                 + "/"
             )
-            per_plate_csv = create_CSVs.create_CSV_pipeline1_SABER(
+            illum_folder = (
+                "/home/ubuntu/bucket/" + image_prefix + batch + "/illum/" + eachplate
+            )
+            per_plate_csv, per_plate_csv_2 = create_CSVs.create_CSV_pipeline1_SABER(
                 eachplate,
                 num_series,
                 bucket_folder,
+                illum_folder,
                 platedict,
                 metadata["one_or_many_files"],
                 metadata["SABERdict"],
@@ -156,8 +176,18 @@ def lambda_handler(event, context):
                 + eachplate
                 + "/load_data_pipeline1.csv"
             )
+            csv_on_bucket_name_2 = (
+                prefix
+                + "load_data_csv/"
+                + batch
+                + "/"
+                + eachplate
+                + "/load_data_pipeline2.csv"
+            )
             with open(per_plate_csv, "rb") as a:
                 s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
+            with open(per_plate_csv_2, "rb") as a:
+                s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
 
     # Now it's time to run DCP
     app_name = run_DCP.run_setup(bucket, prefix, batch, step)
