@@ -291,7 +291,7 @@ if os.path.isdir(subdir):
                                                         IJ.open(os.path.join(subdir,in_name))
                                                 else:
                                                         IJ.newImage("Untitled", "16-bit noise",int(size),int(size), 1)
-                                                        IJ.run("Divide...", "value=300") #get the noise value below the real camera noise level
+                                                        IJ.run("Divide...", "value=30") #get the noise value below the real camera noise level
                                                 im = IJ.getImage()
                                                 IJ.saveAs(im,'tiff',os.path.join(subdir, out_name))
                                                 IJ.run("Close All")
