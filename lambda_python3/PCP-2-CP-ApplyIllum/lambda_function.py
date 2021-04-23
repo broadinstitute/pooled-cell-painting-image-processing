@@ -6,7 +6,6 @@ import boto3
 
 sys.path.append("/opt/pooled-cell-painting-lambda")
 
-import create_CSVs
 import run_DCP
 import create_batch_jobs
 import helpful_functions
@@ -32,7 +31,7 @@ def lambda_handler(event, context):
     image_prefix = key.split(batch)[0]
     prefix = os.path.join(image_prefix, "workspace/")
 
-    # get the metadata file, so we can add stuff to it
+    # Get the metadata file, so we can add stuff to it
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
@@ -60,26 +59,9 @@ def lambda_handler(event, context):
             SABER = True
             print("SABER experiment")
 
-    # Pull the file names we care about, and make the CSV
     platelist = list(image_dict.keys())
-    plate = key.split("/")[-2]
     platedict = image_dict[plate]
     well_list = list(platedict.keys())
-    paint_cycle_name = list(platedict[well_list[0]].keys())[0]
-    if not SABER:
-        csv_on_bucket_name = (
-            prefix + "load_data_csv/" + batch + "/" + plate + "/load_data_pipeline2.csv"
-        )
-        print(csv_on_bucket_name)
-        with open(per_plate_csv, "rb") as a:
-            s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
-    if SABER:
-        csv_on_bucket_name = (
-            prefix + "load_data_csv/" + batch + "/" + plate + "/load_data_pipeline2.csv"
-        )
-        print(csv_on_bucket_name)
-        with open(per_plate_csv, "rb") as a:
-            s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
     # Now let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
