@@ -279,6 +279,7 @@ if os.path.isdir(subdir):
                                         count += 1
 
                 filled_positions = pos_dict.keys()
+                emptylist = []
                 for eachwell in welllist:
                         for eachpresuf in presuflist:
                                 thisprefix, thissuffix=eachpresuf
@@ -292,6 +293,7 @@ if os.path.isdir(subdir):
                                                 else:
                                                         IJ.newImage("Untitled", "16-bit noise",int(size),int(size), 1)
                                                         IJ.run("Divide...", "value=300") #get the noise value below the real camera noise level
+                                                        emptylist.append(out_name)
                                                 im = IJ.getImage()
                                                 IJ.saveAs(im,'tiff',os.path.join(subdir, out_name))
                                                 IJ.run("Close All")
@@ -336,9 +338,10 @@ if os.path.isdir(subdir):
                                 with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
                                         with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
                                                 for line in infile:
-                                                        line=line.replace(permprefix,thisprefix)
-                                                        line=line.replace(permsuffix,thissuffix)
-                                                        outfile.write(line)
+                                                        if not any([empty in line for empty in emptylist]):
+                                                                line=line.replace(permprefix,thisprefix)
+                                                                line=line.replace(permsuffix,thissuffix)
+                                                                outfile.write(line)
 
                                 IJ.run("Grid/Collection stitching", copy_grid_instructions)
                                 im=IJ.getImage()
@@ -412,9 +415,10 @@ if os.path.isdir(subdir):
                                 with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
                                         with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
                                                 for line in infile:
-                                                        line=line.replace(permprefix,thisprefix)
-                                                        line=line.replace(permsuffix,thissuffix)
-                                                        outfile.write(line)
+                                                        if not any([empty in line for empty in emptylist]):
+                                                                line=line.replace(permprefix,thisprefix)
+                                                                line=line.replace(permsuffix,thissuffix)
+                                                                outfile.write(line)
 
                                 IJ.run("Grid/Collection stitching", copy_grid_instructions)
                                 im=IJ.getImage()
@@ -488,9 +492,10 @@ if os.path.isdir(subdir):
                                 with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
                                         with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
                                                 for line in infile:
-                                                        line=line.replace(permprefix,thisprefix)
-                                                        line=line.replace(permsuffix,thissuffix)
-                                                        outfile.write(line)
+                                                        if not any([empty in line for empty in emptylist]):
+                                                                line=line.replace(permprefix,thisprefix)
+                                                                line=line.replace(permsuffix,thissuffix)
+                                                                outfile.write(line)
 
                                 IJ.run("Grid/Collection stitching", copy_grid_instructions)
                                 im=IJ.getImage()
@@ -564,9 +569,10 @@ if os.path.isdir(subdir):
                                 with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
                                         with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
                                                 for line in infile:
-                                                        line=line.replace(permprefix,thisprefix)
-                                                        line=line.replace(permsuffix,thissuffix)
-                                                        outfile.write(line)
+                                                        if not any([empty in line for empty in emptylist]):
+                                                                line=line.replace(permprefix,thisprefix)
+                                                                line=line.replace(permsuffix,thissuffix)
+                                                                outfile.write(line)
 
                                 IJ.run("Grid/Collection stitching", copy_grid_instructions)
                                 im=IJ.getImage()
