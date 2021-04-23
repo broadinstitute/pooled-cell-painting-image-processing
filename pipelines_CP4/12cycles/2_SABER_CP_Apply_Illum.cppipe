@@ -17,75 +17,75 @@ LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_win
     Rescale intensities?:Yes
 
 CorrectIlluminationApply:[module_num:2|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:COX-IV
+    Select the input image:OrigCOX-IV
     Name the output image:CorrCOXIV
     Select the illumination function:IllumCOX-IV
     Select how the illumination function is applied:Divide
-    Select the input image:Calnexin
+    Select the input image:OrigCalnexin
     Name the output image:CorrCalnexin
     Select the illumination function:IllumCalnexin
     Select how the illumination function is applied:Divide
-    Select the input image:Catalase
+    Select the input image:OrigCatalase
     Name the output image:CorrCatalase
     Select the illumination function:IllumCatalase
     Select how the illumination function is applied:Divide
-    Select the input image:DNA_round0
+    Select the input image:OrigDNA_round0
     Name the output image:CorrDNA_round0
     Select the illumination function:IllumDNA_round0
     Select how the illumination function is applied:Divide
-    Select the input image:DNA_round1
+    Select the input image:OrigDNA_round1
     Name the output image:CorrDNA_round1
     Select the illumination function:IllumDNA_round1
     Select how the illumination function is applied:Divide
-    Select the input image:DNA_round2
+    Select the input image:OrigDNA_round2
     Name the output image:CorrDNA_round2
     Select the illumination function:IllumDNA_round2
     Select how the illumination function is applied:Divide
-    Select the input image:DNA_round3
+    Select the input image:OrigDNA_round3
     Name the output image:CorrDNA_round3
     Select the illumination function:IllumDNA_round3
     Select how the illumination function is applied:Divide
-    Select the input image:DNA_round4
+    Select the input image:OrigDNA_round4
     Name the output image:CorrDNA_round4
     Select the illumination function:IllumDNA_round4
     Select how the illumination function is applied:Divide
-    Select the input image:G3BP1
+    Select the input image:OrigG3BP1
     Name the output image:CorrG3BP1
     Select the illumination function:IllumG3BP1
     Select how the illumination function is applied:Divide
-    Select the input image:GM130
+    Select the input image:OrigGM130
     Name the output image:CorrGM130
     Select the illumination function:IllumGM130
     Select how the illumination function is applied:Divide
-    Select the input image:Golgin-97
+    Select the input image:OrigGolgin-97
     Name the output image:CorrGolgin97
     Select the illumination function:IllumGolgin-97
     Select how the illumination function is applied:Divide
-    Select the input image:LAMP1
+    Select the input image:OrigLAMP1
     Name the output image:CorrLAMP1
     Select the illumination function:IllumLAMP1
     Select how the illumination function is applied:Divide
-    Select the input image:Phalloidin
+    Select the input image:OrigPhalloidin
     Name the output image:CorrPhalloidin
     Select the illumination function:IllumPhalloidin
     Select how the illumination function is applied:Divide
-    Select the input image:Syto9
+    Select the input image:OrigSyto9
     Name the output image:CorrSyto9
     Select the illumination function:IllumSyto9
     Select how the illumination function is applied:Divide
-    Select the input image:TDP-43
+    Select the input image:OrigTDP-43
     Name the output image:CorrTDP43
     Select the illumination function:IllumTDP-43
     Select how the illumination function is applied:Divide
-    Select the input image:Tubulin
+    Select the input image:OrigTubulin
     Name the output image:CorrTubulin
     Select the illumination function:IllumTubulin
     Select how the illumination function is applied:Divide
-    Select the input image:p65
+    Select the input image:Origp65
     Name the output image:Corrp65
     Select the illumination function:Illump65
     Select how the illumination function is applied:Divide
-    Select the input image:pRPS6
+    Select the input image:OrigpRPS6
     Name the output image:CorrpRPS6
     Select the illumination function:IllumpRPS6
     Select how the illumination function is applied:Divide
@@ -139,7 +139,7 @@ Align:[module_num:5|svn_version:'Unknown'|variable_revision_number:3|show_window
     Select the additional image:CorrCatalase
     Name the output image:AlignedCatalase
     Select how the alignment is to be applied:Similarly
-    Select the additional image:Golgin-97
+    Select the additional image:CorrGolgin97
     Name the output image:AlignedGolgin97
     Select how the alignment is to be applied:Similarly
     Select the additional image:Corrp65
@@ -489,7 +489,7 @@ SaveImages:[module_num:22|svn_version:'Unknown'|variable_revision_number:15|show
     How to save the series:T (Time)
 
 IdentifyPrimaryObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:DNA_round0
+    Select the input image:CorrDNA_round0
     Name the primary objects to be identified:ConfluentRegions
     Typical diameter of objects, in pixel units (Min,Max):500,5000
     Discard objects outside the diameter range?:Yes
@@ -527,7 +527,7 @@ IdentifyPrimaryObjects:[module_num:23|svn_version:'Unknown'|variable_revision_nu
     Thresholding method:Otsu
 
 MaskImage:[module_num:24|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:DNA_round0
+    Select the input image:CorrDNA_round0
     Name the output image:MaskedDAPI
     Use objects or an image as a mask?:Objects
     Select object for mask:ConfluentRegions
