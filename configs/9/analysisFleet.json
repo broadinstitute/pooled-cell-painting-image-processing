@@ -16,7 +16,7 @@
             "DeleteOnTermination": true,
             "VolumeType": "gp2",
             "VolumeSize": 8,
-            "SnapshotId": "snap-04007a196c0f3f3987"
+            "SnapshotId": "snap-04007a196c0f3f398"
           }
         },
         {
