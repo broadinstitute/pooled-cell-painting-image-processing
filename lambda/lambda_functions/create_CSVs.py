@@ -486,10 +486,8 @@ def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_l
     well_df_list = []
     well_val_df_list = []
     parsed_well_list = []
-    pathlist = []
     for eachwell in well_list:
         well_df_list += [eachwell] * seriesperwell
-        pathlist += [os.path.join(path, platename + "-" + eachwell)] * seriesperwell
         if "Well" not in eachwell:
             well_val = eachwell
         else:
@@ -501,6 +499,14 @@ def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_l
         well_val_df_list += [well_val] * seriesperwell
     df["Metadata_Well"] = well_df_list
     df["Metadata_Well_Value"] = well_val_df_list
+    pathlist =  [
+                os.path.join(path,platename+'-') 
+                + well
+                + '-'
+                + str(site)
+                for well in well_list
+                for site in range(seriesperwell)
+                ]    
     for cycle in range(1, (expected_cycles + 1)):
         this_cycle = "_Cycle%02d_" % cycle
         for chan in channels:
