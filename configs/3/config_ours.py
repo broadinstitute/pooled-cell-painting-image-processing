@@ -3,7 +3,7 @@
 APP_NAME = '2018_11_20_Periscope_X_PaintingSegmentationCheck'                # Used to generate derivative names unique to the application.
 
 # DOCKER REGISTRY INFORMATION:
-DOCKERHUB_TAG = 'cellprofiler/distributed-cellprofiler:2.0.0_4.0.7'
+DOCKERHUB_TAG = 'cellprofiler/distributed-cellprofiler:2.0.0_4.1.3'
 
 # AWS GENERAL SETTINGS:
 AWS_REGION = 'us-east-1'
