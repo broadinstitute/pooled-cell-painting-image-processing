@@ -45,5 +45,9 @@ def grab_batch_config(bucket_name, prefix, batch, step):
 def grab_fleet_file(bucket_name, prefix, batch, step, filename):
     s3 = boto3.client("s3")
     our_fleet = prefix + "lambda/" + batch + "/" + str(step) + "/" + filename
-    with open("/tmp/fleet_ours.json", "wb") as f:
-        s3.download_fileobj(bucket_name, our_fleet, f)
+    try:
+        with open("/tmp/fleet_ours.json", "wb") as f:
+            s3.download_fileobj(bucket_name, our_fleet, f)
+    except botocore.exceptions.ClientError as error:
+        print ("Error grabbing fleet file.")
+        return
