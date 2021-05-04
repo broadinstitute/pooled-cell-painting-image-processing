@@ -484,6 +484,67 @@ def create_batch_jobs_8(
         stitchqueue.scheduleBatch(stitchMessage)
     print("Stitching job submitted. Check your queue")
 
+def create_batch_jobs_8Z(
+    bucket_name,
+    startpath,
+    batchsuffix,
+    metadata,
+    plate_and_well_list,
+    app_name,
+    tileperside=10,
+    final_tile_size=5500,
+    xoffset_tiles=0,
+    yoffset_tiles=0,
+    compress='False',
+):
+    local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
+    if "round_or_square" in list(metadata.keys()):
+        round_or_square = metadata["round_or_square"]
+    else:  # Backwards compatibility for old square runs
+        round_or_square = "square"
+    stitchqueue = JobQueue(app_name + "Queue")
+    stitchMessage = {
+        "Metadata": "",
+        "output_file_location": posixpath.join(startpath, batchsuffix),
+        "shared_metadata": {
+            "input_file_location": local_start_path,
+            "scalingstring": "1.99",
+            "overlap_pct": metadata["overlap_pct"],
+            "size": "1480",
+            "rows": metadata["barcoding_rows"],
+            "columns": metadata["barcoding_columns"],
+            "imperwell":metadata["barcoding_imperwell"],
+            "stitchorder": metadata["stitchorder"],
+            "channame": "DAPI",
+            "tileperside": str(tileperside),
+            "awsdownload": "True",
+            "bucketname": bucket_name,
+            "localtemp": "local_temp",
+            "round_or_square": round_or_square,
+            "final_tile_size": str(final_tile_size),
+            "xoffset_tiles": str(xoffset_tiles),
+            "yoffset_tiles": str(yoffset_tiles),
+            "compress": compress,
+        },
+    }
+    for tostitch in plate_and_well_list:
+        if "_" not in tostitch[1]:
+            well = "Well_" + tostitch[1][4:]
+        else:
+            well = tostitch[1]
+        stitchMessage["Metadata"] = {
+            "subdir": posixpath.join(
+                batchsuffix,
+                "images_aligned",
+                "barcoding",
+            ),
+            "out_subdir_tag": tostitch[0] + "_" + tostitch[1],
+            "filterstring": well,
+            "downloadfilter": tostitch[0] + "-" + tostitch[1] + "*",
+        }
+        stitchqueue.scheduleBatch(stitchMessage)
+    print("Stitching job submitted. Check your queue")
+
 def create_batch_jobs_9(
     startpath, batchsuffix, pipename, plate_and_well_list, site_list, app_name
 ):
