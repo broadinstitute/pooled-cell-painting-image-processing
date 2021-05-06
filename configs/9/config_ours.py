@@ -15,16 +15,16 @@ AWS_BUCKET = 'dummybucket'
 ECS_CLUSTER = 'default_cluster'
 CLUSTER_MACHINES = 1
 TASKS_PER_MACHINE = 1
-MACHINE_TYPE = ['m4.4xlarge']
+MACHINE_TYPE = ['m5.4xlarge']
 MACHINE_PRICE = 0.50
 EBS_VOL_SIZE = 60                       # In GB.  Minimum allowed is 22.
 DOWNLOAD_FILES = 'False'
 
 # DOCKER INSTANCE RUNNING ENVIRONMENT:
-DOCKER_CORES = 1                        # Number of CellProfiler processes to run inside a docker container
+DOCKER_CORES = 2                        # Number of CellProfiler processes to run inside a docker container
 CPU_SHARES = DOCKER_CORES * 1024        # ECS computing units assigned to each docker container (1024 units = 1 core)
 MEMORY = 62500                          # Memory assigned to the docker container in MB
-SECONDS_TO_START = 3*60                 # Wait before the next CP process is initiated to avoid memory collisions
+SECONDS_TO_START = 10*60                 # Wait before the next CP process is initiated to avoid memory collisions
 
 #SQS QUEUE INFORMATION:
 SQS_QUEUE_NAME = APP_NAME + 'Queue'
