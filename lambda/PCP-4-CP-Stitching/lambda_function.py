@@ -14,13 +14,27 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
+
+# Step Information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "stitchFleet.json"
-current_app_name = "2018_11_20_Periscope_X_PaintingStitching"
-prev_step_app_name = "2018_11_20_Periscope_X_PaintingSegmentationCheck"
-prev_step_num = "3"
-duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
 step = "4"
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_PaintingStitching",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-fiji:latest",
+    "SCRIPT_DOWNLOAD_URL": "https://raw.githubusercontent.com/broadinstitute/pooled-cell-painting-image-processing/master/FIJI/BatchStitchPooledCellPainting_StitchAndCrop_Headless.py",
+    "MACHINE_TYPE": "m4.2xlarge",
+    "MACHINE_PRICE": "0.20",
+    "EBS_VOL_SIZE": "400",
+    "DOWNLOAD_FILES": "False",
+    "MEMORY": "31000",
+    "SQS_MESSAGE_VISIBILITY": "720 * 60",
+    "EXPECTED_NUMBER_FILES": "510",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING = "",
+}
+
 # Make sure that range_skip matches that set in PCP-3-CP-SegmentCheck lambda function
 range_skip = 16
 tileperside = 10

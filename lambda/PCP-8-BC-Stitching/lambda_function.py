@@ -11,15 +11,28 @@ import run_DCP
 import create_batch_jobs
 import helpful_functions
 
-s3 = boto3.client("s3")
-sqs = boto3.client("sqs")
+# Step Information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "stitchFleet.json"
-current_app_name = "2018_11_20_Periscope_X_BarcodingStitching"
-prev_step_app_name = "2018_11_20_Periscope_X_PreprocessBarcoding"
-prev_step_num = "7"
-duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
 step = "8"
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_BarcodingStitching",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-fiji:latest",
+    "SCRIPT_DOWNLOAD_URL": "https://raw.githubusercontent.com/broadinstitute/pooled-cell-painting-image-processing/master/FIJI/BatchStitchPooledCellPainting_StitchAndCrop_Headless.py",
+    "MACHINE_TYPE": "m4.2xlarge",
+    "MACHINE_PRICE": "0.25",
+    "EBS_VOL_SIZE": "800",
+    "DOWNLOAD_FILES": "False",
+    "MEMORY": "31000",
+    "SQS_MESSAGE_VISIBILITY": "180 * 60",
+    # EXPECTED_NUMBER_FILES = 3996 for circle, 9 cycles
+    "EXPECTED_NUMBER_FILES": "3996",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING = "",
+}
+
+# Stitching Configuration
 tileperside = 10
 final_tile_size = 5500
 

@@ -1,7 +1,6 @@
 import datetime
 import os, sys
 import json
-
 import boto3
 import numpy
 import pandas
@@ -15,13 +14,31 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "3_CP_SegmentationCheck.cppipe"
+
+# Step information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "segmentFleet.json"
-current_app_name = "2018_11_20_Periscope_X_PaintingSegmentationCheck"
-prev_step_app_name = "2018_11_20_Periscope_X_ApplyIllumPainting"
-duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
+pipeline_name = "3_CP_SegmentationCheck.cppipe"
 step = "3"
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_PaintingSegmentationCheck",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
+    "MACHINE_TYPE": "m4.xlarge",
+    "MACHINE_PRICE": "0.10",
+    "EBS_VOL_SIZE": "200",
+    "DOWNLOAD_FILES": "False",
+    "DOCKER_CORES": "4",
+    "MEMORY": "15000",
+    "SECONDS_TO_START": "3 * 60",
+    "SQS_MESSAGE_VISIBILITY": "20 * 60",
+    "CHECK_IF_DONE_BOOL": "False",
+    "EXPECTED_NUMBER_FILES": "5",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING": "",
+    "USE_PLUGINS": "True",
+}
+
 # Default percentiles are 10 and 90. Change only to troubleshoot troublesome datasets.
 upper_percentile = 90
 lower_percentile = 10

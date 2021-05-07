@@ -12,13 +12,29 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
+
+# Step information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "illumFleet.json"
-prev_step_num = "1"
-current_app_name = "2018_11_20_Periscope_X_ApplyIllumPainting"
-prev_step_app_name = "2018_11_20_Periscope_X_IllumPainting"
-duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
 step = "2"
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_ApplyIllumPainting",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
+    "MACHINE_TYPE": "m4.2xlarge",
+    "MACHINE_PRICE": "0.25",
+    "EBS_VOL_SIZE": "350",
+    "DOWNLOAD_FILES": "False",
+    "DOCKER_CORES": "1",
+    "MEMORY": "30000",
+    "SECONDS_TO_START": "3 * 60",
+    "SQS_MESSAGE_VISIBILITY": "720 * 60",
+    "CHECK_IF_DONE_BOOL": "True",
+    "EXPECTED_NUMBER_FILES": "5000",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING": "",
+    "USE_PLUGINS": "True",
+}
 
 
 def lambda_handler(event, context):

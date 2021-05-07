@@ -2,7 +2,6 @@ import json
 import os
 import sys
 import time
-
 import boto3
 
 sys.path.append("/opt/pooled-cell-painting-lambda")
@@ -14,12 +13,31 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "9_Analysis.cppipe"
+
+# Step information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "analysisFleet.json"
-current_app_name = "2018_11_20_Periscope_X_Analysis"
+pipeline_name = "9_Analysis.cppipe"
 step = "9"
 num_tiles = 100  # set in steps 4 and 8
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_Analysis",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
+    "MACHINE_TYPE": "m5.4xlarge",
+    "MACHINE_PRICE": "0.50",
+    "EBS_VOL_SIZE": "60",
+    "DOWNLOAD_FILES": "False",
+    "DOCKER_CORES": "2",
+    "MEMORY": "62500",
+    "SECONDS_TO_START": "3 * 60",
+    "SQS_MESSAGE_VISIBILITY": "240 * 60",
+    "CHECK_IF_DONE_BOOL": "True",
+    "EXPECTED_NUMBER_FILES": "5",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING": "",
+    "USE_PLUGINS": "True",
+}
 
 def lambda_handler(event, context):
     # Manual trigger
