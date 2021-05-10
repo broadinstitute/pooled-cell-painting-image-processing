@@ -31,19 +31,17 @@ def lambda_handler(event, context):
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket, metadata_file_name, metadata_on_bucket_name
     )
-
     # Standard vs. SABER configs
-    if "SABERdict" not in list(metadata.keys()):
+    if "Channeldict" not in list(metadata.keys()):
+        print("Update your metadata.json to include Channeldict")
+        return "Update your metadata.json to include Channeldict"
+    Channeldict = ast.literal_eval(metadata["Channeldict"])
+    if len(Channeldict.keys()) == 1:
         SABER = False
         print("Not a SABER experiment")
-    if "SABERdict" in list(metadata.keys()):
-        if not metadata["SABERdict"]:
-            SABER = False
-            print("Not a SABER experiment")
-    if "SABERdict" in list(metadata.keys()):
-        if metadata["SABERdict"]:
-            SABER = True
-            print("SABER experiment")
+    if len(Channeldict.keys()) > 1:
+        SABER = True
+        print("SABER experiment")
 
     # Calculate number of images from rows and columns in metadata
     num_series = int(metadata["painting_rows"]) * int(metadata["painting_columns"])
@@ -76,118 +74,59 @@ def lambda_handler(event, context):
 
     # Pull the file names we care about, and make the CSV
     platelist = list(image_dict.keys())
-    if not SABER:
-        for eachplate in platelist:
-            platedict = image_dict[eachplate]
-            well_list = list(platedict.keys())
-            paint_cycle_name = list(platedict[well_list[0]].keys())[0]
-            # Only keep full wells
-            per_well_im_list = []
-            for eachwell in well_list:
-                per_well = platedict[eachwell][paint_cycle_name]
-                per_well.sort()
-                if len(per_well) == full_well_files:
-                    per_well_im_list.append(per_well)
-            bucket_folder = (
-                "/home/ubuntu/bucket/"
-                + image_prefix
-                + batch
-                + "/images/"
-                + eachplate
-                + "/"
-                + paint_cycle_name
-            )
-            illum_folder = (
-                "/home/ubuntu/bucket/" + image_prefix + batch + "/illum/" + eachplate
-            )
-            per_plate_csv, per_plate_csv_2 = create_CSVs.create_CSV_pipeline1(
-                eachplate,
-                num_series,
-                bucket_folder,
-                illum_folder,
-                per_well_im_list,
-                metadata["one_or_many_files"],
-            )
-            csv_on_bucket_name = (
-                prefix
-                + "load_data_csv/"
-                + batch
-                + "/"
-                + eachplate
-                + "/load_data_pipeline1.csv"
-            )
-            csv_on_bucket_name_2 = (
-                prefix
-                + "load_data_csv/"
-                + batch
-                + "/"
-                + eachplate
-                + "/load_data_pipeline2.csv"
-            )
-            with open(per_plate_csv, "rb") as a:
-                s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
-            with open(per_plate_csv_2, "rb") as a:
-                s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
-    if SABER:
-        for eachplate in platelist:
-            platedict = image_dict[eachplate]
-            well_list = list(platedict.keys())
-            SABERdict = ast.literal_eval(metadata["SABERdict"])
-            SABERrounds = list(SABERdict.keys())
-            # Only keep full wells
-            print(f"{full_well_files} expect files per well and round for {eachplate}")
-            incomplete_wells = []
-            for eachwell in well_list:
-                for eachround in SABERrounds:
-                    per_well = platedict[eachwell][eachround]
-                    if len(per_well) != full_well_files:
-                        incomplete_wells.append(eachwell)
-                        print(
-                            f"{eachwell} {eachround} doesn't have full well files. {len(per_well)} files found."
-                        )
-            if incomplete_wells:
-                for well in incomplete_wells:
-                    del platedict[well]
-            bucket_folder = (
-                "/home/ubuntu/bucket/"
-                + image_prefix
-                + batch
-                + "/images/"
-                + eachplate
-                + "/"
-            )
-            illum_folder = (
-                "/home/ubuntu/bucket/" + image_prefix + batch + "/illum/" + eachplate
-            )
-            per_plate_csv, per_plate_csv_2 = create_CSVs.create_CSV_pipeline1_SABER(
-                eachplate,
-                num_series,
-                bucket_folder,
-                illum_folder,
-                platedict,
-                metadata["one_or_many_files"],
-                metadata["SABERdict"],
-            )
-            csv_on_bucket_name = (
-                prefix
-                + "load_data_csv/"
-                + batch
-                + "/"
-                + eachplate
-                + "/load_data_pipeline1.csv"
-            )
-            csv_on_bucket_name_2 = (
-                prefix
-                + "load_data_csv/"
-                + batch
-                + "/"
-                + eachplate
-                + "/load_data_pipeline2.csv"
-            )
-            with open(per_plate_csv, "rb") as a:
-                s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
-            with open(per_plate_csv_2, "rb") as a:
-                s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
+    for eachplate in platelist:
+        platedict = image_dict[eachplate]
+        well_list = list(platedict.keys())
+        Channelrounds = list(Channeldict.keys())
+        # Only keep full wells
+        print(f"{full_well_files} expect files per well and round for {eachplate}")
+        incomplete_wells = []
+        for eachwell in well_list:
+            for eachround in Channelrounds:
+                per_well = platedict[eachwell][eachround]
+                if len(per_well) != full_well_files:
+                    incomplete_wells.append(eachwell)
+                    print(
+                        f"{eachwell} {eachround} doesn't have full well files. {len(per_well)} files found."
+                    )
+        if incomplete_wells:
+            for well in incomplete_wells:
+                del platedict[well]
+        bucket_folder = (
+            "/home/ubuntu/bucket/" + image_prefix + batch + "/images/" + eachplate + "/"
+        )
+        illum_folder = (
+            "/home/ubuntu/bucket/" + image_prefix + batch + "/illum/" + eachplate
+        )
+        per_plate_csv, per_plate_csv_2 = create_CSVs.create_CSV_pipeline1(
+            eachplate,
+            num_series,
+            bucket_folder,
+            illum_folder,
+            platedict,
+            metadata["one_or_many_files"],
+            metadata["Channeldict"],
+        )
+        csv_on_bucket_name = (
+            prefix
+            + "load_data_csv/"
+            + batch
+            + "/"
+            + eachplate
+            + "/load_data_pipeline1.csv"
+        )
+        csv_on_bucket_name_2 = (
+            prefix
+            + "load_data_csv/"
+            + batch
+            + "/"
+            + eachplate
+            + "/load_data_pipeline2.csv"
+        )
+        with open(per_plate_csv, "rb") as a:
+            s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
+        with open(per_plate_csv_2, "rb") as a:
+            s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
 
     # Now it's time to run DCP
     app_name = run_DCP.run_setup(bucket, prefix, batch, step)

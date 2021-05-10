@@ -47,17 +47,16 @@ def lambda_handler(event, context):
                 num_series = int(metadata["painting_imperwell"])
 
     # Standard vs. SABER configs
-    if "SABERdict" not in list(metadata.keys()):
+    if "Channeldict" not in list(metadata.keys()):
+        print("Update your metadata.json to include Channeldict")
+        return "Update your metadata.json to include Channeldict"
+    Channeldict = ast.literal_eval(metadata["Channeldict"])
+    if len(Channeldict.keys()) == 1:
         SABER = False
         print("Not a SABER experiment")
-    if "SABERdict" in list(metadata.keys()):
-        if not metadata["SABERdict"]:
-            SABER = False
-            print("Not a SABER experiment")
-    if "SABERdict" in list(metadata.keys()):
-        if metadata["SABERdict"]:
-            SABER = True
-            print("SABER experiment")
+    if len(Channeldict.keys()) > 1:
+        SABER = True
+        print("SABER experiment")
 
     platelist = list(image_dict.keys())
     platedict = image_dict[plate]

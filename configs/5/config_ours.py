@@ -3,7 +3,7 @@
 APP_NAME = '2018_11_20_Periscope_X_IllumBarcoding'                # Used to generate derivative names unique to the application.
 
 # DOCKER REGISTRY INFORMATION:
-DOCKERHUB_TAG = 'cellprofiler/distributed-cellprofiler:2.0.0_4.0.7'
+DOCKERHUB_TAG = 'cellprofiler/distributed-cellprofiler:2.0.0_4.1.3'
 
 # AWS GENERAL SETTINGS:
 AWS_REGION = 'us-east-1'
@@ -29,7 +29,7 @@ SECONDS_TO_START = 3*60                 # Wait before the next CP process is ini
 #SQS QUEUE INFORMATION:
 SQS_QUEUE_NAME = APP_NAME + 'Queue'
 SQS_MESSAGE_VISIBILITY = 720*60           # Timeout (secs) for messages in flight (average time to be processed)
-SQS_DEAD_LETTER_QUEUE = 'arn:aws:sqs:us-east-1:XXXXXXXXXXXX:DeadMessages_default'
+SQS_DEAD_LETTER_QUEUE = 'arn:aws:sqs:us-east-1:XXXXXXXXXXXX:DeadMessages'
 
 # LOG GROUP INFORMATION:
 LOG_GROUP_NAME = APP_NAME

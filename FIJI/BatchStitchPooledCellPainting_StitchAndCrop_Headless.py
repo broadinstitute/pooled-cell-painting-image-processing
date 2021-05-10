@@ -63,9 +63,10 @@ if not os.path.exists(top_outfolder):
         os.mkdir(top_outfolder)
 
 # Define and create the parent folders where the images will be output
-outfolder=os.path.join(top_outfolder,'images_corrected_stitched')
-tile_outdir = os.path.join(top_outfolder,'images_corrected_cropped')
-downsample_outdir = os.path.join(top_outfolder,'images_corrected_stitched_10X')
+step_being_stitched = subdir.split("/")[-2]
+outfolder = os.path.join(top_outfolder,(step_being_stitched + '_stitched'))
+tile_outdir = os.path.join(top_outfolder,(step_being_stitched + '_cropped'))
+downsample_outdir = os.path.join(top_outfolder,(step_being_stitched + '_stitched_10X'))
 if not os.path.exists(outfolder):
         os.mkdir(outfolder)
 if not os.path.exists(tile_outdir):
@@ -344,11 +345,6 @@ if os.path.isdir(subdir):
                                                                 outfile.write(line)
 
                                 IJ.run("Grid/Collection stitching", copy_grid_instructions)
-                                im=IJ.getImage()
-                                #Tighten the border
-                                IJ.setThreshold(1,65535)
-                                IJ.run("Create Selection")
-                                IJ.run("Crop")
                                 im0=IJ.getImage()
                                 #chop off the bottom and right
                                 #Change per quarter
@@ -421,11 +417,6 @@ if os.path.isdir(subdir):
                                                                 outfile.write(line)
 
                                 IJ.run("Grid/Collection stitching", copy_grid_instructions)
-                                im=IJ.getImage()
-                                #Tighten the border
-                                IJ.setThreshold(1,65535)
-                                IJ.run("Create Selection")
-                                IJ.run("Crop")
                                 im0=IJ.getImage()
                                 #chop off the bottom and left
                                 #Change per quarter
@@ -498,11 +489,6 @@ if os.path.isdir(subdir):
                                                                 outfile.write(line)
 
                                 IJ.run("Grid/Collection stitching", copy_grid_instructions)
-                                im=IJ.getImage()
-                                #Tighten the border
-                                IJ.setThreshold(1,65535)
-                                IJ.run("Create Selection")
-                                IJ.run("Crop")
                                 im0=IJ.getImage()
                                 #chop off the top and right
                                 #Change per quarter
@@ -575,11 +561,6 @@ if os.path.isdir(subdir):
                                                                 outfile.write(line)
 
                                 IJ.run("Grid/Collection stitching", copy_grid_instructions)
-                                im=IJ.getImage()
-                                #Tighten the border
-                                IJ.setThreshold(1,65535)
-                                IJ.run("Create Selection")
-                                IJ.run("Crop")
                                 im0=IJ.getImage()
                                 #chop off the top and left
                                 #Change per quarter

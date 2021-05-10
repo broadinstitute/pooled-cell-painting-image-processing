@@ -30,7 +30,7 @@ SECONDS_TO_START = 3*60                 # Wait before the next CP process is ini
 #SQS QUEUE INFORMATION:
 SQS_QUEUE_NAME = APP_NAME + 'Queue'
 SQS_MESSAGE_VISIBILITY = 720*60           # Timeout (secs) for messages in flight (average time to be processed)
-SQS_DEAD_LETTER_QUEUE = 'arn:aws:sqs:us-east-1:XXXXXXXXXXXX:DeadMessages_default'
+SQS_DEAD_LETTER_QUEUE = 'arn:aws:sqs:us-east-1:XXXXXXXXXXXX:DeadMessages'
 
 # LOG GROUP INFORMATION:
 LOG_GROUP_NAME = APP_NAME

@@ -1,0 +1,20 @@
+#NOTES to troubleshoot stitching manually locally
+
+#cd into your desired location and aws s3 sync a well's worth of DAPI or DNA images down, aka 
+
+aws s3 sync s3://bucketname/projects/project_name/batch_name/images_corrected/barcoding/ ./images_corrected/barcoding --exclude="*" --include="*Plate123-Well1*/*DAPI*"
+
+#Then run this in python to pull all the image files to the top level
+
+import os
+a = os.listdir('images_corrected/barcoding')
+for x in a:
+    if os.path.isdir(os.path.join('images_corrected/barcoding',x)):
+        b = os.listdir(os.path.join('images_corrected/barcoding',x))
+        for c in b:
+            os.rename(os.path.join('images_corrected/barcoding',x,c),os.path.join('images_corrected/barcoding',c))
+
+
+#Then execute this- note that path to script is from executable, path to files is from wherever Fiji last opened a file in the GUI, so this assumes you last opened a file in wherever you put your `images_corrected` subfolder
+
+/Applications/Fiji.app/Contents/MacOS/ImageJ-macosx --headless --console --run ../../../../Users/bcimini/Documents/GitHub/BroadInstitute/pooled-cell-painting-image-processing/FIJI/BatchStitchPooledCellPainting_StitchAndCrop_Headless.py 'input_file_location="./", scalingstring="1.99", overlap_pct="10", size="1480", rows="1", columns="1", imperwell="316", stitchorder="Grid: snake by rows", channame="DAPI", tileperside="10", awsdownload="False", bucketname="pooled-cell-painting", localtemp="./output", round_or_square="round", final_tile_size="5500", xoffset_tiles="0", yoffset_tiles="0", compress="True", subdir="images_corrected/barcoding", out_subdir_tag="Plate123_Well1", filterstring="Well_1", downloadfilter="Plate123-Well1*"'
