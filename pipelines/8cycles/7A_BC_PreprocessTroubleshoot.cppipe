@@ -729,7 +729,7 @@ IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_nu
     # of deviations:4
     Thresholding method:Otsu
 
-CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:20|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A_BackSub
@@ -845,11 +845,11 @@ CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1
     What size sigma should be used for the DoG low sigma?:3
     What size radius should be used for the DoG low sigma?:5
 
-MeasureObjectIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:21|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:CorrCycle01_A, CorrCycle01_C, CorrCycle01_G, CorrCycle01_T, CorrCycle02_A, CorrCycle02_C, CorrCycle02_G, CorrCycle02_T, CorrCycle03_A, CorrCycle03_C, CorrCycle03_G, CorrCycle03_T, CorrCycle04_A, CorrCycle04_C, CorrCycle04_G, CorrCycle04_T, CorrCycle05_A, CorrCycle05_C, CorrCycle05_G, CorrCycle05_T, CorrCycle06_A, CorrCycle06_C, CorrCycle06_G, CorrCycle06_T, CorrCycle07_A, CorrCycle07_C, CorrCycle07_G, CorrCycle07_T, CorrCycle08_A, CorrCycle08_C, CorrCycle08_G, CorrCycle08_T
     Select objects to measure:Foci
 
-CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CallBarcodes:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Number of cycles:8
     Input object name:Foci
     Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A
@@ -862,7 +862,7 @@ CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues
 
-CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:23|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -978,11 +978,11 @@ CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1
     What size sigma should be used for the DoG low sigma?:3
     What size radius should be used for the DoG low sigma?:5
 
-MeasureObjectIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:24|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:CorrCycle01_A_noBackSub, CorrCycle01_C_noBackSub, CorrCycle01_G_noBackSub, CorrCycle01_T_noBackSub, CorrCycle02_A_noBackSub, CorrCycle02_C_noBackSub, CorrCycle02_G_noBackSub, CorrCycle02_T_noBackSub, CorrCycle03_A_noBackSub, CorrCycle03_C_noBackSub, CorrCycle03_G_noBackSub, CorrCycle03_T_noBackSub, CorrCycle04_A_noBackSub, CorrCycle04_C_noBackSub, CorrCycle04_G_noBackSub, CorrCycle04_T_noBackSub, CorrCycle05_A_noBackSub, CorrCycle05_C_noBackSub, CorrCycle05_G_noBackSub, CorrCycle05_T_noBackSub, CorrCycle06_A_noBackSub, CorrCycle06_C_noBackSub, CorrCycle06_G_noBackSub, CorrCycle06_T_noBackSub, CorrCycle07_A_noBackSub, CorrCycle07_C_noBackSub, CorrCycle07_G_noBackSub, CorrCycle07_T_noBackSub, CorrCycle08_A_noBackSub, CorrCycle08_C_noBackSub, CorrCycle08_G_noBackSub, CorrCycle08_T_noBackSub
     Select objects to measure:Foci
 
-CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CallBarcodes:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Number of cycles:8
     Input object name:Foci
     Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A_noBackSub
@@ -995,7 +995,7 @@ CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub
 
-CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:26|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -1111,11 +1111,11 @@ CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1
     What size sigma should be used for the DoG low sigma?:3
     What size radius should be used for the DoG low sigma?:5
 
-MeasureObjectIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:27|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:CorrCycle01_A_noBackSub_DoG35, CorrCycle01_C_noBackSub_DoG35, CorrCycle01_G_noBackSub_DoG35, CorrCycle01_T_noBackSub_DoG35, CorrCycle02_A_noBackSub_DoG35, CorrCycle02_C_noBackSub_DoG35, CorrCycle02_G_noBackSub_DoG35, CorrCycle02_T_noBackSub_DoG35, CorrCycle03_A_noBackSub_DoG35, CorrCycle03_C_noBackSub_DoG35, CorrCycle03_G_noBackSub_DoG35, CorrCycle03_T_noBackSub_DoG35, CorrCycle04_A_noBackSub_DoG35, CorrCycle04_C_noBackSub_DoG35, CorrCycle04_G_noBackSub_DoG35, CorrCycle04_T_noBackSub_DoG35, CorrCycle05_A_noBackSub_DoG35, CorrCycle05_C_noBackSub_DoG35, CorrCycle05_G_noBackSub_DoG35, CorrCycle05_T_noBackSub_DoG35, CorrCycle06_A_noBackSub_DoG35, CorrCycle06_C_noBackSub_DoG35, CorrCycle06_G_noBackSub_DoG35, CorrCycle06_T_noBackSub_DoG35, CorrCycle07_A_noBackSub_DoG35, CorrCycle07_C_noBackSub_DoG35, CorrCycle07_G_noBackSub_DoG35, CorrCycle07_T_noBackSub_DoG35, CorrCycle08_A_noBackSub_DoG35, CorrCycle08_C_noBackSub_DoG35, CorrCycle08_G_noBackSub_DoG35, CorrCycle08_T_noBackSub_DoG35
     Select objects to measure:Foci
 
-CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CallBarcodes:[module_num:28|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Number of cycles:8
     Input object name:Foci
     Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A_noBackSub_DoG35
@@ -1128,7 +1128,140 @@ CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub_DoG35
 
-CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:29|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+    Hidden:32
+    Hidden:1
+    Select an image to measure:Cycle01_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle01_A_noBackSub_Tophat3
+    Select an image to measure:Cycle02_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle02_A_noBackSub_Tophat3
+    Select an image to measure:Cycle03_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle03_A_noBackSub_Tophat3
+    Select an image to measure:Cycle04_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle04_A_noBackSub_Tophat3
+    Select an image to measure:Cycle05_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle05_A_noBackSub_Tophat3
+    Select an image to measure:Cycle06_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle06_A_noBackSub_Tophat3
+    Select an image to measure:Cycle07_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle07_A_noBackSub_Tophat3
+    Select an image to measure:Cycle08_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle08_A_noBackSub_Tophat3
+    Select an image to measure:Cycle01_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle01_C_noBackSub_Tophat3
+    Select an image to measure:Cycle02_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle02_C_noBackSub_Tophat3
+    Select an image to measure:Cycle03_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle03_C_noBackSub_Tophat3
+    Select an image to measure:Cycle04_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle04_C_noBackSub_Tophat3
+    Select an image to measure:Cycle05_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle05_C_noBackSub_Tophat3
+    Select an image to measure:Cycle06_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle06_C_noBackSub_Tophat3
+    Select an image to measure:Cycle07_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle07_C_noBackSub_Tophat3
+    Select an image to measure:Cycle08_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle08_C_noBackSub_Tophat3
+    Select an image to measure:Cycle01_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle01_G_noBackSub_Tophat3
+    Select an image to measure:Cycle02_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle02_G_noBackSub_Tophat3
+    Select an image to measure:Cycle03_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle03_G_noBackSub_Tophat3
+    Select an image to measure:Cycle04_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle04_G_noBackSub_Tophat3
+    Select an image to measure:Cycle05_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle05_G_noBackSub_Tophat3
+    Select an image to measure:Cycle06_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle06_G_noBackSub_Tophat3
+    Select an image to measure:Cycle07_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle07_G_noBackSub_Tophat3
+    Select an image to measure:Cycle08_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle08_G_noBackSub_Tophat3
+    Select an image to measure:Cycle01_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle01_T_noBackSub_Tophat3
+    Select an image to measure:Cycle02_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle02_T_noBackSub_Tophat3
+    Select an image to measure:Cycle03_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle03_T_noBackSub_Tophat3
+    Select an image to measure:Cycle04_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle04_T_noBackSub_Tophat3
+    Select an image to measure:Cycle05_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle05_T_noBackSub_Tophat3
+    Select an image to measure:Cycle06_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle06_T_noBackSub_Tophat3
+    Select an image to measure:Cycle07_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle07_T_noBackSub_Tophat3
+    Select an image to measure:Cycle08_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle08_T_noBackSub_Tophat3
+    Select where to perform color compensation:Within objects
+    Select an object to perform compensation within:Foci
+    Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
+    Should images be rescaled 0-1 before compensating but after masking to objects?:No
+    Should histogram matching be performed between the image groups?:Yes, post-masking to objects
+    What compensation class should serve as the template histogram?:4
+    Should images be rescaled 0-1 after compensating?:No
+    Should the images be divided by a scalar based on group percentiles:No
+    What percentile should be used for multiplication:99.9
+    Should the images have a tophat filter applied before correction?:Yes
+    What size radius should be used for the tophat filter?:3
+    Should the images have a Laplacian of Gaussian filter applied before correction?:No
+    What size radius should be used for the LoG filter?:1
+    Should the images have a Difference of Gaussians filter applied before correction?:No
+    What size sigma should be used for the DoG low sigma?:3
+    What size radius should be used for the DoG low sigma?:5
+
+MeasureObjectIntensity:[module_num:30|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:CorrCycle01_A_noBackSub_Tophat3, CorrCycle01_C_noBackSub_Tophat3, CorrCycle01_G_noBackSub_Tophat3, CorrCycle01_T_noBackSub_Tophat3, CorrCycle02_A_noBackSub_Tophat3, CorrCycle02_C_noBackSub_Tophat3, CorrCycle02_G_noBackSub_Tophat3, CorrCycle02_T_noBackSub_Tophat3, CorrCycle03_A_noBackSub_Tophat3, CorrCycle03_C_noBackSub_Tophat3, CorrCycle03_G_noBackSub_Tophat3, CorrCycle03_T_noBackSub_Tophat3, CorrCycle04_A_noBackSub_Tophat3, CorrCycle04_C_noBackSub_Tophat3, CorrCycle04_G_noBackSub_Tophat3, CorrCycle04_T_noBackSub_Tophat3, CorrCycle05_A_noBackSub_Tophat3, CorrCycle05_C_noBackSub_Tophat3, CorrCycle05_G_noBackSub_Tophat3, CorrCycle05_T_noBackSub_Tophat3, CorrCycle06_A_noBackSub_Tophat3, CorrCycle06_C_noBackSub_Tophat3, CorrCycle06_G_noBackSub_Tophat3, CorrCycle06_T_noBackSub_Tophat3, CorrCycle07_A_noBackSub_Tophat3, CorrCycle07_C_noBackSub_Tophat3, CorrCycle07_G_noBackSub_Tophat3, CorrCycle07_T_noBackSub_Tophat3, CorrCycle08_A_noBackSub_Tophat3, CorrCycle08_C_noBackSub_Tophat3, CorrCycle08_G_noBackSub_Tophat3, CorrCycle08_T_noBackSub_Tophat3
+    Select objects to measure:Foci
+
+CallBarcodes:[module_num:31|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Number of cycles:8
+    Input object name:Foci
+    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A_noBackSub_Tophat3
+    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
+    Name of the file:Barcodes.csv
+    Select the column of barcodes to match against:Barcode
+    Select the column with gene/transcript barcode names:Construct
+    Retain an image of the barcodes color coded by call?:Yes
+    Enter the called barcode image name:Barcodes_IntValues_999
+    Retain an image of the barcodes color coded by score match?:Yes
+    Enter the barcode score image name:BarcodeScores_IntValues_noBackSub_Tophat3
+
+CompensateColors:[module_num:32|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -1244,11 +1377,11 @@ CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1
     What size sigma should be used for the DoG low sigma?:3
     What size radius should be used for the DoG low sigma?:5
 
-MeasureObjectIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:33|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:CorrCycle01_A_noBackSub_Rescale999, CorrCycle01_C_noBackSub_Rescale999, CorrCycle01_G_noBackSub_Rescale999, CorrCycle01_T_noBackSub_Rescale999, CorrCycle02_A_noBackSub_Rescale999, CorrCycle02_C_noBackSub_Rescale999, CorrCycle02_G_noBackSub_Rescale999, CorrCycle02_T_noBackSub_Rescale999, CorrCycle03_A_noBackSub_Rescale999, CorrCycle03_C_noBackSub_Rescale999, CorrCycle03_G_noBackSub_Rescale999, CorrCycle03_T_noBackSub_Rescale999, CorrCycle04_A_noBackSub_Rescale999, CorrCycle04_C_noBackSub_Rescale999, CorrCycle04_G_noBackSub_Rescale999, CorrCycle04_T_noBackSub_Rescale999, CorrCycle05_A_noBackSub_Rescale999, CorrCycle05_C_noBackSub_Rescale999, CorrCycle05_G_noBackSub_Rescale999, CorrCycle05_T_noBackSub_Rescale999, CorrCycle06_A_noBackSub_Rescale999, CorrCycle06_C_noBackSub_Rescale999, CorrCycle06_G_noBackSub_Rescale999, CorrCycle06_T_noBackSub_Rescale999, CorrCycle07_A_noBackSub_Rescale999, CorrCycle07_C_noBackSub_Rescale999, CorrCycle07_G_noBackSub_Rescale999, CorrCycle07_T_noBackSub_Rescale999, CorrCycle08_A_noBackSub_Rescale999, CorrCycle08_C_noBackSub_Rescale999, CorrCycle08_G_noBackSub_Rescale999, CorrCycle08_T_noBackSub_Rescale999
     Select objects to measure:Foci
 
-CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CallBarcodes:[module_num:34|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Number of cycles:8
     Input object name:Foci
     Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A_noBackSub_Rescale999
@@ -1261,7 +1394,7 @@ CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub_Rescale999
 
-CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:35|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -1377,11 +1510,11 @@ CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1
     What size sigma should be used for the DoG low sigma?:3
     What size radius should be used for the DoG low sigma?:5
 
-MeasureObjectIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:36|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:CorrCycle01_A_noBackSub_RescalePostCompensate, CorrCycle01_C_noBackSub_RescalePostCompensate, CorrCycle01_G_noBackSub_RescalePostCompensate, CorrCycle01_T_noBackSub_RescalePostCompensate, CorrCycle02_A_noBackSub_RescalePostCompensate, CorrCycle02_C_noBackSub_RescalePostCompensate, CorrCycle02_G_noBackSub_RescalePostCompensate, CorrCycle02_T_noBackSub_RescalePostCompensate, CorrCycle03_A_noBackSub_RescalePostCompensate, CorrCycle03_C_noBackSub_RescalePostCompensate, CorrCycle03_G_noBackSub_RescalePostCompensate, CorrCycle03_T_noBackSub_RescalePostCompensate, CorrCycle04_A_noBackSub_RescalePostCompensate, CorrCycle04_C_noBackSub_RescalePostCompensate, CorrCycle04_G_noBackSub_RescalePostCompensate, CorrCycle04_T_noBackSub_RescalePostCompensate, CorrCycle05_A_noBackSub_RescalePostCompensate, CorrCycle05_C_noBackSub_RescalePostCompensate, CorrCycle05_G_noBackSub_RescalePostCompensate, CorrCycle05_T_noBackSub_RescalePostCompensate, CorrCycle06_A_noBackSub_RescalePostCompensate, CorrCycle06_C_noBackSub_RescalePostCompensate, CorrCycle06_G_noBackSub_RescalePostCompensate, CorrCycle06_T_noBackSub_RescalePostCompensate, CorrCycle07_A_noBackSub_RescalePostCompensate, CorrCycle07_C_noBackSub_RescalePostCompensate, CorrCycle07_G_noBackSub_RescalePostCompensate, CorrCycle07_T_noBackSub_RescalePostCompensate, CorrCycle08_A_noBackSub_RescalePostCompensate, CorrCycle08_C_noBackSub_RescalePostCompensate, CorrCycle08_G_noBackSub_RescalePostCompensate, CorrCycle08_T_noBackSub_RescalePostCompensate
     Select objects to measure:Foci
 
-CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CallBarcodes:[module_num:37|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Number of cycles:8
     Input object name:Foci
     Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A_noBackSub_RescalePostCompensate
@@ -1394,7 +1527,7 @@ CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub_RescalePostCompensate
 
-CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:38|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -1510,11 +1643,11 @@ CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1
     What size sigma should be used for the DoG low sigma?:3
     What size radius should be used for the DoG low sigma?:5
 
-MeasureObjectIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:39|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:CorrCycle01_A_noBackSub_Rescale999_RescalePostCompensate, CorrCycle01_C_noBackSub_Rescale999_RescalePostCompensate, CorrCycle01_G_noBackSub_Rescale999_RescalePostCompensate, CorrCycle01_T_noBackSub_Rescale999_RescalePostCompensate, CorrCycle02_A_noBackSub_Rescale999_RescalePostCompensate, CorrCycle02_C_noBackSub_Rescale999_RescalePostCompensate, CorrCycle02_G_noBackSub_Rescale999_RescalePostCompensate, CorrCycle02_T_noBackSub_Rescale999_RescalePostCompensate, CorrCycle03_A_noBackSub_Rescale999_RescalePostCompensate, CorrCycle03_C_noBackSub_Rescale999_RescalePostCompensate, CorrCycle03_G_noBackSub_Rescale999_RescalePostCompensate, CorrCycle03_T_noBackSub_Rescale999_RescalePostCompensate, CorrCycle04_A_noBackSub_Rescale999_RescalePostCompensate, CorrCycle04_C_noBackSub_Rescale999_RescalePostCompensate, CorrCycle04_G_noBackSub_Rescale999_RescalePostCompensate, CorrCycle04_T_noBackSub_Rescale999_RescalePostCompensate, CorrCycle05_A_noBackSub_Rescale999_RescalePostCompensate, CorrCycle05_C_noBackSub_Rescale999_RescalePostCompensate, CorrCycle05_G_noBackSub_Rescale999_RescalePostCompensate, CorrCycle05_T_noBackSub_Rescale999_RescalePostCompensate, CorrCycle06_A_noBackSub_Rescale999_RescalePostCompensate, CorrCycle06_C_noBackSub_Rescale999_RescalePostCompensate, CorrCycle06_G_noBackSub_Rescale999_RescalePostCompensate, CorrCycle06_T_noBackSub_Rescale999_RescalePostCompensate, CorrCycle07_A_noBackSub_Rescale999_RescalePostCompensate, CorrCycle07_C_noBackSub_Rescale999_RescalePostCompensate, CorrCycle07_G_noBackSub_Rescale999_RescalePostCompensate, CorrCycle07_T_noBackSub_Rescale999_RescalePostCompensate, CorrCycle08_A_noBackSub_Rescale999_RescalePostCompensate, CorrCycle08_C_noBackSub_Rescale999_RescalePostCompensate, CorrCycle08_G_noBackSub_Rescale999_RescalePostCompensate, CorrCycle08_T_noBackSub_Rescale999_RescalePostCompensate
     Select objects to measure:Foci
 
-CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CallBarcodes:[module_num:40|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Number of cycles:8
     Input object name:Foci
     Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A_noBackSub_Rescale999_RescalePostCompensate
@@ -1527,7 +1660,7 @@ CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub_Rescale999_RescalePostCompensate
 
-RelateObjects:[module_num:65|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:41|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Cells
     Child objects:Foci
     Calculate child-parent distances?:None
@@ -1611,10 +1744,11 @@ RelateObjects:[module_num:65|svn_version:'Unknown'|variable_revision_number:5|sh
     Parent name:None
     Parent name:None
 
-MeasureObjectIntensity:[module_num:66|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select images to measure:BarcodeScores_IntValues, BarcodeScores_IntValues_noBackSub, BarcodeScores_IntValues_noBackSub_DoG35, BarcodeScores_IntValues_noBackSub_Rescale999, BarcodeScores_IntValues_noBackSub_RescalePostCompensate, BarcodeScores_IntValues_noBackSub_Rescale999_RescalePostCompensate
+MeasureObjectIntensity:[module_num:42|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:BarcodeScores_IntValues, BarcodeScores_IntValues_noBackSub, BarcodeScores_IntValues_noBackSub_DoG35, BarcodeScores_IntValues_noBackSub_Tophat3, BarcodeScores_IntValues_noBackSub_Rescale999, BarcodeScores_IntValues_noBackSub_RescalePostCompensate, BarcodeScores_IntValues_noBackSub_Rescale999_RescalePostCompensate
+    Select objects to measure:BarcodeFoci
 
-ExportToSpreadsheet:[module_num:67|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ExportToSpreadsheet:[module_num:43|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:Yes
     Add image file and folder names to your object data file?:No
@@ -1638,7 +1772,7 @@ ExportToSpreadsheet:[module_num:67|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-CalculateMath:[module_num:68|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:44|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Divide20
     Operation:None
     Select the numerator measurement type:Image
@@ -1662,7 +1796,7 @@ CalculateMath:[module_num:68|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-CalculateMath:[module_num:69|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:45|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Divide20floor
     Operation:None
     Select the numerator measurement type:Image
@@ -1686,7 +1820,7 @@ CalculateMath:[module_num:69|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-CalculateMath:[module_num:70|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:46|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Divide20diff
     Operation:Subtract
     Select the minuend measurement type:Image
@@ -1710,7 +1844,7 @@ CalculateMath:[module_num:70|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-FlagImage:[module_num:71|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FlagImage:[module_num:47|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:1
     Hidden:1
     Name the flag's category:Divide20
@@ -1729,7 +1863,7 @@ FlagImage:[module_num:71|svn_version:'Unknown'|variable_revision_number:4|show_w
     Class number:
     Ignore flag skips on last cycle?:No
 
-ImageMath:[module_num:72|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:48|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:None
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -1748,7 +1882,7 @@ ImageMath:[module_num:72|svn_version:'Unknown'|variable_revision_number:5|show_w
     Multiply the second image by:1.0
     Measurement:
 
-RescaleIntensity:[module_num:73|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RescaleIntensity:[module_num:49|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:MaxSqRt
     Name the output image:RescaleIntensity
     Rescaling method:Stretch each image to use the full intensity range
@@ -1762,7 +1896,7 @@ RescaleIntensity:[module_num:73|svn_version:'Unknown'|variable_revision_number:3
     Divisor value:1.0
     Divisor measurement:None
 
-OverlayOutlines:[module_num:74|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:50|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:RescaleIntensity
     Name the output image:Max_Overlay
@@ -1774,7 +1908,7 @@ OverlayOutlines:[module_num:74|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:#0080FF
     Select objects to display:Cells
 
-SaveImages:[module_num:75|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:51|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:Max_Overlay
     Select method for constructing file names:Single name
