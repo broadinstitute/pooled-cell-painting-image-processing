@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
 DateRevision:407
 GitHash:
-ModuleCount:57
+ModuleCount:100
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -729,123 +729,396 @@ IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_nu
     # of deviations:4
     Thresholding method:Otsu
 
-CompensateColors:[module_num:20|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A_BackSub
     What compensation class does this image belong to?:1
-    Select an output image name:Rescale999_CorrCycle01_A
+    Select an output image name:CorrCycle01_A
     Select an image to measure:Cycle02_A_BackSub
     What compensation class does this image belong to?:1
-    Select an output image name:Rescale999_CorrCycle02_A
+    Select an output image name:CorrCycle02_A
     Select an image to measure:Cycle03_A_BackSub
     What compensation class does this image belong to?:1
-    Select an output image name:Rescale999_CorrCycle03_A
+    Select an output image name:CorrCycle03_A
     Select an image to measure:Cycle04_A_BackSub
     What compensation class does this image belong to?:1
-    Select an output image name:Rescale999_CorrCycle04_A
+    Select an output image name:CorrCycle04_A
     Select an image to measure:Cycle05_A_BackSub
     What compensation class does this image belong to?:1
-    Select an output image name:Rescale999_CorrCycle05_A
+    Select an output image name:CorrCycle05_A
     Select an image to measure:Cycle06_A_BackSub
     What compensation class does this image belong to?:1
-    Select an output image name:Rescale999_CorrCycle06_A
+    Select an output image name:CorrCycle06_A
     Select an image to measure:Cycle07_A_BackSub
     What compensation class does this image belong to?:1
-    Select an output image name:Rescale999_CorrCycle07_A
+    Select an output image name:CorrCycle07_A
     Select an image to measure:Cycle08_A_BackSub
     What compensation class does this image belong to?:1
-    Select an output image name:Rescale999_CorrCycle08_A
+    Select an output image name:CorrCycle08_A
     Select an image to measure:Cycle01_C_BackSub
     What compensation class does this image belong to?:2
-    Select an output image name:Rescale999_CorrCycle01_C
+    Select an output image name:CorrCycle01_C
     Select an image to measure:Cycle02_C_BackSub
     What compensation class does this image belong to?:2
-    Select an output image name:Rescale999_CorrCycle02_C
+    Select an output image name:CorrCycle02_C
     Select an image to measure:Cycle03_C_BackSub
     What compensation class does this image belong to?:2
-    Select an output image name:Rescale999_CorrCycle03_C
+    Select an output image name:CorrCycle03_C
     Select an image to measure:Cycle04_C_BackSub
     What compensation class does this image belong to?:2
-    Select an output image name:Rescale999_CorrCycle04_C
+    Select an output image name:CorrCycle04_C
     Select an image to measure:Cycle05_C_BackSub
     What compensation class does this image belong to?:2
-    Select an output image name:Rescale999_CorrCycle05_C
+    Select an output image name:CorrCycle05_C
     Select an image to measure:Cycle06_C_BackSub
     What compensation class does this image belong to?:2
-    Select an output image name:Rescale999_CorrCycle06_C
+    Select an output image name:CorrCycle06_C
     Select an image to measure:Cycle07_C_BackSub
     What compensation class does this image belong to?:2
-    Select an output image name:Rescale999_CorrCycle07_C
+    Select an output image name:CorrCycle07_C
     Select an image to measure:Cycle08_C_BackSub
     What compensation class does this image belong to?:2
-    Select an output image name:Rescale999_CorrCycle08_C
+    Select an output image name:CorrCycle08_C
     Select an image to measure:Cycle01_G_BackSub
     What compensation class does this image belong to?:3
-    Select an output image name:Rescale999_CorrCycle01_G
+    Select an output image name:CorrCycle01_G
     Select an image to measure:Cycle02_G_BackSub
     What compensation class does this image belong to?:3
-    Select an output image name:Rescale999_CorrCycle02_G
+    Select an output image name:CorrCycle02_G
     Select an image to measure:Cycle03_G_BackSub
     What compensation class does this image belong to?:3
-    Select an output image name:Rescale999_CorrCycle03_G
+    Select an output image name:CorrCycle03_G
     Select an image to measure:Cycle04_G_BackSub
     What compensation class does this image belong to?:3
-    Select an output image name:Rescale999_CorrCycle04_G
+    Select an output image name:CorrCycle04_G
     Select an image to measure:Cycle05_G_BackSub
     What compensation class does this image belong to?:3
-    Select an output image name:Rescale999_CorrCycle05_G
+    Select an output image name:CorrCycle05_G
     Select an image to measure:Cycle06_G_BackSub
     What compensation class does this image belong to?:3
-    Select an output image name:Rescale999_CorrCycle06_G
+    Select an output image name:CorrCycle06_G
     Select an image to measure:Cycle07_G_BackSub
     What compensation class does this image belong to?:3
-    Select an output image name:Rescale999_CorrCycle07_G
+    Select an output image name:CorrCycle07_G
     Select an image to measure:Cycle08_G_BackSub
     What compensation class does this image belong to?:3
-    Select an output image name:Rescale999_CorrCycle08_G
+    Select an output image name:CorrCycle08_G
     Select an image to measure:Cycle01_T_BackSub
     What compensation class does this image belong to?:4
-    Select an output image name:Rescale999_CorrCycle01_T
+    Select an output image name:CorrCycle01_T
     Select an image to measure:Cycle02_T_BackSub
     What compensation class does this image belong to?:4
-    Select an output image name:Rescale999_CorrCycle02_T
+    Select an output image name:CorrCycle02_T
     Select an image to measure:Cycle03_T_BackSub
     What compensation class does this image belong to?:4
-    Select an output image name:Rescale999_CorrCycle03_T
+    Select an output image name:CorrCycle03_T
     Select an image to measure:Cycle04_T_BackSub
     What compensation class does this image belong to?:4
-    Select an output image name:Rescale999_CorrCycle04_T
+    Select an output image name:CorrCycle04_T
     Select an image to measure:Cycle05_T_BackSub
     What compensation class does this image belong to?:4
-    Select an output image name:Rescale999_CorrCycle05_T
+    Select an output image name:CorrCycle05_T
     Select an image to measure:Cycle06_T_BackSub
     What compensation class does this image belong to?:4
-    Select an output image name:Rescale999_CorrCycle06_T
+    Select an output image name:CorrCycle06_T
     Select an image to measure:Cycle07_T_BackSub
     What compensation class does this image belong to?:4
-    Select an output image name:Rescale999_CorrCycle07_T
+    Select an output image name:CorrCycle07_T
     Select an image to measure:Cycle08_T_BackSub
     What compensation class does this image belong to?:4
-    Select an output image name:Rescale999_CorrCycle08_T
+    Select an output image name:CorrCycle08_T
     Select where to perform color compensation:Within objects
     Select an object to perform compensation within:Foci
     Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
     Should images be rescaled 0-1 before compensating but after masking to objects?:No
-    Should histogram matching be performed between the image groups?:No
-    What compensation class should serve as the template histogram?:1
+    Should histogram matching be performed between the image groups?:Yes, post-masking to objects
+    What compensation class should serve as the template histogram?:4
+    Should images be rescaled 0-1 after compensating?:No
+    Should the images be divided by a scalar based on group percentiles:No
+    What percentile should be used for multiplication:99.9
+    Should the images have a tophat filter applied before correction?:No
+    What size radius should be used for the tophat filter?:3
+    Should the images have a Laplacian of Gaussian filter applied before correction?:Yes
+    What size radius should be used for the LoG filter?:1
+    Should the images have a Difference of Gaussians filter applied before correction?:No
+    What size sigma should be used for the DoG low sigma?:3
+    What size radius should be used for the DoG low sigma?:5
+
+MeasureObjectIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:CorrCycle01_A, CorrCycle01_C, CorrCycle01_G, CorrCycle01_T, CorrCycle02_A, CorrCycle02_C, CorrCycle02_G, CorrCycle02_T, CorrCycle03_A, CorrCycle03_C, CorrCycle03_G, CorrCycle03_T, CorrCycle04_A, CorrCycle04_C, CorrCycle04_G, CorrCycle04_T, CorrCycle05_A, CorrCycle05_C, CorrCycle05_G, CorrCycle05_T, CorrCycle06_A, CorrCycle06_C, CorrCycle06_G, CorrCycle06_T, CorrCycle07_A, CorrCycle07_C, CorrCycle07_G, CorrCycle07_T, CorrCycle08_A, CorrCycle08_C, CorrCycle08_G, CorrCycle08_T
+    Select objects to measure:Foci
+
+CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Number of cycles:8
+    Input object name:Foci
+    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A
+    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
+    Name of the file:Barcodes.csv
+    Select the column of barcodes to match against:Barcode
+    Select the column with gene/transcript barcode names:Construct
+    Retain an image of the barcodes color coded by call?:Yes
+    Enter the called barcode image name:Barcodes_IntValues_999
+    Retain an image of the barcodes color coded by score match?:Yes
+    Enter the barcode score image name:BarcodeScores_IntValues
+
+CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+    Hidden:32
+    Hidden:1
+    Select an image to measure:Cycle01_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle01_A_noBackSub
+    Select an image to measure:Cycle02_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle02_A_noBackSub
+    Select an image to measure:Cycle03_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle03_A_noBackSub
+    Select an image to measure:Cycle04_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle04_A_noBackSub
+    Select an image to measure:Cycle05_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle05_A_noBackSub
+    Select an image to measure:Cycle06_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle06_A_noBackSub
+    Select an image to measure:Cycle07_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle07_A_noBackSub
+    Select an image to measure:Cycle08_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle08_A_noBackSub
+    Select an image to measure:Cycle01_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle01_C_noBackSub
+    Select an image to measure:Cycle02_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle02_C_noBackSub
+    Select an image to measure:Cycle03_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle03_C_noBackSub
+    Select an image to measure:Cycle04_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle04_C_noBackSub
+    Select an image to measure:Cycle05_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle05_C_noBackSub
+    Select an image to measure:Cycle06_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle06_C_noBackSub
+    Select an image to measure:Cycle07_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle07_C_noBackSub
+    Select an image to measure:Cycle08_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle08_C_noBackSub
+    Select an image to measure:Cycle01_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle01_G_noBackSub
+    Select an image to measure:Cycle02_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle02_G_noBackSub
+    Select an image to measure:Cycle03_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle03_G_noBackSub
+    Select an image to measure:Cycle04_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle04_G_noBackSub
+    Select an image to measure:Cycle05_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle05_G_noBackSub
+    Select an image to measure:Cycle06_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle06_G_noBackSub
+    Select an image to measure:Cycle07_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle07_G_noBackSub
+    Select an image to measure:Cycle08_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle08_G_noBackSub
+    Select an image to measure:Cycle01_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle01_T_noBackSub
+    Select an image to measure:Cycle02_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle02_T_noBackSub
+    Select an image to measure:Cycle03_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle03_T_noBackSub
+    Select an image to measure:Cycle04_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle04_T_noBackSub
+    Select an image to measure:Cycle05_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle05_T_noBackSub
+    Select an image to measure:Cycle06_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle06_T_noBackSub
+    Select an image to measure:Cycle07_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle07_T_noBackSub
+    Select an image to measure:Cycle08_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle08_T_noBackSub
+    Select where to perform color compensation:Within objects
+    Select an object to perform compensation within:Foci
+    Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
+    Should images be rescaled 0-1 before compensating but after masking to objects?:No
+    Should histogram matching be performed between the image groups?:Yes, post-masking to objects
+    What compensation class should serve as the template histogram?:4
+    Should images be rescaled 0-1 after compensating?:No
+    Should the images be divided by a scalar based on group percentiles:No
+    What percentile should be used for multiplication:99.9
+    Should the images have a tophat filter applied before correction?:No
+    What size radius should be used for the tophat filter?:3
+    Should the images have a Laplacian of Gaussian filter applied before correction?:Yes
+    What size radius should be used for the LoG filter?:1
+    Should the images have a Difference of Gaussians filter applied before correction?:No
+    What size sigma should be used for the DoG low sigma?:3
+    What size radius should be used for the DoG low sigma?:5
+
+MeasureObjectIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:CorrCycle01_A_noBackSub, CorrCycle01_C_noBackSub, CorrCycle01_G_noBackSub, CorrCycle01_T_noBackSub, CorrCycle02_A_noBackSub, CorrCycle02_C_noBackSub, CorrCycle02_G_noBackSub, CorrCycle02_T_noBackSub, CorrCycle03_A_noBackSub, CorrCycle03_C_noBackSub, CorrCycle03_G_noBackSub, CorrCycle03_T_noBackSub, CorrCycle04_A_noBackSub, CorrCycle04_C_noBackSub, CorrCycle04_G_noBackSub, CorrCycle04_T_noBackSub, CorrCycle05_A_noBackSub, CorrCycle05_C_noBackSub, CorrCycle05_G_noBackSub, CorrCycle05_T_noBackSub, CorrCycle06_A_noBackSub, CorrCycle06_C_noBackSub, CorrCycle06_G_noBackSub, CorrCycle06_T_noBackSub, CorrCycle07_A_noBackSub, CorrCycle07_C_noBackSub, CorrCycle07_G_noBackSub, CorrCycle07_T_noBackSub, CorrCycle08_A_noBackSub, CorrCycle08_C_noBackSub, CorrCycle08_G_noBackSub, CorrCycle08_T_noBackSub
+    Select objects to measure:Foci
+
+CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Number of cycles:8
+    Input object name:Foci
+    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A_noBackSub
+    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
+    Name of the file:Barcodes.csv
+    Select the column of barcodes to match against:Barcode
+    Select the column with gene/transcript barcode names:Construct
+    Retain an image of the barcodes color coded by call?:Yes
+    Enter the called barcode image name:Barcodes_IntValues_999
+    Retain an image of the barcodes color coded by score match?:Yes
+    Enter the barcode score image name:BarcodeScores_IntValues_noBackSub
+
+CompensateColors:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+    Hidden:32
+    Hidden:1
+    Select an image to measure:Cycle01_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle01_A_Rescale999_noBackSub
+    Select an image to measure:Cycle02_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle02_A_Rescale999_noBackSub
+    Select an image to measure:Cycle03_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle03_A_Rescale999_noBackSub
+    Select an image to measure:Cycle04_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle04_A_Rescale999_noBackSub
+    Select an image to measure:Cycle05_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle05_A_Rescale999_noBackSub
+    Select an image to measure:Cycle06_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle06_A_Rescale999_noBackSub
+    Select an image to measure:Cycle07_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle07_A_Rescale999_noBackSub
+    Select an image to measure:Cycle08_A
+    What compensation class does this image belong to?:1
+    Select an output image name:CorrCycle08_A_Rescale999_noBackSub
+    Select an image to measure:Cycle01_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle01_C_Rescale999_noBackSub
+    Select an image to measure:Cycle02_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle02_C_Rescale999_noBackSub
+    Select an image to measure:Cycle03_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle03_C_Rescale999_noBackSub
+    Select an image to measure:Cycle04_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle04_C_Rescale999_noBackSub
+    Select an image to measure:Cycle05_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle05_C_Rescale999_noBackSub
+    Select an image to measure:Cycle06_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle06_C_Rescale999_noBackSub
+    Select an image to measure:Cycle07_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle07_C_Rescale999_noBackSub
+    Select an image to measure:Cycle08_C
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle08_C_Rescale999_noBackSub
+    Select an image to measure:Cycle01_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle01_G_Rescale999_noBackSub
+    Select an image to measure:Cycle02_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle02_G_Rescale999_noBackSub
+    Select an image to measure:Cycle03_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle03_G_Rescale999_noBackSub
+    Select an image to measure:Cycle04_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle04_G_Rescale999_noBackSub
+    Select an image to measure:Cycle05_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle05_G_Rescale999_noBackSub
+    Select an image to measure:Cycle06_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle06_G_Rescale999_noBackSub
+    Select an image to measure:Cycle07_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle07_G_Rescale999_noBackSub
+    Select an image to measure:Cycle08_G
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle08_G_Rescale999_noBackSub
+    Select an image to measure:Cycle01_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle01_T_Rescale999_noBackSub
+    Select an image to measure:Cycle02_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle02_T_Rescale999_noBackSub
+    Select an image to measure:Cycle03_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle03_T_Rescale999_noBackSub
+    Select an image to measure:Cycle04_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle04_T_Rescale999_noBackSub
+    Select an image to measure:Cycle05_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle05_T_Rescale999_noBackSub
+    Select an image to measure:Cycle06_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle06_T_Rescale999_noBackSub
+    Select an image to measure:Cycle07_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle07_T_Rescale999_noBackSub
+    Select an image to measure:Cycle08_T
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle08_T_Rescale999_noBackSub
+    Select where to perform color compensation:Within objects
+    Select an object to perform compensation within:Foci
+    Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
+    Should images be rescaled 0-1 before compensating but after masking to objects?:No
+    Should histogram matching be performed between the image groups?:Yes, post-masking to objects
+    What compensation class should serve as the template histogram?:4
     Should images be rescaled 0-1 after compensating?:No
     Should the images be divided by a scalar based on group percentiles:Yes
     What percentile should be used for multiplication:99.9
+    Should the images have a tophat filter applied before correction?:No
+    What size radius should be used for the tophat filter?:3
+    Should the images have a Laplacian of Gaussian filter applied before correction?:Yes
+    What size radius should be used for the LoG filter?:1
+    Should the images have a Difference of Gaussians filter applied before correction?:No
+    What size sigma should be used for the DoG low sigma?:3
+    What size radius should be used for the DoG low sigma?:5
 
-MeasureObjectIntensity:[module_num:21|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select images to measure:Rescale999_CorrCycle01_A, Rescale999_CorrCycle01_C, Rescale999_CorrCycle01_G, Rescale999_CorrCycle01_T, Rescale999_CorrCycle02_A, Rescale999_CorrCycle02_C, Rescale999_CorrCycle02_G, Rescale999_CorrCycle02_T, Rescale999_CorrCycle03_A, Rescale999_CorrCycle03_C, Rescale999_CorrCycle03_G, Rescale999_CorrCycle03_T, Rescale999_CorrCycle04_A, Rescale999_CorrCycle04_C, Rescale999_CorrCycle04_G, Rescale999_CorrCycle04_T, Rescale999_CorrCycle05_A, Rescale999_CorrCycle05_C, Rescale999_CorrCycle05_G, Rescale999_CorrCycle05_T, Rescale999_CorrCycle06_A, Rescale999_CorrCycle06_C, Rescale999_CorrCycle06_G, Rescale999_CorrCycle06_T, Rescale999_CorrCycle07_A, Rescale999_CorrCycle07_C, Rescale999_CorrCycle07_G, Rescale999_CorrCycle07_T, Rescale999_CorrCycle08_A, Rescale999_CorrCycle08_C, Rescale999_CorrCycle08_G, Rescale999_CorrCycle08_T
+MeasureObjectIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:CorrCycle01_A_Rescale999_noBackSub, CorrCycle01_C_Rescale999_noBackSub, CorrCycle01_G_Rescale999_noBackSub, CorrCycle01_T_Rescale999_noBackSub, CorrCycle02_A_Rescale999_noBackSub, CorrCycle02_C_Rescale999_noBackSub, CorrCycle02_G_Rescale999_noBackSub, CorrCycle02_T_Rescale999_noBackSub, CorrCycle03_A_Rescale999_noBackSub, CorrCycle03_C_Rescale999_noBackSub, CorrCycle03_G_Rescale999_noBackSub, CorrCycle03_T_Rescale999_noBackSub, CorrCycle04_A_Rescale999_noBackSub, CorrCycle04_C_Rescale999_noBackSub, CorrCycle04_G_Rescale999_noBackSub, CorrCycle04_T_Rescale999_noBackSub, CorrCycle05_A_Rescale999_noBackSub, CorrCycle05_C_Rescale999_noBackSub, CorrCycle05_G_Rescale999_noBackSub, CorrCycle05_T_Rescale999_noBackSub, CorrCycle06_A_Rescale999_noBackSub, CorrCycle06_C_Rescale999_noBackSub, CorrCycle06_G_Rescale999_noBackSub, CorrCycle06_T_Rescale999_noBackSub, CorrCycle07_A_Rescale999_noBackSub, CorrCycle07_C_Rescale999_noBackSub, CorrCycle07_G_Rescale999_noBackSub, CorrCycle07_T_Rescale999_noBackSub, CorrCycle08_A_Rescale999_noBackSub, CorrCycle08_C_Rescale999_noBackSub, CorrCycle08_G_Rescale999_noBackSub, CorrCycle08_T_Rescale999_noBackSub
     Select objects to measure:Foci
 
-CallBarcodes:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CallBarcodes:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Number of cycles:8
     Input object name:Foci
-    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_Rescale999_CorrCycle01_A
+    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_CorrCycle01_A_Rescale999_noBackSub
     Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
     Name of the file:Barcodes.csv
     Select the column of barcodes to match against:Barcode
@@ -853,133 +1126,7 @@ CallBarcodes:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by call?:Yes
     Enter the called barcode image name:Barcodes_IntValues_999
     Retain an image of the barcodes color coded by score match?:Yes
-    Enter the barcode score image name:BarcodeScores_IntValues_999
-
-CompensateColors:[module_num:23|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Hidden:32
-    Hidden:1
-    Select an image to measure:Cycle01_A_BackSub
-    What compensation class does this image belong to?:1
-    Select an output image name:RescalePreMask_CorrCycle01_A
-    Select an image to measure:Cycle02_A_BackSub
-    What compensation class does this image belong to?:1
-    Select an output image name:RescalePreMask_CorrCycle02_A
-    Select an image to measure:Cycle03_A_BackSub
-    What compensation class does this image belong to?:1
-    Select an output image name:RescalePreMask_CorrCycle03_A
-    Select an image to measure:Cycle04_A_BackSub
-    What compensation class does this image belong to?:1
-    Select an output image name:RescalePreMask_CorrCycle04_A
-    Select an image to measure:Cycle05_A_BackSub
-    What compensation class does this image belong to?:1
-    Select an output image name:RescalePreMask_CorrCycle05_A
-    Select an image to measure:Cycle06_A_BackSub
-    What compensation class does this image belong to?:1
-    Select an output image name:RescalePreMask_CorrCycle06_A
-    Select an image to measure:Cycle07_A_BackSub
-    What compensation class does this image belong to?:1
-    Select an output image name:RescalePreMask_CorrCycle07_A
-    Select an image to measure:Cycle08_A_BackSub
-    What compensation class does this image belong to?:1
-    Select an output image name:RescalePreMask_CorrCycle08_A
-    Select an image to measure:Cycle01_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:RescalePreMask_CorrCycle01_C
-    Select an image to measure:Cycle02_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:RescalePreMask_CorrCycle02_C
-    Select an image to measure:Cycle03_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:RescalePreMask_CorrCycle03_C
-    Select an image to measure:Cycle04_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:RescalePreMask_CorrCycle04_C
-    Select an image to measure:Cycle05_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:RescalePreMask_CorrCycle05_C
-    Select an image to measure:Cycle06_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:RescalePreMask_CorrCycle06_C
-    Select an image to measure:Cycle07_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:RescalePreMask_CorrCycle07_C
-    Select an image to measure:Cycle08_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:RescalePreMask_CorrCycle08_C
-    Select an image to measure:Cycle01_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:RescalePreMask_CorrCycle01_G
-    Select an image to measure:Cycle02_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:RescalePreMask_CorrCycle02_G
-    Select an image to measure:Cycle03_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:RescalePreMask_CorrCycle03_G
-    Select an image to measure:Cycle04_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:RescalePreMask_CorrCycle04_G
-    Select an image to measure:Cycle05_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:RescalePreMask_CorrCycle05_G
-    Select an image to measure:Cycle06_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:RescalePreMask_CorrCycle06_G
-    Select an image to measure:Cycle07_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:RescalePreMask_CorrCycle07_G
-    Select an image to measure:Cycle08_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:RescalePreMask_CorrCycle08_G
-    Select an image to measure:Cycle01_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:RescalePreMask_CorrCycle01_T
-    Select an image to measure:Cycle02_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:RescalePreMask_CorrCycle02_T
-    Select an image to measure:Cycle03_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:RescalePreMask_CorrCycle03_T
-    Select an image to measure:Cycle04_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:RescalePreMask_CorrCycle04_T
-    Select an image to measure:Cycle05_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:RescalePreMask_CorrCycle05_T
-    Select an image to measure:Cycle06_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:RescalePreMask_CorrCycle06_T
-    Select an image to measure:Cycle07_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:RescalePreMask_CorrCycle07_T
-    Select an image to measure:Cycle08_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:RescalePreMask_CorrCycle08_T
-    Select where to perform color compensation:Within objects
-    Select an object to perform compensation within:Foci
-    Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:Yes
-    Should images be rescaled 0-1 before compensating but after masking to objects?:No
-    Should histogram matching be performed between the image groups?:No
-    What compensation class should serve as the template histogram?:1
-    Should images be rescaled 0-1 after compensating?:No
-    Should the images be divided by a scalar based on group percentiles:No
-    What percentile should be used for multiplication:99
-
-MeasureObjectIntensity:[module_num:24|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select images to measure:RescalePreMask_CorrCycle01_A, RescalePreMask_CorrCycle01_C, RescalePreMask_CorrCycle01_G, RescalePreMask_CorrCycle01_T, RescalePreMask_CorrCycle02_A, RescalePreMask_CorrCycle02_C, RescalePreMask_CorrCycle02_G, RescalePreMask_CorrCycle02_T, RescalePreMask_CorrCycle03_A, RescalePreMask_CorrCycle03_C, RescalePreMask_CorrCycle03_G, RescalePreMask_CorrCycle03_T, RescalePreMask_CorrCycle04_A, RescalePreMask_CorrCycle04_C, RescalePreMask_CorrCycle04_G, RescalePreMask_CorrCycle04_T, RescalePreMask_CorrCycle05_A, RescalePreMask_CorrCycle05_C, RescalePreMask_CorrCycle05_G, RescalePreMask_CorrCycle05_T, RescalePreMask_CorrCycle06_A, RescalePreMask_CorrCycle06_C, RescalePreMask_CorrCycle06_G, RescalePreMask_CorrCycle06_T, RescalePreMask_CorrCycle07_A, RescalePreMask_CorrCycle07_C, RescalePreMask_CorrCycle07_G, RescalePreMask_CorrCycle07_T, RescalePreMask_CorrCycle08_A, RescalePreMask_CorrCycle08_C, RescalePreMask_CorrCycle08_G, RescalePreMask_CorrCycle08_T
-    Select objects to measure:Foci
-
-CallBarcodes:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Number of cycles:8
-    Input object name:Foci
-    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_RescalePreMask_CorrCycle01_A
-    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
-    Name of the file:Barcodes.csv
-    Select the column of barcodes to match against:Barcode
-    Select the column with gene/transcript barcode names:Construct
-    Retain an image of the barcodes color coded by call?:Yes
-    Enter the called barcode image name:Barcodes_IntValues_999
-    Retain an image of the barcodes color coded by score match?:Yes
-    Enter the barcode score image name:BarcodeScores_IntValues_RescalePreMask
+    Enter the barcode score image name:BarcodeScores_IntValues_Rescale999_noBackSub
 
 CompensateColors:[module_num:26|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:32
@@ -1859,11 +2006,650 @@ CallBarcodes:[module_num:46|svn_version:'Unknown'|variable_revision_number:1|sho
     Select the column of barcodes to match against:Barcode
     Select the column with gene/transcript barcode names:Construct
     Retain an image of the barcodes color coded by call?:Yes
-    Enter the called barcode image name:Barcodes_IntValues_MaskHistARescale
+    Enter the called barcode image name:Barcodes_IntValues_999
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_MaskHistARescale
 
-RelateObjects:[module_num:47|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CompensateColors:[module_num:47|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:32
+    Hidden:1
+    Select an image to measure:Cycle01_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle01_A
+    Select an image to measure:Cycle02_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle02_A
+    Select an image to measure:Cycle03_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle03_A
+    Select an image to measure:Cycle04_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle04_A
+    Select an image to measure:Cycle05_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle05_A
+    Select an image to measure:Cycle06_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle06_A
+    Select an image to measure:Cycle07_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle07_A
+    Select an image to measure:Cycle08_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle08_A
+    Select an image to measure:Cycle01_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle01_C
+    Select an image to measure:Cycle02_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle02_C
+    Select an image to measure:Cycle03_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle03_C
+    Select an image to measure:Cycle04_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle04_C
+    Select an image to measure:Cycle05_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle05_C
+    Select an image to measure:Cycle06_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle06_C
+    Select an image to measure:Cycle07_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle07_C
+    Select an image to measure:Cycle08_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle08_C
+    Select an image to measure:Cycle01_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle01_G
+    Select an image to measure:Cycle02_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle02_G
+    Select an image to measure:Cycle03_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle03_G
+    Select an image to measure:Cycle04_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle04_G
+    Select an image to measure:Cycle05_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle05_G
+    Select an image to measure:Cycle06_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle06_G
+    Select an image to measure:Cycle07_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle07_G
+    Select an image to measure:Cycle08_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle08_G
+    Select an image to measure:Cycle01_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle01_T
+    Select an image to measure:Cycle02_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle02_T
+    Select an image to measure:Cycle03_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle03_T
+    Select an image to measure:Cycle04_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle04_T
+    Select an image to measure:Cycle05_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle05_T
+    Select an image to measure:Cycle06_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle06_T
+    Select an image to measure:Cycle07_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle07_T
+    Select an image to measure:Cycle08_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Rescale999_RescalePostCompensate_CorrCycle08_T
+    Select where to perform color compensation:Within objects
+    Select an object to perform compensation within:Foci
+    Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
+    Should images be rescaled 0-1 before compensating but after masking to objects?:No
+    Should histogram matching be performed between the image groups?:No
+    What compensation class should serve as the template histogram?:1
+    Should images be rescaled 0-1 after compensating?:Yes
+    Should the images be divided by a scalar based on group percentiles:Yes
+    What percentile should be used for multiplication:99.9
+
+MeasureObjectIntensity:[module_num:48|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Rescale999_RescalePostCompensate_CorrCycle01_A, Rescale999_RescalePostCompensate_CorrCycle01_C, Rescale999_RescalePostCompensate_CorrCycle01_G, Rescale999_RescalePostCompensate_CorrCycle01_T, Rescale999_RescalePostCompensate_CorrCycle02_A, Rescale999_RescalePostCompensate_CorrCycle02_C, Rescale999_RescalePostCompensate_CorrCycle02_G, Rescale999_RescalePostCompensate_CorrCycle02_T, Rescale999_RescalePostCompensate_CorrCycle03_A, Rescale999_RescalePostCompensate_CorrCycle03_C, Rescale999_RescalePostCompensate_CorrCycle03_G, Rescale999_RescalePostCompensate_CorrCycle03_T, Rescale999_RescalePostCompensate_CorrCycle04_A, Rescale999_RescalePostCompensate_CorrCycle04_C, Rescale999_RescalePostCompensate_CorrCycle04_G, Rescale999_RescalePostCompensate_CorrCycle04_T, Rescale999_RescalePostCompensate_CorrCycle05_A, Rescale999_RescalePostCompensate_CorrCycle05_C, Rescale999_RescalePostCompensate_CorrCycle05_G, Rescale999_RescalePostCompensate_CorrCycle05_T, Rescale999_RescalePostCompensate_CorrCycle06_A, Rescale999_RescalePostCompensate_CorrCycle06_C, Rescale999_RescalePostCompensate_CorrCycle06_G, Rescale999_RescalePostCompensate_CorrCycle06_T, Rescale999_RescalePostCompensate_CorrCycle07_A, Rescale999_RescalePostCompensate_CorrCycle07_C, Rescale999_RescalePostCompensate_CorrCycle07_G, Rescale999_RescalePostCompensate_CorrCycle07_T, Rescale999_RescalePostCompensate_CorrCycle08_A, Rescale999_RescalePostCompensate_CorrCycle08_C, Rescale999_RescalePostCompensate_CorrCycle08_G, Rescale999_RescalePostCompensate_CorrCycle08_T
+    Select objects to measure:Foci
+
+CallBarcodes:[module_num:49|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Number of cycles:8
+    Input object name:Foci
+    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_Rescale999_RescalePostCompensate_CorrCycle01_A
+    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
+    Name of the file:Barcodes.csv
+    Select the column of barcodes to match against:Barcode
+    Select the column with gene/transcript barcode names:Construct
+    Retain an image of the barcodes color coded by call?:Yes
+    Enter the called barcode image name:Barcodes_IntValues_999
+    Retain an image of the barcodes color coded by score match?:Yes
+    Enter the barcode score image name:BarcodeScores_IntValues_Rescale999_RescalePostCompensate
+
+CompensateColors:[module_num:50|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:32
+    Hidden:1
+    Select an image to measure:Cycle01_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle01_A
+    Select an image to measure:Cycle02_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle02_A
+    Select an image to measure:Cycle03_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle03_A
+    Select an image to measure:Cycle04_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle04_A
+    Select an image to measure:Cycle05_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle05_A
+    Select an image to measure:Cycle06_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle06_A
+    Select an image to measure:Cycle07_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle07_A
+    Select an image to measure:Cycle08_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle08_A
+    Select an image to measure:Cycle01_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle01_C
+    Select an image to measure:Cycle02_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle02_C
+    Select an image to measure:Cycle03_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle03_C
+    Select an image to measure:Cycle04_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle04_C
+    Select an image to measure:Cycle05_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle05_C
+    Select an image to measure:Cycle06_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle06_C
+    Select an image to measure:Cycle07_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle07_C
+    Select an image to measure:Cycle08_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle08_C
+    Select an image to measure:Cycle01_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle01_G
+    Select an image to measure:Cycle02_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle02_G
+    Select an image to measure:Cycle03_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle03_G
+    Select an image to measure:Cycle04_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle04_G
+    Select an image to measure:Cycle05_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle05_G
+    Select an image to measure:Cycle06_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle06_G
+    Select an image to measure:Cycle07_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle07_G
+    Select an image to measure:Cycle08_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle08_G
+    Select an image to measure:Cycle01_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle01_T
+    Select an image to measure:Cycle02_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle02_T
+    Select an image to measure:Cycle03_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle03_T
+    Select an image to measure:Cycle04_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle04_T
+    Select an image to measure:Cycle05_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle05_T
+    Select an image to measure:Cycle06_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle06_T
+    Select an image to measure:Cycle07_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle07_T
+    Select an image to measure:Cycle08_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat4_RescalePostCompensate_CorrCycle08_T
+    Select where to perform color compensation:Within objects
+    Select an object to perform compensation within:Foci
+    Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
+    Should images be rescaled 0-1 before compensating but after masking to objects?:No
+    Should histogram matching be performed between the image groups?:No
+    What compensation class should serve as the template histogram?:1
+    Should images be rescaled 0-1 after compensating?:Yes
+    Should the images be divided by a scalar based on group percentiles:Yes
+    What percentile should be used for multiplication:99.9
+    Should the images have a tophat filter applied before correction?:Yes
+    What size radius should be used for the tophat filter?:4
+
+MeasureObjectIntensity:[module_num:51|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Tophat4_RescalePostCompensate_CorrCycle01_A, Tophat4_RescalePostCompensate_CorrCycle01_C, Tophat4_RescalePostCompensate_CorrCycle01_G, Tophat4_RescalePostCompensate_CorrCycle01_T, Tophat4_RescalePostCompensate_CorrCycle02_A, Tophat4_RescalePostCompensate_CorrCycle02_C, Tophat4_RescalePostCompensate_CorrCycle02_G, Tophat4_RescalePostCompensate_CorrCycle02_T, Tophat4_RescalePostCompensate_CorrCycle03_A, Tophat4_RescalePostCompensate_CorrCycle03_C, Tophat4_RescalePostCompensate_CorrCycle03_G, Tophat4_RescalePostCompensate_CorrCycle03_T, Tophat4_RescalePostCompensate_CorrCycle04_A, Tophat4_RescalePostCompensate_CorrCycle04_C, Tophat4_RescalePostCompensate_CorrCycle04_G, Tophat4_RescalePostCompensate_CorrCycle04_T, Tophat4_RescalePostCompensate_CorrCycle05_A, Tophat4_RescalePostCompensate_CorrCycle05_C, Tophat4_RescalePostCompensate_CorrCycle05_G, Tophat4_RescalePostCompensate_CorrCycle05_T, Tophat4_RescalePostCompensate_CorrCycle06_A, Tophat4_RescalePostCompensate_CorrCycle06_C, Tophat4_RescalePostCompensate_CorrCycle06_G, Tophat4_RescalePostCompensate_CorrCycle06_T, Tophat4_RescalePostCompensate_CorrCycle07_A, Tophat4_RescalePostCompensate_CorrCycle07_C, Tophat4_RescalePostCompensate_CorrCycle07_G, Tophat4_RescalePostCompensate_CorrCycle07_T, Tophat4_RescalePostCompensate_CorrCycle08_A, Tophat4_RescalePostCompensate_CorrCycle08_C, Tophat4_RescalePostCompensate_CorrCycle08_G, Tophat4_RescalePostCompensate_CorrCycle08_T
+    Select objects to measure:Foci
+
+CallBarcodes:[module_num:52|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Number of cycles:8
+    Input object name:Foci
+    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_Tophat4_RescalePostCompensate_CorrCycle01_A
+    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
+    Name of the file:Barcodes.csv
+    Select the column of barcodes to match against:Barcode
+    Select the column with gene/transcript barcode names:Construct
+    Retain an image of the barcodes color coded by call?:Yes
+    Enter the called barcode image name:Barcodes_IntValues_999
+    Retain an image of the barcodes color coded by score match?:Yes
+    Enter the barcode score image name:BarcodeScores_IntValues_Tophat4_RescalePostCompensate
+
+CompensateColors:[module_num:53|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:32
+    Hidden:1
+    Select an image to measure:Cycle01_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle01_A
+    Select an image to measure:Cycle02_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle02_A
+    Select an image to measure:Cycle03_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle03_A
+    Select an image to measure:Cycle04_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle04_A
+    Select an image to measure:Cycle05_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle05_A
+    Select an image to measure:Cycle06_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle06_A
+    Select an image to measure:Cycle07_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle07_A
+    Select an image to measure:Cycle08_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle08_A
+    Select an image to measure:Cycle01_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle01_C
+    Select an image to measure:Cycle02_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle02_C
+    Select an image to measure:Cycle03_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle03_C
+    Select an image to measure:Cycle04_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle04_C
+    Select an image to measure:Cycle05_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle05_C
+    Select an image to measure:Cycle06_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle06_C
+    Select an image to measure:Cycle07_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle07_C
+    Select an image to measure:Cycle08_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle08_C
+    Select an image to measure:Cycle01_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle01_G
+    Select an image to measure:Cycle02_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle02_G
+    Select an image to measure:Cycle03_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle03_G
+    Select an image to measure:Cycle04_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle04_G
+    Select an image to measure:Cycle05_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle05_G
+    Select an image to measure:Cycle06_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle06_G
+    Select an image to measure:Cycle07_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle07_G
+    Select an image to measure:Cycle08_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle08_G
+    Select an image to measure:Cycle01_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle01_T
+    Select an image to measure:Cycle02_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle02_T
+    Select an image to measure:Cycle03_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle03_T
+    Select an image to measure:Cycle04_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle04_T
+    Select an image to measure:Cycle05_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle05_T
+    Select an image to measure:Cycle06_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle06_T
+    Select an image to measure:Cycle07_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle07_T
+    Select an image to measure:Cycle08_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:Tophat8_RescalePostCompensate_CorrCycle08_T
+    Select where to perform color compensation:Within objects
+    Select an object to perform compensation within:Foci
+    Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
+    Should images be rescaled 0-1 before compensating but after masking to objects?:No
+    Should histogram matching be performed between the image groups?:No
+    What compensation class should serve as the template histogram?:1
+    Should images be rescaled 0-1 after compensating?:Yes
+    Should the images be divided by a scalar based on group percentiles:Yes
+    What percentile should be used for multiplication:99.9
+    Should the images have a tophat filter applied before correction?:Yes
+    What size radius should be used for the tophat filter?:8
+
+MeasureObjectIntensity:[module_num:54|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Tophat8_RescalePostCompensate_CorrCycle01_A, Tophat8_RescalePostCompensate_CorrCycle01_C, Tophat8_RescalePostCompensate_CorrCycle01_G, Tophat8_RescalePostCompensate_CorrCycle01_T, Tophat8_RescalePostCompensate_CorrCycle02_A, Tophat8_RescalePostCompensate_CorrCycle02_C, Tophat8_RescalePostCompensate_CorrCycle02_G, Tophat8_RescalePostCompensate_CorrCycle02_T, Tophat8_RescalePostCompensate_CorrCycle03_A, Tophat8_RescalePostCompensate_CorrCycle03_C, Tophat8_RescalePostCompensate_CorrCycle03_G, Tophat8_RescalePostCompensate_CorrCycle03_T, Tophat8_RescalePostCompensate_CorrCycle04_A, Tophat8_RescalePostCompensate_CorrCycle04_C, Tophat8_RescalePostCompensate_CorrCycle04_G, Tophat8_RescalePostCompensate_CorrCycle04_T, Tophat8_RescalePostCompensate_CorrCycle05_A, Tophat8_RescalePostCompensate_CorrCycle05_C, Tophat8_RescalePostCompensate_CorrCycle05_G, Tophat8_RescalePostCompensate_CorrCycle05_T, Tophat8_RescalePostCompensate_CorrCycle06_A, Tophat8_RescalePostCompensate_CorrCycle06_C, Tophat8_RescalePostCompensate_CorrCycle06_G, Tophat8_RescalePostCompensate_CorrCycle06_T, Tophat8_RescalePostCompensate_CorrCycle07_A, Tophat8_RescalePostCompensate_CorrCycle07_C, Tophat8_RescalePostCompensate_CorrCycle07_G, Tophat8_RescalePostCompensate_CorrCycle07_T, Tophat8_RescalePostCompensate_CorrCycle08_A, Tophat8_RescalePostCompensate_CorrCycle08_C, Tophat8_RescalePostCompensate_CorrCycle08_G, Tophat8_RescalePostCompensate_CorrCycle08_T
+    Select objects to measure:Foci
+
+CallBarcodes:[module_num:55|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Number of cycles:8
+    Input object name:Foci
+    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_Tophat8_RescalePostCompensate_CorrCycle01_A
+    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
+    Name of the file:Barcodes.csv
+    Select the column of barcodes to match against:Barcode
+    Select the column with gene/transcript barcode names:Construct
+    Retain an image of the barcodes color coded by call?:Yes
+    Enter the called barcode image name:Barcodes_IntValues_999
+    Retain an image of the barcodes color coded by score match?:Yes
+    Enter the barcode score image name:BarcodeScores_IntValues_Tophat8_RescalePostCompensate
+
+CompensateColors:[module_num:59|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:32
+    Hidden:1
+    Select an image to measure:Cycle01_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle01_A
+    Select an image to measure:Cycle02_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle02_A
+    Select an image to measure:Cycle03_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle03_A
+    Select an image to measure:Cycle04_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle04_A
+    Select an image to measure:Cycle05_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle05_A
+    Select an image to measure:Cycle06_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle06_A
+    Select an image to measure:Cycle07_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle07_A
+    Select an image to measure:Cycle08_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle08_A
+    Select an image to measure:Cycle01_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle01_C
+    Select an image to measure:Cycle02_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle02_C
+    Select an image to measure:Cycle03_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle03_C
+    Select an image to measure:Cycle04_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle04_C
+    Select an image to measure:Cycle05_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle05_C
+    Select an image to measure:Cycle06_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle06_C
+    Select an image to measure:Cycle07_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle07_C
+    Select an image to measure:Cycle08_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle08_C
+    Select an image to measure:Cycle01_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle01_G
+    Select an image to measure:Cycle02_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle02_G
+    Select an image to measure:Cycle03_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle03_G
+    Select an image to measure:Cycle04_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle04_G
+    Select an image to measure:Cycle05_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle05_G
+    Select an image to measure:Cycle06_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle06_G
+    Select an image to measure:Cycle07_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle07_G
+    Select an image to measure:Cycle08_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle08_G
+    Select an image to measure:Cycle01_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle01_T
+    Select an image to measure:Cycle02_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle02_T
+    Select an image to measure:Cycle03_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle03_T
+    Select an image to measure:Cycle04_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle04_T
+    Select an image to measure:Cycle05_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle05_T
+    Select an image to measure:Cycle06_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle06_T
+    Select an image to measure:Cycle07_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle07_T
+    Select an image to measure:Cycle08_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:LoG8_RescalePostCompensate_CorrCycle08_T
+    Select where to perform color compensation:Within objects
+    Select an object to perform compensation within:Foci
+    Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
+    Should images be rescaled 0-1 before compensating but after masking to objects?:No
+    Should histogram matching be performed between the image groups?:No
+    What compensation class should serve as the template histogram?:1
+    Should images be rescaled 0-1 after compensating?:Yes
+    Should the images be divided by a scalar based on group percentiles:Yes
+    What percentile should be used for multiplication:99.9
+    Should the images have a Laplacian of Gaussian filter applied before correction?:Yes
+    What size radius should be used for the LoG filter?:8
+
+MeasureObjectIntensity:[module_num:60|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:LoG8_RescalePostCompensate_CorrCycle01_A, LoG8_RescalePostCompensate_CorrCycle01_C, LoG8_RescalePostCompensate_CorrCycle01_G, LoG8_RescalePostCompensate_CorrCycle01_T, LoG8_RescalePostCompensate_CorrCycle02_A, LoG8_RescalePostCompensate_CorrCycle02_C, LoG8_RescalePostCompensate_CorrCycle02_G, LoG8_RescalePostCompensate_CorrCycle02_T, LoG8_RescalePostCompensate_CorrCycle03_A, LoG8_RescalePostCompensate_CorrCycle03_C, LoG8_RescalePostCompensate_CorrCycle03_G, LoG8_RescalePostCompensate_CorrCycle03_T, LoG8_RescalePostCompensate_CorrCycle04_A, LoG8_RescalePostCompensate_CorrCycle04_C, LoG8_RescalePostCompensate_CorrCycle04_G, LoG8_RescalePostCompensate_CorrCycle04_T, LoG8_RescalePostCompensate_CorrCycle05_A, LoG8_RescalePostCompensate_CorrCycle05_C, LoG8_RescalePostCompensate_CorrCycle05_G, LoG8_RescalePostCompensate_CorrCycle05_T, LoG8_RescalePostCompensate_CorrCycle06_A, LoG8_RescalePostCompensate_CorrCycle06_C, LoG8_RescalePostCompensate_CorrCycle06_G, LoG8_RescalePostCompensate_CorrCycle06_T, LoG8_RescalePostCompensate_CorrCycle07_A, LoG8_RescalePostCompensate_CorrCycle07_C, LoG8_RescalePostCompensate_CorrCycle07_G, LoG8_RescalePostCompensate_CorrCycle07_T, LoG8_RescalePostCompensate_CorrCycle08_A, LoG8_RescalePostCompensate_CorrCycle08_C, LoG8_RescalePostCompensate_CorrCycle08_G, LoG8_RescalePostCompensate_CorrCycle08_T
+    Select objects to measure:Foci
+
+CallBarcodes:[module_num:61|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Number of cycles:8
+    Input object name:Foci
+    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_LoG8_RescalePostCompensate_CorrCycle01_A
+    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
+    Name of the file:Barcodes.csv
+    Select the column of barcodes to match against:Barcode
+    Select the column with gene/transcript barcode names:Construct
+    Retain an image of the barcodes color coded by call?:Yes
+    Enter the called barcode image name:Barcodes_IntValues_999
+    Retain an image of the barcodes color coded by score match?:Yes
+    Enter the barcode score image name:BarcodeScores_IntValues_LoG8_RescalePostCompensate
+
+CompensateColors:[module_num:62|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:32
+    Hidden:1
+    Select an image to measure:Cycle01_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle01_A
+    Select an image to measure:Cycle02_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle02_A
+    Select an image to measure:Cycle03_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle03_A
+    Select an image to measure:Cycle04_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle04_A
+    Select an image to measure:Cycle05_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle05_A
+    Select an image to measure:Cycle06_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle06_A
+    Select an image to measure:Cycle07_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle07_A
+    Select an image to measure:Cycle08_A_BackSub
+    What compensation class does this image belong to?:1
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle08_A
+    Select an image to measure:Cycle01_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle01_C
+    Select an image to measure:Cycle02_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle02_C
+    Select an image to measure:Cycle03_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle03_C
+    Select an image to measure:Cycle04_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle04_C
+    Select an image to measure:Cycle05_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle05_C
+    Select an image to measure:Cycle06_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle06_C
+    Select an image to measure:Cycle07_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle07_C
+    Select an image to measure:Cycle08_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle08_C
+    Select an image to measure:Cycle01_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle01_G
+    Select an image to measure:Cycle02_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle02_G
+    Select an image to measure:Cycle03_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle03_G
+    Select an image to measure:Cycle04_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle04_G
+    Select an image to measure:Cycle05_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle05_G
+    Select an image to measure:Cycle06_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle06_G
+    Select an image to measure:Cycle07_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle07_G
+    Select an image to measure:Cycle08_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle08_G
+    Select an image to measure:Cycle01_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle01_T
+    Select an image to measure:Cycle02_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle02_T
+    Select an image to measure:Cycle03_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle03_T
+    Select an image to measure:Cycle04_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle04_T
+    Select an image to measure:Cycle05_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle05_T
+    Select an image to measure:Cycle06_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle06_T
+    Select an image to measure:Cycle07_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle07_T
+    Select an image to measure:Cycle08_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:DoG48_RescalePostCompensate_CorrCycle08_T
+    Select where to perform color compensation:Within objects
+    Select an object to perform compensation within:Foci
+    Should individual images be rescaled 0-1 before compensating pre-masking or on unmasked images?:No
+    Should images be rescaled 0-1 before compensating but after masking to objects?:No
+    Should histogram matching be performed between the image groups?:No
+    What compensation class should serve as the template histogram?:1
+    Should images be rescaled 0-1 after compensating?:Yes
+    Should the images be divided by a scalar based on group percentiles:Yes
+    What percentile should be used for multiplication:99.9
+    Should the images have a Difference of Gaussians filter applied before correction?:Yes
+    What size sigma should be used for the DoG low sigma?:4
+    What size radius should be used for the DoG low sigma?:8
+
+MeasureObjectIntensity:[module_num:63|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DoG48_RescalePostCompensate_CorrCycle01_A, DoG48_RescalePostCompensate_CorrCycle01_C, DoG48_RescalePostCompensate_CorrCycle01_G, DoG48_RescalePostCompensate_CorrCycle01_T, DoG48_RescalePostCompensate_CorrCycle02_A, DoG48_RescalePostCompensate_CorrCycle02_C, DoG48_RescalePostCompensate_CorrCycle02_G, DoG48_RescalePostCompensate_CorrCycle02_T, DoG48_RescalePostCompensate_CorrCycle03_A, DoG48_RescalePostCompensate_CorrCycle03_C, DoG48_RescalePostCompensate_CorrCycle03_G, DoG48_RescalePostCompensate_CorrCycle03_T, DoG48_RescalePostCompensate_CorrCycle04_A, DoG48_RescalePostCompensate_CorrCycle04_C, DoG48_RescalePostCompensate_CorrCycle04_G, DoG48_RescalePostCompensate_CorrCycle04_T, DoG48_RescalePostCompensate_CorrCycle05_A, DoG48_RescalePostCompensate_CorrCycle05_C, DoG48_RescalePostCompensate_CorrCycle05_G, DoG48_RescalePostCompensate_CorrCycle05_T, DoG48_RescalePostCompensate_CorrCycle06_A, DoG48_RescalePostCompensate_CorrCycle06_C, DoG48_RescalePostCompensate_CorrCycle06_G, DoG48_RescalePostCompensate_CorrCycle06_T, DoG48_RescalePostCompensate_CorrCycle07_A, DoG48_RescalePostCompensate_CorrCycle07_C, DoG48_RescalePostCompensate_CorrCycle07_G, DoG48_RescalePostCompensate_CorrCycle07_T, DoG48_RescalePostCompensate_CorrCycle08_A, DoG48_RescalePostCompensate_CorrCycle08_C, DoG48_RescalePostCompensate_CorrCycle08_G, DoG48_RescalePostCompensate_CorrCycle08_T
+    Select objects to measure:Foci
+
+CallBarcodes:[module_num:64|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Number of cycles:8
+    Input object name:Foci
+    Select one of the measures from Cycle 1 to use for calling:Intensity_MaxIntensity_DoG48_RescalePostCompensate_CorrCycle01_A
+    Input data file location:Default Input Folder|Desktop\metadata\20200211_6W_CP151A1
+    Name of the file:Barcodes.csv
+    Select the column of barcodes to match against:Barcode
+    Select the column with gene/transcript barcode names:Construct
+    Retain an image of the barcodes color coded by call?:Yes
+    Enter the called barcode image name:Barcodes_IntValues_999
+    Retain an image of the barcodes color coded by score match?:Yes
+    Enter the barcode score image name:BarcodeScores_IntValues_DoG48_RescalePostCompensate
+
+RelateObjects:[module_num:65|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Cells
     Child objects:Foci
     Calculate child-parent distances?:None
@@ -1947,11 +2733,11 @@ RelateObjects:[module_num:47|svn_version:'Unknown'|variable_revision_number:5|sh
     Parent name:None
     Parent name:None
 
-MeasureObjectIntensity:[module_num:48|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select images to measure:BarcodeScores_IntValues_999, BarcodeScores_IntValues_HistogramPreMask_A, BarcodeScores_IntValues_HistogramPreMask_T, BarcodeScores_IntValues_MaskHistARescale, BarcodeScores_IntValues_MaskHistogram_A, BarcodeScores_IntValues_MaskHistogram_T, BarcodeScores_IntValues_RescaleAfterMask, BarcodeScores_IntValues_RescalePostCompensate, BarcodeScores_IntValues_RescalePreMask
+MeasureObjectIntensity:[module_num:66|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:BarcodeScores_IntValues, BarcodeScores_IntValues_noBackSub, BarcodeScores_IntValues_Rescale999_noBackSub, BarcodeScores_IntValues_HistogramPreMask_A, BarcodeScores_IntValues_HistogramPreMask_T, BarcodeScores_IntValues_MaskHistARescale, BarcodeScores_IntValues_MaskHistogram_A, BarcodeScores_IntValues_MaskHistogram_T, BarcodeScores_IntValues_RescaleAfterMask, BarcodeScores_IntValues_RescalePostCompensate, BarcodeScores_IntValues_RescalePreMask, BarcodeScores_IntValues_Rescale999_RescalePostCompensate, BarcodeScores_IntValues_Tophat4_RescalePostCompensate, BarcodeScores_IntValues_Tophat8_RescalePostCompensate, BarcodeScores_IntValues_LoG4_RescalePostCompensate, BarcodeScores_IntValues_LoG8_RescalePostCompensate, BarcodeScores_IntValues_DoG48_RescalePostCompensate
     Select objects to measure:BarcodeFoci
 
-ExportToSpreadsheet:[module_num:49|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ExportToSpreadsheet:[module_num:67|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:Yes
     Add image file and folder names to your object data file?:No
@@ -1975,7 +2761,7 @@ ExportToSpreadsheet:[module_num:49|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-CalculateMath:[module_num:50|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:68|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Divide20
     Operation:None
     Select the numerator measurement type:Image
@@ -1999,7 +2785,7 @@ CalculateMath:[module_num:50|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-CalculateMath:[module_num:51|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:69|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Divide20floor
     Operation:None
     Select the numerator measurement type:Image
@@ -2023,7 +2809,7 @@ CalculateMath:[module_num:51|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-CalculateMath:[module_num:52|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:70|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Divide20diff
     Operation:Subtract
     Select the minuend measurement type:Image
@@ -2047,7 +2833,7 @@ CalculateMath:[module_num:52|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-FlagImage:[module_num:53|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FlagImage:[module_num:71|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:1
     Hidden:1
     Name the flag's category:Divide20
@@ -2066,7 +2852,7 @@ FlagImage:[module_num:53|svn_version:'Unknown'|variable_revision_number:4|show_w
     Class number:
     Ignore flag skips on last cycle?:No
 
-ImageMath:[module_num:54|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:72|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:None
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -2085,7 +2871,7 @@ ImageMath:[module_num:54|svn_version:'Unknown'|variable_revision_number:5|show_w
     Multiply the second image by:1.0
     Measurement:
 
-RescaleIntensity:[module_num:55|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RescaleIntensity:[module_num:73|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:MaxSqRt
     Name the output image:RescaleIntensity
     Rescaling method:Stretch each image to use the full intensity range
@@ -2099,7 +2885,7 @@ RescaleIntensity:[module_num:55|svn_version:'Unknown'|variable_revision_number:3
     Divisor value:1.0
     Divisor measurement:None
 
-OverlayOutlines:[module_num:56|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:74|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:RescaleIntensity
     Name the output image:Max_Overlay
@@ -2111,7 +2897,7 @@ OverlayOutlines:[module_num:56|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:#0080FF
     Select objects to display:Cells
 
-SaveImages:[module_num:57|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:75|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:Max_Overlay
     Select method for constructing file names:Single name
