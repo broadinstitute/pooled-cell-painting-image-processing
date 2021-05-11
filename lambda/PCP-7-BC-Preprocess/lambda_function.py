@@ -32,7 +32,6 @@ config_dict = {
     "EXPECTED_NUMBER_FILES": "49",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
-    "USE_PLUGINS": "True",
 }
 
 def lambda_handler(event, context):

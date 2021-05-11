@@ -33,7 +33,6 @@ config_dict = {
     "EXPECTED_NUMBER_FILES": "5000",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
-    "USE_PLUGINS": "True",
 }
 
 
@@ -124,6 +123,6 @@ def lambda_handler(event, context):
         )
 
         # Run the monitor
-        run_DCP.run_monitor(bucket_name, prefix, batch, step)
+        run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)
         print("Go run the monitor now")
         return "Cluster started"

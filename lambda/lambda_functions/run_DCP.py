@@ -4,25 +4,25 @@ import boto3
 
 sys.path.append("/tmp")
 
-def run_setup(bucket_name, prefix, batch, cellprofiler=True):
+def run_setup(bucket_name, prefix, batch, config_dict, cellprofiler=True):
     os.chdir("/tmp")
-    if os.path.exists("/tmp/config_ours.py"):
-        os.remove("/tmp/config_ours.py")
+    if os.path.exists("/tmp/configAWS.py"):
+        os.remove("/tmp/configAWS.py")
         print("removed previous config file")
     grab_batch_config(bucket_name, prefix, batch)
     import boto3_setup
-    app_name = boto3_setup.setup(cellprofiler=cellprofiler)
+    app_name = boto3_setup.setup(config_dict, cellprofiler=cellprofiler)
     return app_name
 
 def run_cluster(bucket_name, prefix, batch, step, filename, njobs):
     os.chdir("/tmp")
     grab_fleet_file(bucket_name, prefix, batch, step, filename)
     import boto3_setup
-    boto3_setup.startCluster("fleet_ours.json", njobs)
+    boto3_setup.startCluster("fleet_ours.json", njobs, config_dict)
 
-def run_monitor(bucket_name, prefix, batch, step):
+def run_monitor(bucket_name, prefix, batch, step, config_dict):
     import boto3_setup
-    boto3_setup.upload_monitor(bucket_name, prefix, batch, step)
+    boto3_setup.upload_monitor(bucket_name, prefix, batch, step, config_dict)
 
 def grab_batch_config(bucket_name, prefix, batch):
     s3 = boto3.client("s3")

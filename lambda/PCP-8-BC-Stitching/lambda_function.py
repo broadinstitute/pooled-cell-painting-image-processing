@@ -125,6 +125,6 @@ def lambda_handler(event, context):
         )
 
         # Run the monitor
-        run_DCP.run_monitor(bucket_name, prefix, batch, step)
+        run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)
         print("Go run the monitor now")
         return "Cluster started"
