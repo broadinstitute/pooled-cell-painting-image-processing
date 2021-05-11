@@ -117,8 +117,6 @@ def lambda_handler(event, context):
             bucket_name,
             prefix,
             batch,
-            step,
-            fleet_file_name,
             len(platelist) * len(well_list),
         )
 

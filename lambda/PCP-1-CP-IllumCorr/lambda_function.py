@@ -157,7 +157,7 @@ def lambda_handler(event, context):
     )
 
     # Start a cluster
-    run_DCP.run_cluster(bucket, prefix, batch, step, fleet_file_name, len(platelist))
+    run_DCP.run_cluster(bucket, prefix, batch, len(platelist))
 
     # Run the monitor
     run_DCP.run_monitor(bucket, prefix, batch, step, config_dict)

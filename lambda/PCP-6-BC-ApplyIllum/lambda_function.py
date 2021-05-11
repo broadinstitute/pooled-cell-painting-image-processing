@@ -154,7 +154,7 @@ def lambda_handler(event, context):
             njobs = len(plate_and_well_list) * 19
         else:
             njobs = len(plate_and_well_list) * num_series
-        run_DCP.run_cluster(bucket_name, prefix, batch, step, fleet_file_name, njobs)
+        run_DCP.run_cluster(bucket_name, prefix, batch, njobs)
 
         # Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)
