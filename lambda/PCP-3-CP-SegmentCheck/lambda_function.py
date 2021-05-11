@@ -179,7 +179,7 @@ def lambda_handler(event, context):
                 s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
         # now let's do our stuff!
-        app_name = run_DCP.run_setup(bucket_name, prefix, batch, step)
+        app_name = run_DCP.run_setup(bucket_name, prefix, batch)
 
         # make the jobs
         create_batch_jobs.create_batch_jobs_3(

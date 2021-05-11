@@ -116,9 +116,7 @@ def lambda_handler(event, context):
             s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
 
     # Now it's time to run DCP
-    # Replacement for 'fab setup'
-    app_name = run_DCP.run_setup(bucket, prefix, batch, step)
-    # run_DCP.grab_batch_config(bucket,prefix,batch,step)
+    app_name = run_DCP.run_setup(bucket, prefix, batch)
 
     # Make a batch
     create_batch_jobs.create_batch_jobs_5(

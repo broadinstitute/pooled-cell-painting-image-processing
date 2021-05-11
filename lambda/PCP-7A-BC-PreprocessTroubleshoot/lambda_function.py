@@ -50,7 +50,7 @@ def lambda_handler(event, context):
     num_sites = round(len(plate_and_well_list) * num_series / skip)
 
     # Setup DCP
-    app_name = run_DCP.run_setup(bucket_name, prefix, batch, step)
+    app_name = run_DCP.run_setup(bucket_name, prefix, batch)
 
     # Make the jobs
     create_batch_jobs.create_batch_jobs_7A(

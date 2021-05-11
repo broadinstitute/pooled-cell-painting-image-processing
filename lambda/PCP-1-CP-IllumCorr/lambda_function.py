@@ -146,7 +146,7 @@ def lambda_handler(event, context):
             s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
 
     # Now it's time to run DCP
-    app_name = run_DCP.run_setup(bucket, prefix, batch, step)
+    app_name = run_DCP.run_setup(bucket, prefix, batch)
 
     # Make a batch
     if not SABER:

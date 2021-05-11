@@ -64,7 +64,7 @@ def lambda_handler(event, context):
     # Removed Check if Run Done
     # now let's do our stuff!
     app_name = run_DCP.run_setup(
-        bucket_name, prefix, batch, step, cellprofiler=False
+        bucket_name, prefix, batch, cellprofiler=False
     )
 
     # make the jobs
