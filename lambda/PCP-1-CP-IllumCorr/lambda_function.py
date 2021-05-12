@@ -48,9 +48,6 @@ def lambda_handler(event, context):
         s3, bucket, metadata_file_name, metadata_on_bucket_name
     )
     # Standard vs. SABER configs
-    if "Channeldict" not in list(metadata.keys()):
-        print("Update your metadata.json to include Channeldict")
-        return "Update your metadata.json to include Channeldict"
     Channeldict = ast.literal_eval(metadata["Channeldict"])
     if len(Channeldict.keys()) == 1:
         SABER = False
@@ -62,10 +59,9 @@ def lambda_handler(event, context):
     # Calculate number of images from rows and columns in metadata
     num_series = int(metadata["painting_rows"]) * int(metadata["painting_columns"])
     # Overwrite rows x columns number series if images per well set in metadata
-    if "painting_imperwell" in list(metadata.keys()):
-        if metadata["painting_imperwell"] != "":
-            if int(metadata["painting_imperwell"]) != 0:
-                num_series = int(metadata["painting_imperwell"])
+    if metadata["painting_imperwell"] != "":
+        if int(metadata["painting_imperwell"]) != 0:
+            num_series = int(metadata["painting_imperwell"])
 
     # Get the list of images in this experiment
     if not SABER:

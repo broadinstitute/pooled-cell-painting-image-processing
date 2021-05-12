@@ -50,10 +50,9 @@ def lambda_handler(event, context):
         s3, bucket, metadata_file_name, metadata_on_bucket_name
     )
     num_series = int(metadata["barcoding_rows"]) * int(metadata["barcoding_columns"])
-    if "barcoding_imperwell" in list(metadata.keys()):
-        if metadata["barcoding_imperwell"] != "":
-            if int(metadata["barcoding_imperwell"]) != 0:
-                num_series = int(metadata["barcoding_imperwell"])
+    if metadata["barcoding_imperwell"] != "":
+        if int(metadata["barcoding_imperwell"]) != 0:
+            num_series = int(metadata["barcoding_imperwell"])
     expected_cycles = int(metadata["barcoding_cycles"])
 
     # Get the list of images in this experiment - this can take a long time for big experiments so let's add some prints

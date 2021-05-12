@@ -73,10 +73,9 @@ def lambda_handler(event, context):
     expected_cycles = metadata["barcoding_cycles"]
     platelist = list(image_dict.keys())
     num_series = int(metadata["barcoding_rows"]) * int(metadata["barcoding_columns"])
-    if "barcoding_imperwell" in list(metadata.keys()):
-        if metadata["barcoding_imperwell"] != "":
-            if int(metadata["barcoding_imperwell"]) != 0:
-                num_series = int(metadata["barcoding_imperwell"])
+    if metadata["barcoding_imperwell"] != "":
+        if int(metadata["barcoding_imperwell"]) != 0:
+            num_series = int(metadata["barcoding_imperwell"])
     expected_files_per_well = (
         num_series * ((int(metadata["barcoding_cycles"]) * 4) + 1)
     ) + 3

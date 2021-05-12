@@ -57,23 +57,11 @@ def lambda_handler(event, context):
 
     image_dict = metadata["painting_file_data"]
     num_series = int(metadata["painting_rows"]) * int(metadata["painting_columns"])
-    if "painting_imperwell" in list(metadata.keys()):
-        if metadata["painting_imperwell"] != "":
-            if int(metadata["painting_imperwell"]) != 0:
-                num_series = int(metadata["painting_imperwell"])
+    if metadata["painting_imperwell"] != "":
+        if int(metadata["painting_imperwell"]) != 0:
+            num_series = int(metadata["painting_imperwell"])
     expected_files_per_well = np.ceil(float(num_series) / int(metadata["range_skip"]))
     plate_and_well_list = metadata["painting_plate_and_well_list"]
-
-    if "painting_xoffset_tiles" in list(metadata.keys()):
-        painting_xoffset_tiles = metadata["painting_xoffset_tiles"]
-        painting_yoffset_tiles = metadata["painting_yoffset_tiles"]
-    else:
-        painting_xoffset_tiles = painting_yoffset_tiles = "0"
-
-    if "compress" in list(metadata.keys()):
-        compress = metadata["compress"]
-    else:
-        compress = "True"
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
@@ -112,9 +100,9 @@ def lambda_handler(event, context):
             app_name,
             tileperside=metadata["tileperside"],
             final_tile_size=metadata["final_tile_size"],
-            xoffset_tiles=painting_xoffset_tiles,
-            yoffset_tiles=painting_yoffset_tiles,
-            compress=compress,
+            xoffset_tiles=metadata["painting_xoffset_tiles"],
+            yoffset_tiles=metadata["painting_yoffset_tiles"],
+            compress=metadata["compress"],
         )
 
         # Start a cluster

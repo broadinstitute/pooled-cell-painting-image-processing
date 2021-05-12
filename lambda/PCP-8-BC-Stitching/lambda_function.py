@@ -54,24 +54,12 @@ def lambda_handler(event, context):
 
     image_dict = metadata["barcoding_file_data"]
     num_series = int(metadata["barcoding_rows"]) * int(metadata["barcoding_columns"])
-    if "barcoding_imperwell" in list(metadata.keys()):
-        if metadata["barcoding_imperwell"] != "":
-            if int(metadata["barcoding_imperwell"]) != 0:
-                num_series = int(metadata["barcoding_imperwell"])
+    if metadata["barcoding_imperwell"] != "":
+        if int(metadata["barcoding_imperwell"]) != 0:
+            num_series = int(metadata["barcoding_imperwell"])
     # number of site * 4 channels barcoding * number of cycles. doesn't include 1 DAPI/site
     expected_files_per_well = int(num_series) * 4 * int(metadata["barcoding_cycles"])
     plate_and_well_list = metadata["barcoding_plate_and_well_list"]
-
-    if "barcoding_xoffset_tiles" in list(metadata.keys()):
-        barcoding_xoffset_tiles = metadata["barcoding_xoffset_tiles"]
-        barcoding_yoffset_tiles = metadata["barcoding_yoffset_tiles"]
-    else:
-        barcoding_xoffset_tiles = barcoding_yoffset_tiles = "0"
-
-    if "compress" in list(metadata.keys()):
-        compress = metadata["compress"]
-    else:
-        compress = "True"
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
@@ -110,9 +98,9 @@ def lambda_handler(event, context):
             app_name,
             tileperside=metadata["tileperside"],
             final_tile_size=metadata["final_tile_size"],
-            xoffset_tiles=barcoding_xoffset_tiles,
-            yoffset_tiles=barcoding_yoffset_tiles,
-            compress=compress,
+            xoffset_tiles=metadata["barcoding_xoffset_tiles"],
+            yoffset_tiles=metadata["barcoding_yoffset_tiles"],
+            compress=metadata["compress"],
         )
 
         # Start a cluster
