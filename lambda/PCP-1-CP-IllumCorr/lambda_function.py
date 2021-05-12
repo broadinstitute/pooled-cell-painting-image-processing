@@ -74,6 +74,23 @@ def lambda_handler(event, context):
         image_list, filter_in=parse_name_filter, filter_out="copy"
     )
     metadata["painting_file_data"] = image_dict
+
+    # Get the final list of channels in this experiment
+    Channelrounds = list(Channeldict.keys())
+    channels = []
+    for eachround in Channelrounds:
+        templist = []
+        templist += Channeldict[eachround].values()
+        channels += list(i[0] for i in templist)
+    for index, chan in enumerate(channels):
+        if "round" in chan:
+            if "round0" in chan:
+                channels[index] = chan.split("_")[0]
+            else:
+                channels.remove(chan)
+    metadata["channel_list"] = channels
+
+    # Add image list and channel list to metadata file
     helpful_functions.write_metadata_file(
         s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name
     )
