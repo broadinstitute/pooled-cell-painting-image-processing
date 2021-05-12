@@ -1,8 +1,8 @@
 CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
-DateRevision:407
+DateRevision:413
 GitHash:
-ModuleCount:14
+ModuleCount:17
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -138,17 +138,17 @@ SaveImages:[module_num:7|svn_version:'Unknown'|variable_revision_number:15|show_
 IdentifyPrimaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:CorrDNA
     Name the primary objects to be identified:ConfluentRegions
-    Typical diameter of objects, in pixel units (Min,Max):500,5000
+    Typical diameter of objects, in pixel units (Min,Max):50,5000
     Discard objects outside the diameter range?:Yes
-    Discard objects touching the border of the image?:No
-    Method to distinguish clumped objects:Intensity
-    Method to draw dividing lines between clumped objects:None
-    Size of smoothing filter:10
-    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Discard objects touching the border of the image?:Yes
+    Method to distinguish clumped objects:Shape
+    Method to draw dividing lines between clumped objects:Shape
+    Size of smoothing filter:8
+    Suppress local maxima that are closer than this minimum allowed distance:8
     Speed up by using lower-resolution image to find local maxima?:Yes
     Fill holes in identified objects?:After declumping only
-    Automatically calculate size of smoothing filter for declumping?:Yes
-    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Automatically calculate size of smoothing filter for declumping?:No
+    Automatically calculate minimum allowed distance between local maxima?:No
     Handling of objects if excessive number of objects identified:Continue
     Maximum number of objects:500
     Display accepted local maxima?:No
@@ -157,13 +157,13 @@ IdentifyPrimaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_num
     Threshold setting version:12
     Threshold strategy:Global
     Thresholding method:Minimum Cross-Entropy
-    Threshold smoothing scale:2
-    Threshold correction factor:.5
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.2
     Lower and upper bounds on threshold:0.0,1.0
     Manual threshold:0.0
     Select the measurement to threshold with:None
-    Two-class or three-class thresholding?:Two classes
-    Log transform before thresholding?:No
+    Two-class or three-class thresholding?:Three classes
+    Log transform before thresholding?:Yes
     Assign pixels in the middle intensity class to the foreground or the background?:Foreground
     Size of adaptive window:50
     Lower outlier fraction:0.05
@@ -182,17 +182,25 @@ MaskImage:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|show_wi
     Invert the mask?:Yes
 
 MaskImage:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:CorrProtein
-    Name the output image:MaskedProtein
+    Select the input image:CorrMito
+    Name the output image:MaskedMito
     Use objects or an image as a mask?:Objects
     Select object for mask:ConfluentRegions
     Select image for mask:None
     Invert the mask?:Yes
 
-IdentifyPrimaryObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MaskImage:[module_num:11|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CorrER
+    Name the output image:MaskedER
+    Use objects or an image as a mask?:Objects
+    Select object for mask:ConfluentRegions
+    Select image for mask:None
+    Invert the mask?:Yes
+
+IdentifyPrimaryObjects:[module_num:12|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:MaskedDAPI
     Name the primary objects to be identified:Nuclei
-    Typical diameter of objects, in pixel units (Min,Max):10,80
+    Typical diameter of objects, in pixel units (Min,Max):10,50
     Discard objects outside the diameter range?:Yes
     Discard objects touching the border of the image?:Yes
     Method to distinguish clumped objects:Shape
@@ -216,7 +224,7 @@ IdentifyPrimaryObjects:[module_num:11|svn_version:'Unknown'|variable_revision_nu
     Lower and upper bounds on threshold:0.0,1.0
     Manual threshold:0.0
     Select the measurement to threshold with:None
-    Two-class or three-class thresholding?:Two classes
+    Two-class or three-class thresholding?:Three classes
     Log transform before thresholding?:No
     Assign pixels in the middle intensity class to the foreground or the background?:Foreground
     Size of adaptive window:50
@@ -227,28 +235,56 @@ IdentifyPrimaryObjects:[module_num:11|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2.0
     Thresholding method:Otsu
 
-IdentifySecondaryObjects:[module_num:12|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:13|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Add
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:MaskedMitoPlusER
+    Image or measurement?:Image
+    Select the first image:MaskedMito
+    Multiply the first image by:0.5
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:MaskedER
+    Multiply the second image by:0.5
+    Measurement:
+
+Smooth:[module_num:14|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:MaskedMitoPlusER
+    Name the output image:MitoPlusER_Smoothed
+    Select smoothing method:Gaussian Filter
+    Calculate artifact diameter automatically?:No
+    Typical artifact diameter:2
+    Edge intensity difference:0.1
+    Clip intensities to 0 and 1?:Yes
+
+IdentifySecondaryObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Nuclei
     Name the objects to be identified:Cells
-    Select the method to identify the secondary objects:Watershed - Image
-    Select the input image:MaskedProtein
+    Select the method to identify the secondary objects:Propagation
+    Select the input image:MitoPlusER_Smoothed
     Number of pixels by which to expand the primary objects:10
-    Regularization factor:0.05
+    Regularization factor:0.01
     Discard secondary objects touching the border of the image?:No
     Discard the associated primary objects?:No
     Name the new primary objects:FilteredNuclei
-    Fill holes in identified objects?:No
+    Fill holes in identified objects?:Yes
     Threshold setting version:12
     Threshold strategy:Global
-    Thresholding method:Minimum Cross-Entropy
-    Threshold smoothing scale:2
-    Threshold correction factor:0.7
-    Lower and upper bounds on threshold:0.0005,1
+    Thresholding method:Otsu
+    Threshold smoothing scale:0.0
+    Threshold correction factor:1
+    Lower and upper bounds on threshold:0.0,1.0
     Manual threshold:0.0
     Select the measurement to threshold with:None
     Two-class or three-class thresholding?:Three classes
-    Log transform before thresholding?:No
-    Assign pixels in the middle intensity class to the foreground or the background?:Background
+    Log transform before thresholding?:Yes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
     Size of adaptive window:50
     Lower outlier fraction:0.05
     Upper outlier fraction:0.05
@@ -257,7 +293,7 @@ IdentifySecondaryObjects:[module_num:12|svn_version:'Unknown'|variable_revision_
     # of deviations:2.0
     Thresholding method:Otsu
 
-ExportToSpreadsheet:[module_num:13|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ExportToSpreadsheet:[module_num:16|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:No
     Add image file and folder names to your object data file?:No
@@ -281,7 +317,7 @@ ExportToSpreadsheet:[module_num:13|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-CreateBatchFiles:[module_num:14|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+CreateBatchFiles:[module_num:17|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Store batch files in default output folder?:Yes
     Output folder path:c:\users\administrator\desktop\batchfiles\20190930_6w_cp075\illum
     Are the cluster computers running Windows?:No
