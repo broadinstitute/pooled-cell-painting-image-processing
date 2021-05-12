@@ -18,7 +18,7 @@ def run_cluster(bucket_name, prefix, batch, njobs):
     os.chdir("/tmp")
     grab_fleet_file(bucket_name, prefix, batch)
     import boto3_setup
-    boto3_setup.startCluster("fleet_ours.json", njobs, config_dict)
+    boto3_setup.startCluster("configFleet.json", njobs, config_dict)
 
 def run_monitor(bucket_name, prefix, batch, step, config_dict):
     import boto3_setup
@@ -39,7 +39,7 @@ def grab_fleet_file(bucket_name, prefix, batch):
     s3 = boto3.client("s3")
     our_fleet = prefix + "lambda/" + batch + "/configFleet.json"
     try:
-        with open("/tmp/fleet_ours.json", "wb") as f:
+        with open("/tmp/configFleet.json", "wb") as f:
             s3.download_fileobj(bucket_name, our_fleet, f)
     except botocore.exceptions.ClientError as error:
         print ("Error grabbing fleet file.")
