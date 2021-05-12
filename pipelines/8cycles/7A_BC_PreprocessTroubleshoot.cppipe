@@ -1,12 +1,12 @@
 CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
-DateRevision:407
+DateRevision:413
 GitHash:
-ModuleCount:100
+ModuleCount:51
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Input data file location:Default Input Folder|Downloads
+    Input data file location:Elsewhere...|/Users/pryder/GitHub/pearlryder_projects/2017_10_19_Profiling_rare_ORFs/20210407_24W_CP251/workspace/load_data_csv
     Name of the file:load_data_pipeline7.csv
     Load images based on this data?:Yes
     Base image location:None|
@@ -188,7 +188,7 @@ ImageMath:[module_num:5|svn_version:'Unknown'|variable_revision_number:5|show_wi
     Multiply the eighth image by:1.0
     Measurement:
 
-CorrectIlluminationCalculate:[module_num:6|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CorrectIlluminationCalculate:[module_num:6|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:MeanOfAllACycles
     Name the output image:IllumMeanA
     Select how the illumination function is calculated:Background
@@ -571,7 +571,7 @@ ImageMath:[module_num:14|svn_version:'Unknown'|variable_revision_number:5|show_w
     Multiply the thirty-second image by:1.0
     Measurement:
 
-IdentifyPrimaryObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+IdentifyPrimaryObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Cycle01_DAPI
     Name the primary objects to be identified:Nuclei
     Typical diameter of objects, in pixel units (Min,Max):6,25
@@ -729,7 +729,7 @@ IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_nu
     # of deviations:4
     Thresholding method:Otsu
 
-CompensateColors:[module_num:20|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:20|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A_BackSub
@@ -862,7 +862,7 @@ CallBarcodes:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues
 
-CompensateColors:[module_num:23|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:23|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -995,7 +995,7 @@ CallBarcodes:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub
 
-CompensateColors:[module_num:26|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:26|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -1128,7 +1128,7 @@ CallBarcodes:[module_num:28|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub_DoG35
 
-CompensateColors:[module_num:29|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:29|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -1261,7 +1261,7 @@ CallBarcodes:[module_num:31|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub_Tophat3
 
-CompensateColors:[module_num:32|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:32|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -1394,7 +1394,7 @@ CallBarcodes:[module_num:34|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub_Rescale999
 
-CompensateColors:[module_num:35|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:35|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -1527,7 +1527,7 @@ CallBarcodes:[module_num:37|svn_version:'Unknown'|variable_revision_number:1|sho
     Retain an image of the barcodes color coded by score match?:Yes
     Enter the barcode score image name:BarcodeScores_IntValues_noBackSub_RescalePostCompensate
 
-CompensateColors:[module_num:38|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+CompensateColors:[module_num:38|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:32
     Hidden:1
     Select an image to measure:Cycle01_A
@@ -1668,6 +1668,8 @@ RelateObjects:[module_num:41|svn_version:'Unknown'|variable_revision_number:5|sh
     Calculate distances to other parents?:No
     Do you want to save the children with parents as a new object set?:No
     Name the output object:RelateObjects
+    Parent name:None
+    Parent name:None
     Parent name:None
     Parent name:None
     Parent name:None
