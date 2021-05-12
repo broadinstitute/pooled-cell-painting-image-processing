@@ -16,10 +16,17 @@
   "fast_or_slow_mode":"slow",
   "one_or_many_files":"many",
   "round_or_square":"round",
+  "_commenton_offset_tiles":"Set to 0 unless trouleshooting gross stitching misalignments",
   "barcoding_xoffset_tiles":"0",
   "barcoding_yoffset_tiles":"0",
   "painting_xoffset_tiles":"0",
   "painting_yoffset_tiles":"0",
   "compress":"True",
-  "_commentonstitchorder":"Typically should be either 'Grid: snake by rows','Grid: row-by-row', or 'Filename defined position'",
-  "stitchorder":"Grid: snake by rows"}
+  "_commenton_stitchorder":"Typically should be either 'Grid: snake by rows','Grid: row-by-row', or 'Filename defined position'",
+  "stitchorder":"Grid: snake by rows",
+  "_commenton_range_skip":"Set your sampling frequency for SegmentCheck",
+  "range_skip":"16",
+  "_commenton_tile_settings":"Parameters for the cropping of whole-well stitched image",
+  "tileperside":"10",
+  "final_tile_size":"5500"
+}

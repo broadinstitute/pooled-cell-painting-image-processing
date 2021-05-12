@@ -35,11 +35,6 @@ config_dict = {
     "NECESSARY_STRING = "",
 }
 
-# Make sure that range_skip matches that set in PCP-3-CP-SegmentCheck lambda function
-range_skip = 16
-tileperside = 10
-final_tile_size = 5500
-
 
 def lambda_handler(event, context):
     # Log the received event
@@ -66,7 +61,7 @@ def lambda_handler(event, context):
         if metadata["painting_imperwell"] != "":
             if int(metadata["painting_imperwell"]) != 0:
                 num_series = int(metadata["painting_imperwell"])
-    expected_files_per_well = np.ceil(float(num_series) / range_skip)
+    expected_files_per_well = np.ceil(float(num_series) / int(metadata["range_skip"]))
     plate_and_well_list = metadata["painting_plate_and_well_list"]
 
     if "painting_xoffset_tiles" in list(metadata.keys()):
@@ -79,7 +74,6 @@ def lambda_handler(event, context):
         compress = metadata["compress"]
     else:
         compress = "True"
-
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
@@ -116,8 +110,8 @@ def lambda_handler(event, context):
             metadata,
             plate_and_well_list,
             app_name,
-            tileperside=tileperside,
-            final_tile_size=final_tile_size,
+            tileperside=metadata["tileperside"],
+            final_tile_size=metadata["final_tile_size"],
             xoffset_tiles=painting_xoffset_tiles,
             yoffset_tiles=painting_yoffset_tiles,
             compress=compress,

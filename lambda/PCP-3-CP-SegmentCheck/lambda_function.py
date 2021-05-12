@@ -41,8 +41,6 @@ config_dict = {
 # Default percentiles are 10 and 90. Change only to troubleshoot troublesome datasets.
 upper_percentile = 90
 lower_percentile = 10
-# If you change range_skip, you must also change it in PCP-4-CP lambda function
-range_skip = 16
 
 
 def lambda_handler(event, context):
@@ -73,7 +71,7 @@ def lambda_handler(event, context):
         if metadata["painting_imperwell"] != "":
             if int(metadata["painting_imperwell"]) != 0:
                 num_series = int(metadata["painting_imperwell"])
-    out_range = list(range(0, num_series, range_skip))
+    out_range = list(range(0, num_series, int(metadata["range_skip"])))
     expected_files_per_well = (num_series * int(metadata["painting_channels"])) + 6
     platelist = list(image_dict.keys())
     plate_and_well_list = []
@@ -163,7 +161,7 @@ def lambda_handler(event, context):
                 + "/images_corrected/painting"
             )
             per_plate_csv = create_CSVs.create_CSV_pipeline3(
-                eachplate, num_series, bucket_folder, well_list, range_skip
+                eachplate, num_series, bucket_folder, well_list, metadata["range_skip"]
             )
             csv_on_bucket_name = (
                 prefix

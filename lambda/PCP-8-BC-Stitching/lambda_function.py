@@ -32,10 +32,6 @@ config_dict = {
     "NECESSARY_STRING = "",
 }
 
-# Stitching Configuration
-tileperside = 10
-final_tile_size = 5500
-
 
 def lambda_handler(event, context):
     # Log the received event
@@ -112,8 +108,8 @@ def lambda_handler(event, context):
             metadata,
             plate_and_well_list,
             app_name,
-            tileperside=tileperside,
-            final_tile_size=final_tile_size,
+            tileperside=metadata["tileperside"],
+            final_tile_size=metadata["final_tile_size"],
             xoffset_tiles=barcoding_xoffset_tiles,
             yoffset_tiles=barcoding_yoffset_tiles,
             compress=compress,

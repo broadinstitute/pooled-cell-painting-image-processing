@@ -18,7 +18,6 @@ sqs = boto3.client("sqs")
 metadata_file_name = "/tmp/metadata.json"
 pipeline_name = "9_Analysis.cppipe"
 step = "9"
-num_tiles = 100  # set in steps 4 and 8
 
 # AWS Configuration Specific to this Function
 config_dict = {
@@ -56,7 +55,7 @@ def lambda_handler(event, context):
     image_dict = metadata["wells_with_all_cycles"]
     expected_cycles = metadata["barcoding_cycles"]
     platelist = list(image_dict.keys())
-    num_sites = int(num_tiles)
+    num_sites = int(metadata["tileperside"]*metadata["tileperside"])
 
     # Pull the file names we care about, and make the CSV
     for eachplate in platelist:
