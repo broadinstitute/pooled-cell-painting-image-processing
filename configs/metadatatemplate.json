@@ -1,7 +1,6 @@
 { "_commenton_imperwell":"If used, the imperwell fields will overwrite the columns and rows. Set to 0 if not using.",
   "painting_rows":"38",
   "painting_columns":"38",
-  "painting_channels":"5",
   "painting_imperwell":"1364",
   "_commenton_Channeldict":"Values are channel-to-[stain, frame] mapping",
   "_commenton_Channeldict":"If multiple rounds, keys are folder names of the rounds. For the stain that is common between rounds, include _roundN in stain name. ",

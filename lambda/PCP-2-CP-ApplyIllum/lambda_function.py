@@ -64,9 +64,15 @@ def lambda_handler(event, context):
     Channeldict = ast.literal_eval(metadata["Channeldict"])
     if len(Channeldict.keys()) == 1:
         SABER = False
+        C0 = list(Channeldict.keys())[0]
+        num_painting_channels = len(Channeldict[C0].keys())
         print("Not a SABER experiment")
     if len(Channeldict.keys()) > 1:
         SABER = True
+        num_painting_channels = 0
+        for x in list(Channeldict.keys()):
+            y = len(Channeldict[x])
+            num_painting_channels += y
         print("SABER experiment")
 
     platelist = list(image_dict.keys())
@@ -77,7 +83,7 @@ def lambda_handler(event, context):
     sqs = boto3.client("sqs")
 
     filter_prefix = image_prefix + batch + "/illum"
-    expected_len = (int(metadata["painting_channels"]) + 1) * len(platelist)
+    expected_len = (num_painting_channels + 1) * len(platelist)
 
     done = helpful_functions.check_if_run_done(
         s3,

@@ -71,7 +71,7 @@ def lambda_handler(event, context):
         if int(metadata["painting_imperwell"]) != 0:
             num_series = int(metadata["painting_imperwell"])
     out_range = list(range(0, num_series, int(metadata["range_skip"])))
-    expected_files_per_well = (num_series * int(metadata["painting_channels"])) + 6
+    expected_files_per_well = (num_series * len(metadata["channel_list"])) + 6
     platelist = list(image_dict.keys())
     plate_and_well_list = []
     for eachplate in platelist:
