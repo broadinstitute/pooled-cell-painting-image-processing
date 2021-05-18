@@ -146,11 +146,11 @@ def create_or_update_ecs_service(ecs, ECS_SERVICE_NAME, ECS_TASK_NAME):
     print("Service created")
 
 
-def get_queue_url(sqs):
+def get_queue_url(sqs, config_dict):
     result = sqs.list_queues()
     if "QueueUrls" in list(result.keys()):
         for u in result["QueueUrls"]:
-            if u.split("/")[-1] == SQS_QUEUE_NAME:
+            if u.split("/")[-1] == (config_dict["APP_NAME"] + 'Queue'):
                 return u
     return None
 
@@ -166,7 +166,8 @@ def get_or_create_queue(sqs, config_dict):
         + '","maxReceiveCount":"10"}',
         "VisibilityTimeout": str(config_dict["SQS_MESSAGE_VISIBILITY"]),
     }
-    u = get_queue_url(sqs)
+    SQS_QUEUE_NAME = config_dict["APP_NAME"] + 'Queue'
+    u = get_queue_url(sqs, config_dict)
     if u is None:
         print("Creating queue")
         sqs.create_queue(QueueName=SQS_QUEUE_NAME, Attributes=SQS_DEFINITION)
@@ -310,7 +311,7 @@ class JobQueue:
     def __init__(self, name=None):
         self.sqs = boto3.resource("sqs")
         if name == None:
-            self.queue = self.sqs.get_queue_by_name(QueueName=SQS_QUEUE_NAME)
+            self.queue = self.sqs.get_queue_by_name(QueueName=(config_dict["APP_NAME"] + 'Queue'))
         else:
             self.queue = self.sqs.get_queue_by_name(QueueName=name)
         self.inProcess = -1
@@ -460,7 +461,7 @@ def startCluster(fleetfile, njobs, config_dict):
     )
     createMonitor.write('"MONITOR_APP_NAME" : "' + config_dict["APP_NAME"] + '",\n')
     createMonitor.write('"MONITOR_ECS_CLUSTER" : "' + ECS_CLUSTER + '",\n')
-    createMonitor.write('"MONITOR_QUEUE_NAME" : "' + SQS_QUEUE_NAME + '",\n')
+    createMonitor.write('"MONITOR_QUEUE_NAME" : "' + (config_dict["APP_NAME"] + 'Queue') + '",\n')
     createMonitor.write('"MONITOR_BUCKET_NAME" : "' + AWS_BUCKET + '",\n')
     createMonitor.write('"MONITOR_LOG_GROUP_NAME" : "' + LOG_GROUP_NAME + '",\n')
     createMonitor.write('"MONITOR_START_TIME" : "' + starttime + '"}\n')
