@@ -29,7 +29,7 @@ config_dict = {
     "EBS_VOL_SIZE": "400",
     "DOWNLOAD_FILES": "False",
     "MEMORY": "31000",
-    "SQS_MESSAGE_VISIBILITY": "720 * 60",
+    "SQS_MESSAGE_VISIBILITY": "43200",
     "EXPECTED_NUMBER_FILES": "510",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",

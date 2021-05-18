@@ -13,12 +13,29 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "7A_BC_PreprocessTroubleshoot.cppipe"
-metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "preprocessFleet.json"
-step = "7A"
-skip = 15  # Must match skip set in config file
 
+# Step information
+metadata_file_name = "/tmp/metadata.json"
+pipeline_name = "7_BC_Preprocess_Troubleshoot.cppipe"
+step = "7A"
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_PreprocessBarcodingTroubleshoot",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
+    "MACHINE_TYPE": "r4.2xlarge",
+    "MACHINE_PRICE": "0.40",
+    "EBS_VOL_SIZE": "800",
+    "DOWNLOAD_FILES": "False",
+    "DOCKER_CORES": "2",
+    "MEMORY": "30000",
+    "SECONDS_TO_START": "180",
+    "SQS_MESSAGE_VISIBILITY": "7200",
+    "CHECK_IF_DONE_BOOL": "True",
+    "EXPECTED_NUMBER_FILES": "49",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING": "",
+}
 
 def lambda_handler(event, context):
     # Log the received event
