@@ -179,7 +179,7 @@ def create_batch_jobs_4(
     final_tile_size=5500,
     xoffset_tiles=0,
     yoffset_tiles=0,
-    compress='False',
+    compress="False",
 ):
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
@@ -197,7 +197,7 @@ def create_batch_jobs_4(
             "size": "1480",
             "rows": metadata["painting_rows"],
             "columns": metadata["painting_columns"],
-            "imperwell":metadata["painting_imperwell"],
+            "imperwell": metadata["painting_imperwell"],
             "stitchorder": metadata["stitchorder"],
             "channame": "DNA",
             "tileperside": str(tileperside),
@@ -423,6 +423,7 @@ def create_batch_jobs_7A(
             correctqueue.scheduleBatch(templateMessage_correct)
     print("Correction job submitted. Check your queue")
 
+
 def create_batch_jobs_8(
     bucket_name,
     startpath,
@@ -434,7 +435,7 @@ def create_batch_jobs_8(
     final_tile_size=5500,
     xoffset_tiles=0,
     yoffset_tiles=0,
-    compress='False',
+    compress="False",
 ):
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
@@ -452,7 +453,7 @@ def create_batch_jobs_8(
             "size": "1480",
             "rows": metadata["barcoding_rows"],
             "columns": metadata["barcoding_columns"],
-            "imperwell":metadata["barcoding_imperwell"],
+            "imperwell": metadata["barcoding_imperwell"],
             "stitchorder": metadata["stitchorder"],
             "channame": "DAPI",
             "tileperside": str(tileperside),
@@ -472,17 +473,14 @@ def create_batch_jobs_8(
         else:
             well = tostitch[1]
         stitchMessage["Metadata"] = {
-            "subdir": posixpath.join(
-                batchsuffix,
-                "images_corrected",
-                "barcoding",
-            ),
+            "subdir": posixpath.join(batchsuffix, "images_corrected", "barcoding",),
             "out_subdir_tag": tostitch[0] + "_" + tostitch[1],
             "filterstring": well,
             "downloadfilter": tostitch[0] + "-" + tostitch[1] + "*",
         }
         stitchqueue.scheduleBatch(stitchMessage)
     print("Stitching job submitted. Check your queue")
+
 
 def create_batch_jobs_8Z(
     bucket_name,
@@ -495,7 +493,7 @@ def create_batch_jobs_8Z(
     final_tile_size=5500,
     xoffset_tiles=0,
     yoffset_tiles=0,
-    compress='False',
+    compress="False",
 ):
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
@@ -513,7 +511,7 @@ def create_batch_jobs_8Z(
             "size": "1480",
             "rows": metadata["barcoding_rows"],
             "columns": metadata["barcoding_columns"],
-            "imperwell":metadata["barcoding_imperwell"],
+            "imperwell": metadata["barcoding_imperwell"],
             "stitchorder": metadata["stitchorder"],
             "channame": "DAPI",
             "tileperside": str(tileperside),
@@ -533,17 +531,14 @@ def create_batch_jobs_8Z(
         else:
             well = tostitch[1]
         stitchMessage["Metadata"] = {
-            "subdir": posixpath.join(
-                batchsuffix,
-                "images_aligned",
-                "barcoding",
-            ),
+            "subdir": posixpath.join(batchsuffix, "images_aligned", "barcoding",),
             "out_subdir_tag": tostitch[0] + "_" + tostitch[1],
             "filterstring": well,
             "downloadfilter": tostitch[0] + "-" + tostitch[1] + "*",
         }
         stitchqueue.scheduleBatch(stitchMessage)
     print("Stitching job submitted. Check your queue")
+
 
 def create_batch_jobs_9(
     startpath, batchsuffix, pipename, plate_and_well_list, site_list, app_name

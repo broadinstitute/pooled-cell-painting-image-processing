@@ -24,10 +24,10 @@ step = "8"
 
 def lambda_handler(event, context):
     # Set up for Manual Trigger
-    bucket_name = 'pooled-cell-painting'
-    image_prefix = 'projects/2018_11_20_Periscope_X/'
-    batch = 'nameofthebatch'
-    prefix = 'projects/2018_11_20_Periscope_X/workspace/'
+    bucket_name = "pooled-cell-painting"
+    image_prefix = "projects/2018_11_20_Periscope_X/"
+    batch = "nameofthebatch"
+    prefix = "projects/2018_11_20_Periscope_X/workspace/"
 
     print(plate, batch, image_prefix, prefix)
 
@@ -50,7 +50,7 @@ def lambda_handler(event, context):
     # Removed Check if Run Done
     # now let's do our stuff!
     app_name = run_DCP.run_setup(
-        bucket_name, prefix, batch, cellprofiler=False
+        bucket_name, prefix, batch, config_dict, cellprofiler=False
     )
 
     # make the jobs
@@ -70,7 +70,7 @@ def lambda_handler(event, context):
 
     # Start a cluster
     run_DCP.run_cluster(
-        bucket_name, prefix, batch, len(plate_and_well_list)
+        bucket_name, prefix, batch, len(plate_and_well_list, config_dict)
     )
 
     # Run the monitor

@@ -35,6 +35,7 @@ config_dict = {
     "NECESSARY_STRING": "",
 }
 
+
 def lambda_handler(event, context):
     bucket = event["Records"][0]["s3"]["bucket"]["name"]
     key = event["Records"][0]["s3"]["object"]["key"]
@@ -119,7 +120,7 @@ def lambda_handler(event, context):
                             f"{eachwell} {eachround} doesn't have full well files. {len(per_well)} files found."
                         )
             if not SABER:
-                platename = list(Channeldict.keys())[0] + '_' + eachplate
+                platename = list(Channeldict.keys())[0] + "_" + eachplate
                 per_well = platedict[eachwell][platename]
                 if len(per_well) != full_well_files:
                     incomplete_wells.append(eachwell)
@@ -166,7 +167,7 @@ def lambda_handler(event, context):
             s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
 
     # Now it's time to run DCP
-    app_name = run_DCP.run_setup(bucket, prefix, batch)
+    app_name = run_DCP.run_setup(bucket, prefix, batch, config_dict)
 
     # Make a batch
     if not SABER:
@@ -178,7 +179,7 @@ def lambda_handler(event, context):
     )
 
     # Start a cluster
-    run_DCP.run_cluster(bucket, prefix, batch, len(platelist))
+    run_DCP.run_cluster(bucket, prefix, batch, len(platelist), config_dict)
 
     # Run the monitor
     run_DCP.run_monitor(bucket, prefix, batch, step, config_dict)

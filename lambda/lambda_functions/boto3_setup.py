@@ -20,16 +20,17 @@ MONITOR_TIME = 60
 # AUXILIARY FUNCTIONS
 #################################
 
+
 def generate_task_definition(config_dict):
     task_definition = {
-        "family": config_dict['APP_NAME'],
+        "family": config_dict["APP_NAME"],
         "containerDefinitions": [
             {
                 "environment": [{"name": "AWS_REGION", "value": AWS_REGION}],
-                "name": config_dict['APP_NAME'],
-                "image": config_dict['DOCKERHUB_TAG'],
+                "name": config_dict["APP_NAME"],
+                "image": config_dict["DOCKERHUB_TAG"],
                 "cpu": CPU_SHARES,
-                "memory": config_dict['MEMORY'],
+                "memory": config_dict["MEMORY"],
                 "essential": True,
                 "privileged": True,
                 "logConfiguration": {
@@ -37,7 +38,7 @@ def generate_task_definition(config_dict):
                     "options": {
                         "awslogs-group": LOG_GROUP_NAME + "_perInstance",
                         "awslogs-region": AWS_REGION,
-                        "awslogs-stream-prefix": config_dict['APP_NAME'],
+                        "awslogs-stream-prefix": config_dict["APP_NAME"],
                     },
                 },
             }
@@ -46,7 +47,7 @@ def generate_task_definition(config_dict):
     sqs = boto3.client("sqs")
     queue_name = get_queue_url(sqs)
     task_definition["containerDefinitions"][0]["environment"] += [
-        {"name": "APP_NAME", "value": config_dict['APP_NAME']},
+        {"name": "APP_NAME", "value": config_dict["APP_NAME"]},
         {"name": "SQS_QUEUE_URL", "value": queue_name},
         {"name": "AWS_ACCESS_KEY_ID", "value": os.environ["MY_AWS_ACCESS_KEY_ID"]},
         {
@@ -54,16 +55,22 @@ def generate_task_definition(config_dict):
             "value": os.environ["MY_AWS_SECRET_ACCESS_KEY"],
         },
         {"name": "AWS_BUCKET", "value": AWS_BUCKET},
-        {"name": "DOCKER_CORES", "value": str(config_dict['DOCKER_CORES'])},
+        {"name": "DOCKER_CORES", "value": str(config_dict["DOCKER_CORES"])},
         {"name": "LOG_GROUP_NAME", "value": LOG_GROUP_NAME},
-        {"name": "CHECK_IF_DONE_BOOL", "value": config_dict['CHECK_IF_DONE_BOOL']},
-        {"name": "EXPECTED_NUMBER_FILES", "value": str(config_dict['EXPECTED_NUMBER_FILES'])},
+        {"name": "CHECK_IF_DONE_BOOL", "value": config_dict["CHECK_IF_DONE_BOOL"]},
+        {
+            "name": "EXPECTED_NUMBER_FILES",
+            "value": str(config_dict["EXPECTED_NUMBER_FILES"]),
+        },
         {"name": "ECS_CLUSTER", "value": ECS_CLUSTER},
-        {"name": "SECONDS_TO_START", "value": str(config_dict['SECONDS_TO_START'])},
-        {"name": "MIN_FILE_SIZE_BYTES", "value": str(config_dict['MIN_FILE_SIZE_BYTES'])},
+        {"name": "SECONDS_TO_START", "value": str(config_dict["SECONDS_TO_START"])},
+        {
+            "name": "MIN_FILE_SIZE_BYTES",
+            "value": str(config_dict["MIN_FILE_SIZE_BYTES"]),
+        },
         {"name": "USE_PLUGINS", "value": "True"},
-        {"name": "NECESSARY_STRING", "value": config_dict['NECESSARY_STRING']},
-        {"name": "DOWNLOAD_FILES", "value": config_dict['DOWNLOAD_FILES']}
+        {"name": "NECESSARY_STRING", "value": config_dict["NECESSARY_STRING"]},
+        {"name": "DOWNLOAD_FILES", "value": config_dict["DOWNLOAD_FILES"]},
     ]
     return task_definition
 
@@ -73,7 +80,7 @@ def generate_fiji_task_definition(config_dict):
     sqs = boto3.client("sqs")
     queue_name = get_queue_url(sqs)
     task_definition["containerDefinitions"][0]["environment"] += [
-        {"name": "APP_NAME", "value": config_dict['APP_NAME']},
+        {"name": "APP_NAME", "value": config_dict["APP_NAME"]},
         {"name": "SQS_QUEUE_URL", "value": queue_name},
         {"name": "AWS_ACCESS_KEY_ID", "value": os.environ["MY_AWS_ACCESS_KEY_ID"]},
         {
@@ -82,10 +89,16 @@ def generate_fiji_task_definition(config_dict):
         },
         {"name": "AWS_BUCKET", "value": AWS_BUCKET},
         {"name": "LOG_GROUP_NAME", "value": LOG_GROUP_NAME},
-        {"name": "EXPECTED_NUMBER_FILES", "value": str(config_dict['EXPECTED_NUMBER_FILES'])},
+        {
+            "name": "EXPECTED_NUMBER_FILES",
+            "value": str(config_dict["EXPECTED_NUMBER_FILES"]),
+        },
         {"name": "ECS_CLUSTER", "value": ECS_CLUSTER},
-        {"name": "MIN_FILE_SIZE_BYTES", "value": str(config_dict['MIN_FILE_SIZE_BYTES'])},
-        {"name": "SCRIPT_DOWNLOAD_URL", "value": config_dict['SCRIPT_DOWNLOAD_URL']},
+        {
+            "name": "MIN_FILE_SIZE_BYTES",
+            "value": str(config_dict["MIN_FILE_SIZE_BYTES"]),
+        },
+        {"name": "SCRIPT_DOWNLOAD_URL", "value": config_dict["SCRIPT_DOWNLOAD_URL"]},
     ]
     return task_definition
 
@@ -151,7 +164,7 @@ def get_or_create_queue(sqs, config_dict):
         "RedrivePolicy": '{"deadLetterTargetArn":"'
         + SQS_DEAD_LETTER_QUEUE
         + '","maxReceiveCount":"10"}',
-        "VisibilityTimeout": str(config_dict['SQS_MESSAGE_VISIBILITY']),
+        "VisibilityTimeout": str(config_dict["SQS_MESSAGE_VISIBILITY"]),
     }
     u = get_queue_url(sqs)
     if u is None:
@@ -168,16 +181,21 @@ def loadConfig(configFile):
         data = json.load(conf)
     return data
 
+
 def generateECSconfig(ECS_CLUSTER, config_dict, AWS_BUCKET, s3client):
     configfile = open("/tmp/configtemp.config", "w")
     configfile.write("ECS_CLUSTER=" + ECS_CLUSTER + "\n")
     configfile.write('ECS_AVAILABLE_LOGGING_DRIVERS=["json-file","awslogs"]')
     configfile.close()
     s3client.upload_file(
-        "/tmp/configtemp.config", AWS_BUCKET, "ecsconfigs/" + config_dict['APP_NAME'] + "_ecs.config"
+        "/tmp/configtemp.config",
+        AWS_BUCKET,
+        "ecsconfigs/" + config_dict["APP_NAME"] + "_ecs.config",
     )
     os.remove("/tmp/configtemp.config")
-    return "s3://" + AWS_BUCKET + "/ecsconfigs/" + config_dict['APP_NAME'] + "_ecs.config"
+    return (
+        "s3://" + AWS_BUCKET + "/ecsconfigs/" + config_dict["APP_NAME"] + "_ecs.config"
+    )
 
 
 def generateUserData(ecsConfigFile, dockerBaseSize):
@@ -208,7 +226,7 @@ def generateUserData(ecsConfigFile, dockerBaseSize):
     pre_user_data.attach(config)
 
     pre_user_data_string = pre_user_data.as_string()
-    return b64encode(pre_user_data_string.encode('utf-8')).decode('utf-8')
+    return b64encode(pre_user_data_string.encode("utf-8")).decode("utf-8")
 
 
 def removequeue(queueName):
@@ -330,16 +348,16 @@ class JobQueue:
 
 
 def setup(config_dict, cellprofiler):
-    print(config_dict['APP_NAME'], "setup started")
-    ECS_TASK_NAME = config_dict['APP_NAME'] + "Task"
-    ECS_SERVICE_NAME = config_dict['APP_NAME'] + "Service"
+    print(config_dict["APP_NAME"], "setup started")
+    ECS_TASK_NAME = config_dict["APP_NAME"] + "Task"
+    ECS_SERVICE_NAME = config_dict["APP_NAME"] + "Service"
     sqs = boto3.client("sqs")
     get_or_create_queue(sqs, config_dict)
     ecs = boto3.client("ecs")
     get_or_create_cluster(ecs)
     update_ecs_task_definition(ecs, ECS_TASK_NAME, config_dict, cellprofiler)
     create_or_update_ecs_service(ecs, ECS_SERVICE_NAME, ECS_TASK_NAME)
-    return config_dict['APP_NAME']
+    return config_dict["APP_NAME"]
 
 
 #################################
@@ -354,7 +372,9 @@ def submitJob():
 
     # Step 1: Read the job configuration file
     jobInfo = loadConfig(sys.argv[2])
-    if "output_structure" not in list(jobInfo.keys()):  # backwards compatibility for 1.0.0
+    if "output_structure" not in list(
+        jobInfo.keys()
+    ):  # backwards compatibility for 1.0.0
         jobInfo["output_structure"] = ""
     templateMessage = {
         "Metadata": "",
@@ -389,7 +409,7 @@ def startCluster(fleetfile, njobs, config_dict):
     print(njobs, "jobs to do")
 
     try:
-        DOCKER_CORES = float(config_dict['DOCKER_CORES'])
+        DOCKER_CORES = float(config_dict["DOCKER_CORES"])
     except:
         DOCKER_CORES = 1.0
     nmachines = min(
@@ -400,24 +420,26 @@ def startCluster(fleetfile, njobs, config_dict):
 
     # Step 1: set up the configuration files
     s3client = boto3.client("s3")
-    ecsConfigFile = generateECSconfig(ECS_CLUSTER, config_dict['APP_NAME'], AWS_BUCKET, s3client)
+    ecsConfigFile = generateECSconfig(
+        ECS_CLUSTER, config_dict["APP_NAME"], AWS_BUCKET, s3client
+    )
     spotfleetConfig = loadConfig(fleetfile)
     spotfleetConfig["ValidFrom"] = datetime.datetime.now().replace(microsecond=0)
     spotfleetConfig["ValidUntil"] = (
         datetime.datetime.now() + datetime.timedelta(days=365)
     ).replace(microsecond=0)
     spotfleetConfig["TargetCapacity"] = nmachines
-    spotfleetConfig["SpotPrice"] = "%.2f" % config_dict['MACHINE_PRICE']
-    DOCKER_BASE_SIZE = int(config_dict['EBS_VOL_SIZE']) - 2
+    spotfleetConfig["SpotPrice"] = "%.2f" % config_dict["MACHINE_PRICE"]
+    DOCKER_BASE_SIZE = int(config_dict["EBS_VOL_SIZE"]) - 2
     userData = generateUserData(ecsConfigFile, DOCKER_BASE_SIZE)
-    MACHINE_TYPE = "[" + config_dict['MACHINE_TYPE'] "]"
+    MACHINE_TYPE = "[" + config_dict["MACHINE_TYPE"] + "]"
     for LaunchSpecification in range(0, len(spotfleetConfig["LaunchSpecifications"])):
         spotfleetConfig["LaunchSpecifications"][LaunchSpecification][
             "UserData"
         ] = userData
         spotfleetConfig["LaunchSpecifications"][LaunchSpecification][
             "BlockDeviceMappings"
-        ][1]["Ebs"]["VolumeSize"] = config_dict['EBS_VOL_SIZE']
+        ][1]["Ebs"]["VolumeSize"] = config_dict["EBS_VOL_SIZE"]
         spotfleetConfig["LaunchSpecifications"][LaunchSpecification][
             "InstanceType"
         ] = MACHINE_TYPE[LaunchSpecification]
@@ -430,11 +452,13 @@ def startCluster(fleetfile, njobs, config_dict):
 
     # Step 3: Make the monitor
     starttime = str(int(time.time() * 1000))
-    createMonitor = open("/tmp/" + config_dict['APP_NAME'] + "SpotFleetRequestId.json", "w")
+    createMonitor = open(
+        "/tmp/" + config_dict["APP_NAME"] + "SpotFleetRequestId.json", "w"
+    )
     createMonitor.write(
         '{"MONITOR_FLEET_ID" : "' + requestInfo["SpotFleetRequestId"] + '",\n'
     )
-    createMonitor.write('"MONITOR_APP_NAME" : "' + config_dict['APP_NAME'] + '",\n')
+    createMonitor.write('"MONITOR_APP_NAME" : "' + config_dict["APP_NAME"] + '",\n')
     createMonitor.write('"MONITOR_ECS_CLUSTER" : "' + ECS_CLUSTER + '",\n')
     createMonitor.write('"MONITOR_QUEUE_NAME" : "' + SQS_QUEUE_NAME + '",\n')
     createMonitor.write('"MONITOR_BUCKET_NAME" : "' + AWS_BUCKET + '",\n')
@@ -460,7 +484,7 @@ def startCluster(fleetfile, njobs, config_dict):
     ecs = boto3.client("ecs")
     ecs.update_service(
         cluster=ECS_CLUSTER,
-        service=config_dict['APP_NAME'] + "Service",
+        service=config_dict["APP_NAME"] + "Service",
         desiredCount=nmachines * TASKS_PER_MACHINE,
     )
     print("Service updated.")
@@ -485,11 +509,13 @@ def startCluster(fleetfile, njobs, config_dict):
                 "Your spot fleet request is causing an error and is now being cancelled.  Please check your configuration and try again"
             )
             for eacherror in errorcheck["HistoryRecords"]:
-                print((
-                    eacherror["EventInformation"]["EventSubType"]
-                    + " : "
-                    + eacherror["EventInformation"]["EventDescription"]
-                ))
+                print(
+                    (
+                        eacherror["EventInformation"]["EventSubType"]
+                        + " : "
+                        + eacherror["EventInformation"]["EventDescription"]
+                    )
+                )
             ec2client.cancel_spot_fleet_requests(
                 SpotFleetRequestIds=[requestInfo["SpotFleetRequestId"]],
                 TerminateInstances=True,
@@ -520,16 +546,18 @@ def upload_monitor(bucket_name, prefix, batch, step, config_dict):
         + "/"
         + step
         + "/"
-        + config_dict['APP_NAME']
+        + config_dict["APP_NAME"]
         + "SpotFleetRequestId.json"
     )
-    with open("/tmp/" + config_dict['APP_NAME'] + "SpotFleetRequestId.json", "rb") as a:
+    with open("/tmp/" + config_dict["APP_NAME"] + "SpotFleetRequestId.json", "rb") as a:
         s3.put_object(Body=a, Bucket=bucket_name, Key=json_on_bucket_name)
 
 
 def monitor(config_dict):
 
-    monitorInfo = loadConfig("/tmp/" + config_dict['APP_NAME'] + "SpotFleetRequestId.json")
+    monitorInfo = loadConfig(
+        "/tmp/" + config_dict["APP_NAME"] + "SpotFleetRequestId.json"
+    )
     monitorcluster = monitorInfo["MONITOR_ECS_CLUSTER"]
     monitorapp = monitorInfo["MONITOR_APP_NAME"]
     fleetId = monitorInfo["MONITOR_FLEET_ID"]
@@ -556,7 +584,9 @@ def monitor(config_dict):
 
     # Step 2: When no messages are pending, stop service
     # Reload the monitor info, because for long jobs new fleets may have been started, etc
-    monitorInfo = loadConfig("/tmp/" + config_dict['APP_NAME'] + "SpotFleetRequestId.json")
+    monitorInfo = loadConfig(
+        "/tmp/" + config_dict["APP_NAME"] + "SpotFleetRequestId.json"
+    )
     monitorcluster = monitorInfo["MONITOR_ECS_CLUSTER"]
     monitorapp = monitorInfo["MONITOR_APP_NAME"]
     fleetId = monitorInfo["MONITOR_FLEET_ID"]

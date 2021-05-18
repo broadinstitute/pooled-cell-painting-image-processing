@@ -30,7 +30,7 @@ def create_CSV_pipeline1(
                         for well in platedict.keys():
                             listoffiles.append(platedict[well][round])
             if len(Channelrounds) == 1:
-                fullplatename = list(Channeldict.keys())[0] + '_' + platename
+                fullplatename = list(Channeldict.keys())[0] + "_" + platename
                 for round in rounddict.keys():
                     if chan in rounddict[round]:
                         for well in platedict.keys():
@@ -68,7 +68,7 @@ def create_CSV_pipeline1(
                         for well in platedict.keys():
                             listoffiles.append(platedict[well][round])
             if len(Channelrounds) == 1:
-                fullplatename = list(Channeldict.keys())[0] + '_' + platename
+                fullplatename = list(Channeldict.keys())[0] + "_" + platename
                 for round in rounddict.keys():
                     if chan in rounddict[round]:
                         for well in platedict.keys():

@@ -17,7 +17,7 @@ def parse_image_names(imlist, filter_in, filter_out="jibberish"):
                     try:
                         plate, cycle, imname = platePlus.split("/")
                     except ValueError:
-                        print ("Images are not in standard folder organization in s3.")
+                        print("Images are not in standard folder organization in s3.")
                         return
                     well = imname[: imname.index("_")]
                     if plate not in list(image_dict.keys()):
@@ -98,11 +98,12 @@ def download_and_read_metadata_file(
     s3, bucket_name, metadata_file_name, metadata_on_bucket_name
 ):
     import botocore
+
     with open(metadata_file_name, "wb") as f:
         try:
             s3.download_fileobj(bucket_name, metadata_on_bucket_name, f)
         except botocore.exceptions.ClientError as error:
-            print ("Metadata file missing. Upload metadata.json.")
+            print("Metadata file missing. Upload metadata.json.")
             return
     with open(metadata_file_name, "r") as input_metadata:
         metadata = json.load(input_metadata)
@@ -116,7 +117,9 @@ def write_metadata_file(
         json.dump(metadata, f)
     with open(metadata_file_name, "rb") as metadatafile:
         print(metadatafile)
-        s3.put_object(Body=metadatafile, Bucket=bucket_name, Key=metadata_on_bucket_name)
+        s3.put_object(
+            Body=metadatafile, Bucket=bucket_name, Key=metadata_on_bucket_name
+        )
 
 
 def paginate_a_folder(s3, bucket_name, prefix):
@@ -127,7 +130,9 @@ def paginate_a_folder(s3, bucket_name, prefix):
         for page in pages:
             image_list += [x["Key"] for x in page["Contents"]]
     except KeyError:
-        print ("No images in folder. Check batch name matches between pipeline and images.")
+        print(
+            "No images in folder. Check batch name matches between pipeline and images."
+        )
         return
     return image_list
 
@@ -155,7 +160,7 @@ def check_if_run_done(
 
     if len(image_list) >= expected_len:
         done = True
-        print ("Sufficient output files found from previous step.")
+        print("Sufficient output files found from previous step.")
     else:
         print("Only ", len(image_list), " output files so far")
 
@@ -163,7 +168,7 @@ def check_if_run_done(
     queue_url = check_named_queue(sqs, prev_step_app_name + "Queue")
     if queue_url == None:
         done = True
-        print ("Queue from previous step does not still exist.")
+        print("Queue from previous step does not still exist.")
     else:
         # Maybe something died, and now your queue is just at 0 jobs
         attributes = sqs.get_queue_attributes(
@@ -179,14 +184,14 @@ def check_if_run_done(
             == 0
         ):
             done = True
-            print ("Queue from previous step exists but is at 0.")
+            print("Queue from previous step exists but is at 0.")
 
     # If indeed we are done, we want to check we're not overlapping and starting the same next job many times
     if done:
         # Check if current queue exists already (job already triggered)
         current_queue_url = check_named_queue(sqs, current_app_name + "Queue")
         if current_queue_url != None:
-            print ("Current step queue already exists.")
+            print("Current step queue already exists.")
             return False
         # Check FIFO queue
         dup_queue_url = check_named_queue(sqs, dup_queue_name)
@@ -203,7 +208,7 @@ def check_if_run_done(
         if nmess2 != nmess:  # aka, if we're the first job to report in as finished
             return True
         else:
-            print ("Trigger already exists in FIFO queue.")
+            print("Trigger already exists in FIFO queue.")
             return False
 
     # or, we're just not done yet

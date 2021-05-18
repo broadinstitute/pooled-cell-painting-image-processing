@@ -32,7 +32,7 @@ config_dict = {
     "SQS_MESSAGE_VISIBILITY": "720 * 60",
     "EXPECTED_NUMBER_FILES": "510",
     "MIN_FILE_SIZE_BYTES": "1",
-    "NECESSARY_STRING = "",
+    "NECESSARY_STRING": "",
 }
 
 
@@ -68,7 +68,7 @@ def lambda_handler(event, context):
 
     filter_prefix = image_prefix + batch + "/images_corrected/painting"
     # Because this step is batched per site (not well) don't need to anticipate partial loading of jobs
-    expected_len = (len(plate_and_well_list) * expected_files_per_well + 5)
+    expected_len = len(plate_and_well_list) * expected_files_per_well + 5
 
     done = helpful_functions.check_if_run_done(
         s3,
@@ -87,7 +87,7 @@ def lambda_handler(event, context):
     else:
         # now let's do our stuff!
         app_name = run_DCP.run_setup(
-            bucket_name, prefix, batch, cellprofiler=False
+            bucket_name, prefix, batch, config_dict, cellprofiler=False
         )
 
         # make the jobs
@@ -107,7 +107,7 @@ def lambda_handler(event, context):
 
         # Start a cluster
         run_DCP.run_cluster(
-            bucket_name, prefix, batch, len(plate_and_well_list)
+            bucket_name, prefix, batch, len(plate_and_well_list, config_dict)
         )
 
         # Run the monitor

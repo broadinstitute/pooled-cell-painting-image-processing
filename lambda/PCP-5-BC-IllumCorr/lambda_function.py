@@ -35,6 +35,7 @@ config_dict = {
     "NECESSARY_STRING": "",
 }
 
+
 def lambda_handler(event, context):
     # Log the received event
     bucket = event["Records"][0]["s3"]["bucket"]["name"]
@@ -114,7 +115,7 @@ def lambda_handler(event, context):
             s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
 
     # Now it's time to run DCP
-    app_name = run_DCP.run_setup(bucket, prefix, batch)
+    app_name = run_DCP.run_setup(bucket, prefix, batch, config_dict)
 
     # Make a batch
     create_batch_jobs.create_batch_jobs_5(
@@ -123,7 +124,7 @@ def lambda_handler(event, context):
 
     # Start a cluster
     run_DCP.run_cluster(
-        bucket, prefix, batch, len(platelist) * expected_cycles
+        bucket, prefix, batch, len(platelist) * expected_cycles, config_dict
     )
 
     # Run the monitor

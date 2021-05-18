@@ -34,6 +34,7 @@ config_dict = {
     "NECESSARY_STRING": "",
 }
 
+
 def lambda_handler(event, context):
     # Log the received event
     bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
@@ -55,11 +56,11 @@ def lambda_handler(event, context):
     barcodepath = os.path.join(prefix, "metadata", batch)
     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=barcodepath)
     filelist = []
-    for obj in response.get('Contents', []):
+    for obj in response.get("Contents", []):
         filelist += obj
     if ".csv" not in filelist:
-        print (f"No Barcodes.csv in {barcodepath}")
-        return("Barcodes.csv is missing")
+        print(f"No Barcodes.csv in {barcodepath}")
+        return "Barcodes.csv is missing"
 
     # get the metadata file, so we can add stuff to it
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
@@ -129,7 +130,7 @@ def lambda_handler(event, context):
                 s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
         # now let's do our stuff!
-        app_name = run_DCP.run_setup(bucket_name, prefix, batch)
+        app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_dict)
 
         # make the jobs
         create_batch_jobs.create_batch_jobs_7(
@@ -142,11 +143,9 @@ def lambda_handler(event, context):
         )
 
         # Start a cluster
-        run_DCP.run_cluster(
-            bucket_name, prefix, batch, num_sites
-        )
+        run_DCP.run_cluster(bucket_name, prefix, batch, num_sites, config_dict)
 
         # Run the monitor
-        run_DCP.run_monitor(bucket_name, prefix, batch, step)
+        run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)
         print("Go run the monitor now")
         return "Cluster started"

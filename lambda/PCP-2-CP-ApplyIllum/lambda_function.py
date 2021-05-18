@@ -103,7 +103,7 @@ def lambda_handler(event, context):
 
     else:
         # now let's do our stuff!
-        app_name = run_DCP.run_setup(bucket_name, prefix, batch)
+        app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_dict)
 
         if not SABER:
             pipeline_name = "2_CP_Apply_Illum.cppipe"
@@ -116,10 +116,7 @@ def lambda_handler(event, context):
 
         # Start a cluster
         run_DCP.run_cluster(
-            bucket_name,
-            prefix,
-            batch,
-            len(platelist) * len(well_list),
+            bucket_name, prefix, batch, len(platelist) * len(well_list), config_dict,
         )
 
         # Run the monitor

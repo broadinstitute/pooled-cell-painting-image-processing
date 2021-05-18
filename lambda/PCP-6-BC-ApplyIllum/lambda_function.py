@@ -135,7 +135,7 @@ def lambda_handler(event, context):
                 s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
         # now let's do our stuff!
-        app_name = run_DCP.run_setup(bucket_name, prefix, batch)
+        app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_dict)
 
         # make the jobs
         create_batch_jobs.create_batch_jobs_6(
@@ -153,7 +153,7 @@ def lambda_handler(event, context):
             njobs = len(plate_and_well_list) * 19
         else:
             njobs = len(plate_and_well_list) * num_series
-        run_DCP.run_cluster(bucket_name, prefix, batch, njobs)
+        run_DCP.run_cluster(bucket_name, prefix, batch, njobs, config_dict)
 
         # Run the monitor
         run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)

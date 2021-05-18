@@ -142,7 +142,12 @@ def lambda_handler(event, context):
         )
         with open(local_pipeline_name, "wb") as f:
             s3.download_fileobj(bucket_name, pipeline_on_bucket_name, f)
-        edit_id_secondary(local_pipeline_name, local_temp_pipeline_name, calc_lower_percentile, calc_upper_percentile)
+        edit_id_secondary(
+            local_pipeline_name,
+            local_temp_pipeline_name,
+            calc_lower_percentile,
+            calc_upper_percentile,
+        )
         with open(local_temp_pipeline_name, "rb") as pipeline:
             s3.put_object(
                 Body=pipeline, Bucket=bucket_name, Key=pipeline_on_bucket_name
@@ -175,7 +180,7 @@ def lambda_handler(event, context):
                 s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
         # now let's do our stuff!
-        app_name = run_DCP.run_setup(bucket_name, prefix, batch)
+        app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_dict)
 
         # make the jobs
         create_batch_jobs.create_batch_jobs_3(
@@ -188,6 +193,7 @@ def lambda_handler(event, context):
             prefix,
             batch,
             len(plate_and_well_list) * len(out_range),
+            config_dict,
         )
 
         # Run the monitor
@@ -206,5 +212,5 @@ def edit_id_secondary(file_in_name, file_out_name, lower_value, upper_value):
                 if "Lower and upper bounds on" in line and IDSecond == True:
                     prompt, answer = line.split(":")
                     new_answer = str(lower_value) + "," + str(upper_value)
-                    line = prompt + ":" + new_answer +"\n"
+                    line = prompt + ":" + new_answer + "\n"
                 outfile.write(line)
