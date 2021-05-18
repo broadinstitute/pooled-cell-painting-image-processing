@@ -30,13 +30,13 @@ def generate_task_definition(config_dict):
                 "name": config_dict["APP_NAME"],
                 "image": config_dict["DOCKERHUB_TAG"],
                 "cpu": CPU_SHARES,
-                "memory": config_dict["MEMORY"],
+                "memory": int(config_dict["MEMORY"]),
                 "essential": True,
                 "privileged": True,
                 "logConfiguration": {
                     "logDriver": "awslogs",
                     "options": {
-                        "awslogs-group": LOG_GROUP_NAME + "_perInstance",
+                        "awslogs-group": config_dict["APP_NAME"] + "_perInstance",
                         "awslogs-region": AWS_REGION,
                         "awslogs-stream-prefix": config_dict["APP_NAME"],
                     },
@@ -45,7 +45,7 @@ def generate_task_definition(config_dict):
         ],
     }
     sqs = boto3.client("sqs")
-    queue_name = get_queue_url(sqs)
+    queue_name = get_queue_url(sqs, config_dict)
     task_definition["containerDefinitions"][0]["environment"] += [
         {"name": "APP_NAME", "value": config_dict["APP_NAME"]},
         {"name": "SQS_QUEUE_URL", "value": queue_name},
@@ -56,7 +56,7 @@ def generate_task_definition(config_dict):
         },
         {"name": "AWS_BUCKET", "value": AWS_BUCKET},
         {"name": "DOCKER_CORES", "value": str(config_dict["DOCKER_CORES"])},
-        {"name": "LOG_GROUP_NAME", "value": LOG_GROUP_NAME},
+        {"name": "LOG_GROUP_NAME", "value": config_dict["APP_NAME"]},
         {"name": "CHECK_IF_DONE_BOOL", "value": config_dict["CHECK_IF_DONE_BOOL"]},
         {
             "name": "EXPECTED_NUMBER_FILES",
@@ -78,7 +78,7 @@ def generate_task_definition(config_dict):
 def generate_fiji_task_definition(config_dict):
     task_definition = TASK_DEFINITION.copy()
     sqs = boto3.client("sqs")
-    queue_name = get_queue_url(sqs)
+    queue_name = get_queue_url(sqs, config_dict)
     task_definition["containerDefinitions"][0]["environment"] += [
         {"name": "APP_NAME", "value": config_dict["APP_NAME"]},
         {"name": "SQS_QUEUE_URL", "value": queue_name},
@@ -88,7 +88,7 @@ def generate_fiji_task_definition(config_dict):
             "value": os.environ["MY_AWS_SECRET_ACCESS_KEY"],
         },
         {"name": "AWS_BUCKET", "value": AWS_BUCKET},
-        {"name": "LOG_GROUP_NAME", "value": LOG_GROUP_NAME},
+        {"name": "LOG_GROUP_NAME", "value": config_dict["APP_NAME"]},
         {
             "name": "EXPECTED_NUMBER_FILES",
             "value": str(config_dict["EXPECTED_NUMBER_FILES"]),
@@ -463,7 +463,7 @@ def startCluster(fleetfile, njobs, config_dict):
     createMonitor.write('"MONITOR_ECS_CLUSTER" : "' + ECS_CLUSTER + '",\n')
     createMonitor.write('"MONITOR_QUEUE_NAME" : "' + (config_dict["APP_NAME"] + 'Queue') + '",\n')
     createMonitor.write('"MONITOR_BUCKET_NAME" : "' + AWS_BUCKET + '",\n')
-    createMonitor.write('"MONITOR_LOG_GROUP_NAME" : "' + LOG_GROUP_NAME + '",\n')
+    createMonitor.write('"MONITOR_LOG_GROUP_NAME" : "' + config_dict["APP_NAME"] + '",\n')
     createMonitor.write('"MONITOR_START_TIME" : "' + starttime + '"}\n')
     createMonitor.close()
 

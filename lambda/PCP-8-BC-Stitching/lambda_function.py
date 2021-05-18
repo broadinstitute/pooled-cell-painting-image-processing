@@ -26,7 +26,6 @@ config_dict = {
     "DOWNLOAD_FILES": "False",
     "MEMORY": "31000",
     "SQS_MESSAGE_VISIBILITY": "10800",
-    # EXPECTED_NUMBER_FILES = 3996 for circle, 9 cycles
     "EXPECTED_NUMBER_FILES": "3996",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
