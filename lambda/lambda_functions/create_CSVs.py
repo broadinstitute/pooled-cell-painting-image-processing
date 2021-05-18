@@ -24,10 +24,17 @@ def create_CSV_pipeline1(
         df = pandas.DataFrame(columns=columns)
         for chan in channels:
             listoffiles = []
-            for round in rounddict.keys():
-                if chan in rounddict[round]:
-                    for well in platedict.keys():
-                        listoffiles.append(platedict[well][round])
+            if len(Channelrounds) > 1:
+                for round in rounddict.keys():
+                    if chan in rounddict[round]:
+                        for well in platedict.keys():
+                            listoffiles.append(platedict[well][round])
+            if len(Channelrounds) == 1:
+                fullplatename = list(Channeldict.keys())[0] + '_' + platename
+                for round in rounddict.keys():
+                    if chan in rounddict[round]:
+                        for well in platedict.keys():
+                            listoffiles.append(platedict[well][fullplatename])
             listoffiles = [x for l in listoffiles for x in l]
             df["FileName_Orig" + chan] = listoffiles
         df["Metadata_Plate"] = [platename] * len(listoffiles)
@@ -39,7 +46,7 @@ def create_CSV_pipeline1(
                     if chan == i[0]:
                         df["PathName_Orig" + chan] = pathperround
                         df["Frame_Orig" + chan] = i[1]
-        file_out_name = "/tmp/" + str(platename) + ".csv"
+        file_out_name = "/tmp/" + str(platename) + "_1.csv"
         df.to_csv(file_out_name, index=False)
         # Make .csv for 2_CP_ApplyIllum
         df["Metadata_Site"] = df["Metadata_Series"]
@@ -55,16 +62,23 @@ def create_CSV_pipeline1(
         df["Metadata_Well_Value"] = well_val_df_list
         for chan in channels:
             listoffiles = []
-            for round in rounddict.keys():
-                if chan in rounddict[round]:
-                    for well in platedict.keys():
-                        listoffiles.append(platedict[well][round])
+            if len(Channelrounds) > 1:
+                for round in rounddict.keys():
+                    if chan in rounddict[round]:
+                        for well in platedict.keys():
+                            listoffiles.append(platedict[well][round])
+            if len(Channelrounds) == 1:
+                fullplatename = list(Channeldict.keys())[0] + '_' + platename
+                for round in rounddict.keys():
+                    if chan in rounddict[round]:
+                        for well in platedict.keys():
+                            listoffiles.append(platedict[well][fullplatename])
             listoffiles = [x for l in listoffiles for x in l]
             df["PathName_Illum" + chan] = [illum_path] * len(listoffiles)
             df["FileName_Illum" + chan] = [platename + "_Illum" + chan + ".npy"] * len(
                 listoffiles
             )
-        file_out_name_2 = "/tmp/" + str(platename) + ".csv"
+        file_out_name_2 = "/tmp/" + str(platename) + "_2.csv"
         df.to_csv(file_out_name_2, index=False)
     return file_out_name, file_out_name_2
 

@@ -106,13 +106,21 @@ def lambda_handler(event, context):
     for eachplate in platelist:
         platedict = image_dict[eachplate]
         well_list = list(platedict.keys())
-        Channelrounds = list(Channeldict.keys())
         # Only keep full wells
         print(f"{full_well_files} expect files per well and round for {eachplate}")
         incomplete_wells = []
         for eachwell in well_list:
-            for eachround in Channelrounds:
-                per_well = platedict[eachwell][eachround]
+            if SABER:
+                for eachround in Channelrounds:
+                    per_well = platedict[eachwell][eachround]
+                    if len(per_well) != full_well_files:
+                        incomplete_wells.append(eachwell)
+                        print(
+                            f"{eachwell} {eachround} doesn't have full well files. {len(per_well)} files found."
+                        )
+            if not SABER:
+                platename = list(Channeldict.keys())[0] + '_' + eachplate
+                per_well = platedict[eachwell][platename]
                 if len(per_well) != full_well_files:
                     incomplete_wells.append(eachwell)
                     print(
