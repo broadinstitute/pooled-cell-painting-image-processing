@@ -24,7 +24,7 @@ config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_Analysis",
     "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
     "TASKS_PER_MACHINE":"1",
-    "MACHINE_TYPE": "m5.4xlarge",
+    "MACHINE_TYPE": ["m5.4xlarge"],
     "MACHINE_PRICE": "0.50",
     "EBS_VOL_SIZE": "60",
     "DOWNLOAD_FILES": "False",

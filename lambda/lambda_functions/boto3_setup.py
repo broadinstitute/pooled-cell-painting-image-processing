@@ -133,7 +133,7 @@ def create_or_update_ecs_service(ecs, ECS_SERVICE_NAME, ECS_TASK_NAME):
     if len(service) > 0:
         print("Service exists. Removing")
         ecs.delete_service(cluster=ECS_CLUSTER, service=ECS_SERVICE_NAME)
-        print(("Removed service " + ECS_SERVICE_NAME))
+        print("Removed service " + ECS_SERVICE_NAME)
         time.sleep(WAIT_TIME)
 
     print("Creating new service")
@@ -183,7 +183,7 @@ def loadConfig(configFile):
     return data
 
 
-def generateECSconfig(ECS_CLUSTER, config_dict, AWS_BUCKET, s3client):
+def generateECSconfig(ECS_CLUSTER, APP_NAME, AWS_BUCKET, s3client):
     configfile = open("/tmp/configtemp.config", "w")
     configfile.write("ECS_CLUSTER=" + ECS_CLUSTER + "\n")
     configfile.write('ECS_AVAILABLE_LOGGING_DRIVERS=["json-file","awslogs"]')
@@ -191,11 +191,11 @@ def generateECSconfig(ECS_CLUSTER, config_dict, AWS_BUCKET, s3client):
     s3client.upload_file(
         "/tmp/configtemp.config",
         AWS_BUCKET,
-        "ecsconfigs/" + config_dict["APP_NAME"] + "_ecs.config",
+        "ecsconfigs/" + APP_NAME + "_ecs.config",
     )
     os.remove("/tmp/configtemp.config")
     return (
-        "s3://" + AWS_BUCKET + "/ecsconfigs/" + config_dict["APP_NAME"] + "_ecs.config"
+        "s3://" + AWS_BUCKET + "/ecsconfigs/" + APP_NAME + "_ecs.config"
     )
 
 
@@ -320,7 +320,7 @@ class JobQueue:
     def scheduleBatch(self, data):
         msg = json.dumps(data)
         response = self.queue.send_message(MessageBody=msg)
-        print(("Batch sent. Message ID:", response.get("MessageId")))
+        print("Batch sent. Message ID:", response.get("MessageId"))
 
     def pendingLoad(self):
         self.queue.load()
@@ -330,7 +330,7 @@ class JobQueue:
             self.pending = visible
             self.inProcess = nonVis
             d = datetime.datetime.now()
-            print((d, "In process:", nonVis, "Pending", visible))
+            print(d, "In process:", nonVis, "Pending", visible)
         if visible + nonVis > 0:
             return True
         else:
@@ -430,26 +430,25 @@ def startCluster(fleetfile, njobs, config_dict):
         datetime.datetime.now() + datetime.timedelta(days=365)
     ).replace(microsecond=0)
     spotfleetConfig["TargetCapacity"] = nmachines
-    spotfleetConfig["SpotPrice"] = "%.2f" % config_dict["MACHINE_PRICE"]
+    spotfleetConfig["SpotPrice"] = "%.2f" % float(config_dict["MACHINE_PRICE"])
     DOCKER_BASE_SIZE = int(config_dict["EBS_VOL_SIZE"]) - 2
     userData = generateUserData(ecsConfigFile, DOCKER_BASE_SIZE)
-    MACHINE_TYPE = "[" + config_dict["MACHINE_TYPE"] + "]"
     for LaunchSpecification in range(0, len(spotfleetConfig["LaunchSpecifications"])):
         spotfleetConfig["LaunchSpecifications"][LaunchSpecification][
             "UserData"
         ] = userData
         spotfleetConfig["LaunchSpecifications"][LaunchSpecification][
             "BlockDeviceMappings"
-        ][1]["Ebs"]["VolumeSize"] = config_dict["EBS_VOL_SIZE"]
+        ][1]["Ebs"]["VolumeSize"] = int(config_dict["EBS_VOL_SIZE"])
         spotfleetConfig["LaunchSpecifications"][LaunchSpecification][
             "InstanceType"
-        ] = MACHINE_TYPE[LaunchSpecification]
+        ] = config_dict["MACHINE_TYPE"][LaunchSpecification]
 
     # Step 2: make the spot fleet request
     ec2client = boto3.client("ec2")
     requestInfo = ec2client.request_spot_fleet(SpotFleetRequestConfig=spotfleetConfig)
     print("Request in process. Wait until your machines are available in the cluster.")
-    print(("SpotFleetRequestId", requestInfo["SpotFleetRequestId"]))
+    print("SpotFleetRequestId", requestInfo["SpotFleetRequestId"])
 
     # Step 3: Make the monitor
     starttime = str(int(time.time() * 1000))
@@ -469,15 +468,15 @@ def startCluster(fleetfile, njobs, config_dict):
 
     # Step 4: Create a log group for this app and date if one does not already exist
     logclient = boto3.client("logs")
-    loggroupinfo = logclient.describe_log_groups(logGroupNamePrefix=LOG_GROUP_NAME)
+    loggroupinfo = logclient.describe_log_groups(logGroupNamePrefix=config_dict["APP_NAME"])
     groupnames = [d["logGroupName"] for d in loggroupinfo["logGroups"]]
-    if LOG_GROUP_NAME not in groupnames:
-        logclient.create_log_group(logGroupName=LOG_GROUP_NAME)
-        logclient.put_retention_policy(logGroupName=LOG_GROUP_NAME, retentionInDays=60)
-    if LOG_GROUP_NAME + "_perInstance" not in groupnames:
-        logclient.create_log_group(logGroupName=LOG_GROUP_NAME + "_perInstance")
+    if config_dict["APP_NAME"] not in groupnames:
+        logclient.create_log_group(logGroupName=config_dict["APP_NAME"])
+        logclient.put_retention_policy(logGroupName=config_dict["APP_NAME"], retentionInDays=60)
+    if config_dict["APP_NAME"] + "_perInstance" not in groupnames:
+        logclient.create_log_group(logGroupName=config_dict["APP_NAME"] + "_perInstance")
         logclient.put_retention_policy(
-            logGroupName=LOG_GROUP_NAME + "_perInstance", retentionInDays=60
+            logGroupName=config_dict["APP_NAME"] + "_perInstance", retentionInDays=60
         )
 
     # Step 5: update the ECS service to be ready to inject docker containers in EC2 instances
@@ -494,9 +493,9 @@ def startCluster(fleetfile, njobs, config_dict):
     status = ec2client.describe_spot_fleet_instances(
         SpotFleetRequestId=requestInfo["SpotFleetRequestId"]
     )
-    while len(status["ActiveInstances"]) < CLUSTER_MACHINES:
+    while len(status["ActiveInstances"]) < nmachines:
         # First check to make sure there's not a problem
-        print((datetime.datetime.now().replace(microsecond=0)))
+        print(datetime.datetime.now().replace(microsecond=0))
         # hackery to deal with time zones
         errorcheck = ec2client.describe_spot_fleet_request_history(
             SpotFleetRequestId=requestInfo["SpotFleetRequestId"],

@@ -22,7 +22,7 @@ config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_IllumPainting",
     "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
     "TASKS_PER_MACHINE":"1",
-    "MACHINE_TYPE": "m4.xlarge",
+    "MACHINE_TYPE": ["m4.xlarge"],
     "MACHINE_PRICE": "0.10",
     "EBS_VOL_SIZE": "22",
     "DOWNLOAD_FILES": "False",
@@ -109,7 +109,7 @@ def lambda_handler(event, context):
         platedict = image_dict[eachplate]
         well_list = list(platedict.keys())
         # Only keep full wells
-        print(f"{full_well_files} expect files per well and round for {eachplate}")
+        print(f"{full_well_files} expected files per well and round for {eachplate}")
         incomplete_wells = []
         for eachwell in well_list:
             if SABER:
