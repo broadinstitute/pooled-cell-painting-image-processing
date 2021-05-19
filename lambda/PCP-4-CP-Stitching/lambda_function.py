@@ -24,6 +24,7 @@ config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_PaintingStitching",
     "DOCKERHUB_TAG": "cellprofiler/distributed-fiji:latest",
     "SCRIPT_DOWNLOAD_URL": "https://raw.githubusercontent.com/broadinstitute/pooled-cell-painting-image-processing/master/FIJI/BatchStitchPooledCellPainting_StitchAndCrop_Headless.py",
+    "TASKS_PER_MACHINE":"1",
     "MACHINE_TYPE": "m4.2xlarge",
     "MACHINE_PRICE": "0.20",
     "EBS_VOL_SIZE": "400",

@@ -414,7 +414,7 @@ def startCluster(fleetfile, njobs, config_dict):
     except:
         DOCKER_CORES = 1.0
     nmachines = min(
-        200, int(numpy.ceil(float(njobs) / (DOCKER_CORES * TASKS_PER_MACHINE)))
+        200, int(numpy.ceil(float(njobs) / (DOCKER_CORES * int(config_dict["TASKS_PER_MACHINE"]))))
     )
 
     print(nmachines, "machines being started to run them")
@@ -486,7 +486,7 @@ def startCluster(fleetfile, njobs, config_dict):
     ecs.update_service(
         cluster=ECS_CLUSTER,
         service=config_dict["APP_NAME"] + "Service",
-        desiredCount=nmachines * TASKS_PER_MACHINE,
+        desiredCount=nmachines * int(config_dict["TASKS_PER_MACHINE"]),
     )
     print("Service updated.")
 
