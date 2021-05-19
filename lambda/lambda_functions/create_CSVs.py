@@ -39,12 +39,19 @@ def create_CSV_pipeline1(
             df["FileName_Orig" + chan] = listoffiles
         df["Metadata_Plate"] = [platename] * len(listoffiles)
         df["Metadata_Series"] = list(range(seriesperwell)) * len(platedict.keys())
-        for eachround in Channelrounds:
-            pathperround = path + eachround + "/"
+        if len(Channelrounds) > 1:
+            for eachround in Channelrounds:
+                pathperround = path + eachround + "/"
+                for chan in channels:
+                    for i in list(Channeldict[eachround].values()):
+                        if chan == i[0]:
+                            df["PathName_Orig" + chan] = pathperround
+                            df["Frame_Orig" + chan] = i[1]
+        if len(Channelrounds) == 1:
             for chan in channels:
+                df["PathName_Orig" + chan] = path + fullplatename + "/"
                 for i in list(Channeldict[eachround].values()):
                     if chan == i[0]:
-                        df["PathName_Orig" + chan] = pathperround
                         df["Frame_Orig" + chan] = i[1]
         file_out_name = "/tmp/" + str(platename) + "_1.csv"
         df.to_csv(file_out_name, index=False)
