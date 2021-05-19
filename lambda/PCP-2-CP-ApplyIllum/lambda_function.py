@@ -21,7 +21,7 @@ step = "2"
 config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_ApplyIllumPainting",
     "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
-    "TASKS_PER_MACHINE":"1",
+    "TASKS_PER_MACHINE": "1",
     "MACHINE_TYPE": ["m4.2xlarge"],
     "MACHINE_PRICE": "0.25",
     "EBS_VOL_SIZE": "350",

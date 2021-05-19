@@ -150,7 +150,7 @@ def get_queue_url(sqs, config_dict):
     result = sqs.list_queues()
     if "QueueUrls" in list(result.keys()):
         for u in result["QueueUrls"]:
-            if u.split("/")[-1] == (config_dict["APP_NAME"] + 'Queue'):
+            if u.split("/")[-1] == (config_dict["APP_NAME"] + "Queue"):
                 return u
     return None
 
@@ -166,7 +166,7 @@ def get_or_create_queue(sqs, config_dict):
         + '","maxReceiveCount":"10"}',
         "VisibilityTimeout": str(config_dict["SQS_MESSAGE_VISIBILITY"]),
     }
-    SQS_QUEUE_NAME = config_dict["APP_NAME"] + 'Queue'
+    SQS_QUEUE_NAME = config_dict["APP_NAME"] + "Queue"
     u = get_queue_url(sqs, config_dict)
     if u is None:
         print("Creating queue")
@@ -189,14 +189,10 @@ def generateECSconfig(ECS_CLUSTER, APP_NAME, AWS_BUCKET, s3client):
     configfile.write('ECS_AVAILABLE_LOGGING_DRIVERS=["json-file","awslogs"]')
     configfile.close()
     s3client.upload_file(
-        "/tmp/configtemp.config",
-        AWS_BUCKET,
-        "ecsconfigs/" + APP_NAME + "_ecs.config",
+        "/tmp/configtemp.config", AWS_BUCKET, "ecsconfigs/" + APP_NAME + "_ecs.config",
     )
     os.remove("/tmp/configtemp.config")
-    return (
-        "s3://" + AWS_BUCKET + "/ecsconfigs/" + APP_NAME + "_ecs.config"
-    )
+    return "s3://" + AWS_BUCKET + "/ecsconfigs/" + APP_NAME + "_ecs.config"
 
 
 def generateUserData(ecsConfigFile, dockerBaseSize):
@@ -311,7 +307,9 @@ class JobQueue:
     def __init__(self, name=None):
         self.sqs = boto3.resource("sqs")
         if name == None:
-            self.queue = self.sqs.get_queue_by_name(QueueName=(config_dict["APP_NAME"] + 'Queue'))
+            self.queue = self.sqs.get_queue_by_name(
+                QueueName=(config_dict["APP_NAME"] + "Queue")
+            )
         else:
             self.queue = self.sqs.get_queue_by_name(QueueName=name)
         self.inProcess = -1
@@ -414,7 +412,12 @@ def startCluster(fleetfile, njobs, config_dict):
     except:
         DOCKER_CORES = 1.0
     nmachines = min(
-        200, int(numpy.ceil(float(njobs) / (DOCKER_CORES * int(config_dict["TASKS_PER_MACHINE"]))))
+        200,
+        int(
+            numpy.ceil(
+                float(njobs) / (DOCKER_CORES * int(config_dict["TASKS_PER_MACHINE"]))
+            )
+        ),
     )
 
     print(nmachines, "machines being started to run them")
@@ -460,21 +463,31 @@ def startCluster(fleetfile, njobs, config_dict):
     )
     createMonitor.write('"MONITOR_APP_NAME" : "' + config_dict["APP_NAME"] + '",\n')
     createMonitor.write('"MONITOR_ECS_CLUSTER" : "' + ECS_CLUSTER + '",\n')
-    createMonitor.write('"MONITOR_QUEUE_NAME" : "' + (config_dict["APP_NAME"] + 'Queue') + '",\n')
+    createMonitor.write(
+        '"MONITOR_QUEUE_NAME" : "' + (config_dict["APP_NAME"] + "Queue") + '",\n'
+    )
     createMonitor.write('"MONITOR_BUCKET_NAME" : "' + AWS_BUCKET + '",\n')
-    createMonitor.write('"MONITOR_LOG_GROUP_NAME" : "' + config_dict["APP_NAME"] + '",\n')
+    createMonitor.write(
+        '"MONITOR_LOG_GROUP_NAME" : "' + config_dict["APP_NAME"] + '",\n'
+    )
     createMonitor.write('"MONITOR_START_TIME" : "' + starttime + '"}\n')
     createMonitor.close()
 
     # Step 4: Create a log group for this app and date if one does not already exist
     logclient = boto3.client("logs")
-    loggroupinfo = logclient.describe_log_groups(logGroupNamePrefix=config_dict["APP_NAME"])
+    loggroupinfo = logclient.describe_log_groups(
+        logGroupNamePrefix=config_dict["APP_NAME"]
+    )
     groupnames = [d["logGroupName"] for d in loggroupinfo["logGroups"]]
     if config_dict["APP_NAME"] not in groupnames:
         logclient.create_log_group(logGroupName=config_dict["APP_NAME"])
-        logclient.put_retention_policy(logGroupName=config_dict["APP_NAME"], retentionInDays=60)
+        logclient.put_retention_policy(
+            logGroupName=config_dict["APP_NAME"], retentionInDays=60
+        )
     if config_dict["APP_NAME"] + "_perInstance" not in groupnames:
-        logclient.create_log_group(logGroupName=config_dict["APP_NAME"] + "_perInstance")
+        logclient.create_log_group(
+            logGroupName=config_dict["APP_NAME"] + "_perInstance"
+        )
         logclient.put_retention_policy(
             logGroupName=config_dict["APP_NAME"] + "_perInstance", retentionInDays=60
         )

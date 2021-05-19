@@ -23,7 +23,7 @@ step = "7A"
 config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_PreprocessBarcodingTroubleshoot",
     "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
-    "TASKS_PER_MACHINE":"2",
+    "TASKS_PER_MACHINE": "2",
     "MACHINE_TYPE": ["r4.2xlarge"],
     "MACHINE_PRICE": "0.40",
     "EBS_VOL_SIZE": "800",
@@ -37,6 +37,7 @@ config_dict = {
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
 }
+
 
 def lambda_handler(event, context):
     # Log the received event
