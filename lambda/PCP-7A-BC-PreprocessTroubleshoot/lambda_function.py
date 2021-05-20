@@ -50,7 +50,7 @@ def lambda_handler(event, context):
 
     # Load metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
-    print("Loading", metadata_on_bucket_name)
+    print (f"Downloading metadata from {metadata_on_bucket_name}")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )

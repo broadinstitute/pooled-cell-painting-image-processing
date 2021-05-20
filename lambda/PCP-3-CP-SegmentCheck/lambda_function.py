@@ -59,9 +59,9 @@ def lambda_handler(event, context):
     prefix = os.path.join(image_prefix, "workspace/")
     print(batch, prefix)
 
-    # get the metadata file, so we can add stuff to it
+    # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
-    print("Loading", metadata_on_bucket_name)
+    print (f"Downloading metadata from {metadata_on_bucket_name}")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
@@ -88,20 +88,24 @@ def lambda_handler(event, context):
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
 
+    run_DCP.grab_batch_config(bucket_name, prefix, batch)
+    from configAWS import SQS_DUPLICATE_QUEUE
+
     filter_prefix = image_prefix + batch + "/images_corrected/painting"
     # Expected length shows that all transfers (i.e. all wells) have at least started
     expected_len = ((len(plate_and_well_list) - 1) * expected_files_per_well) + 1
 
     print("Checking if all files are present")
+    prev_step_app_name = config_dict["APP_NAME"].rsplit("_", 1)[-2] + "_ApplyIllumPainting"
     done = helpful_functions.check_if_run_done(
         s3,
         bucket_name,
         filter_prefix,
         expected_len,
-        current_app_name,
+        config_dict["APP_NAME"],
         prev_step_app_name,
         sqs,
-        duplicate_queue_name,
+        SQS_DUPLICATE_QUEUE,
     )
 
     if not done:

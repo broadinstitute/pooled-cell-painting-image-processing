@@ -46,9 +46,9 @@ def lambda_handler(event, context):
     prefix = "2018_11_20_Periscope_X/workspace"
     bucket_name = "imaging-platform"
 
-    # get the metadata file, so we can add stuff to it
+    # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
-    print("Loading", metadata_on_bucket_name)
+    print (f"Downloading metadata from {metadata_on_bucket_name}")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
