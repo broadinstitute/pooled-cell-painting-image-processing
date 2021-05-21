@@ -42,6 +42,7 @@ config_dict = {
 # Default percentiles are 10 and 90. Change only to troubleshoot troublesome datasets.
 upper_percentile = 90
 lower_percentile = 10
+segmentation_channel = "Phalloidin"
 
 
 def lambda_handler(event, context):
@@ -172,7 +173,7 @@ def lambda_handler(event, context):
                 + "/images_corrected/painting"
             )
             per_plate_csv = create_CSVs.create_CSV_pipeline3(
-                eachplate, num_series, bucket_folder, well_list, metadata["range_skip"]
+                eachplate, num_series, bucket_folder, well_list, metadata["range_skip"], segmentation_channel
             )
             csv_on_bucket_name = (
                 prefix
