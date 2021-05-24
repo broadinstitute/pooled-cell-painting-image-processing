@@ -70,7 +70,7 @@ def create_batch_jobs_2(
 
 
 def create_batch_jobs_3(
-    startpath, batchsuffix, segmentpipename, plate_and_well_list, site_list, app_name
+    startpath, batchsuffix, segmentpipename, plate_and_well_list, app_name
 ):
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
@@ -83,23 +83,20 @@ def create_batch_jobs_3(
     )
     segmentqueue = JobQueue(app_name + "Queue")
     for tosegment in plate_and_well_list:
-        for site in site_list:
-            templateMessage_segment = {
-                "Metadata": "Metadata_Plate="
-                + tosegment[0]
-                + ",Metadata_Well="
-                + tosegment[1]
-                + ",Metadata_Site="
-                + str(site),
-                "pipeline": posixpath.join(pipelinepath, segmentpipename),
-                "output": segmentoutpath,
-                "output_structure": "Metadata_Plate",
-                "input": pipelinepath,
-                "data_file": posixpath.join(
-                    datafilepath, tosegment[0], "load_data_pipeline3.csv"
-                ),
-            }
-            segmentqueue.scheduleBatch(templateMessage_segment)
+        templateMessage_segment = {
+            "Metadata": "Metadata_Plate="
+            + tosegment[0]
+            + ",Metadata_Well="
+            + tosegment[1],
+            "pipeline": posixpath.join(pipelinepath, segmentpipename),
+            "output": segmentoutpath,
+            "output_structure": "Metadata_Plate",
+            "input": pipelinepath,
+            "data_file": posixpath.join(
+                datafilepath, tosegment[0], "load_data_pipeline3.csv"
+            ),
+        }
+        segmentqueue.scheduleBatch(templateMessage_segment)
     print("Segment check job submitted. Check your queue")
 
 

@@ -192,7 +192,7 @@ def lambda_handler(event, context):
 
         # make the jobs
         create_batch_jobs.create_batch_jobs_3(
-            image_prefix, batch, pipeline_name, plate_and_well_list, out_range, app_name
+            image_prefix, batch, pipeline_name, plate_and_well_list, app_name
         )
 
         # Start a cluster
