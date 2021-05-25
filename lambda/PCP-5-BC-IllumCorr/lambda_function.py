@@ -30,12 +30,16 @@ config_dict = {
     "MEMORY": "15000",
     "SECONDS_TO_START": "180",
     "SQS_MESSAGE_VISIBILITY": "43200",
-    "CHECK_IF_DONE_BOOL": "False",
-    "EXPECTED_NUMBER_FILES": "5",
+    "CHECK_IF_DONE_BOOL": "True",
+    "EXPECTED_NUMBER_FILES": "6",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
 }
 
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 def lambda_handler(event, context):
     # Log the received event
@@ -87,9 +91,15 @@ def lambda_handler(event, context):
         s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name
     )
 
-    # Pull the file names we care about, and make the CSV
-    print("Making the CSVs")
+    # Create list of plates to be processed
     platelist = list(image_dict.keys())
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+    if include_plates:
+        platelist = include_plates
+
+    # Pull the file names we care about and make the CSVs
+    print("Making the CSVs")
     for eachplate in platelist:
         platedict = parsed_image_dict[eachplate]
         well_list = list(platedict.keys())

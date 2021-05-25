@@ -38,6 +38,10 @@ config_dict = {
     "NECESSARY_STRING": "",
 }
 
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 def lambda_handler(event, context):
     # Log the received event
@@ -58,6 +62,13 @@ def lambda_handler(event, context):
     image_dict = metadata["wells_with_all_cycles"]
     expected_cycles = metadata["barcoding_cycles"]
     platelist = list(image_dict.keys())
+    # Apply filters to plate and well lists
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+        plate_and_well_list = helpful_functions.make_plate_and_well_list(platelist, image_dict)
+    if include_plates:
+        platelist = include_plates
+        plate_and_well_list = helpful_functions.make_plate_and_well_list(platelist, image_dict)
     num_series = int(metadata["barcoding_rows"]) * int(metadata["barcoding_columns"])
     if metadata["barcoding_imperwell"] != "":
         if int(metadata["barcoding_imperwell"]) != 0:

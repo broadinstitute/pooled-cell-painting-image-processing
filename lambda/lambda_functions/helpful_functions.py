@@ -279,3 +279,12 @@ def concat_some_csvs(s3, bucket_name, file_list, csvname):
             print(count)
     df_merged = pandas.concat(df_dict, ignore_index=True)
     return df_merged
+
+def make_plate_and_well_list(platelist, image_dict):
+    plate_and_well_list = []
+    for eachplate in platelist:
+        platedict = image_dict[eachplate]
+        well_list = list(platedict["1"].keys())
+        for eachwell in well_list:
+            plate_and_well_list.append(eachplate, eachwell)
+    return plate_and_well_list
