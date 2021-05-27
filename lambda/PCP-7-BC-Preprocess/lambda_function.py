@@ -11,6 +11,9 @@ import run_DCP
 import create_batch_jobs
 import helpful_functions
 
+s3 = boto3.client("s3")
+sqs = boto3.client("sqs")
+
 # Step information
 metadata_file_name = "/tmp/metadata.json"
 pipeline_name = "7_BC_Preprocess.cppipe"
@@ -62,8 +65,8 @@ def lambda_handler(event, context):
     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=barcodepath)
     filelist = []
     for obj in response.get("Contents", []):
-        filelist += obj
-    if ".csv" not in filelist:
+        filelist.append(obj['Key'])
+    if not any(".csv" in file for file in filelist):
         print(f"No Barcodes.csv in {barcodepath}")
         return "Barcodes.csv is missing"
 
