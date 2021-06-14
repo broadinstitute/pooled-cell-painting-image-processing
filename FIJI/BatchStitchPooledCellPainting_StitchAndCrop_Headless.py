@@ -1,4 +1,5 @@
 #@String input_file_location
+#@String step_to_stitch
 #@String subdir
 #@String out_subdir_tag
 #@String rows
@@ -63,10 +64,9 @@ if not os.path.exists(top_outfolder):
         os.mkdir(top_outfolder)
 
 # Define and create the parent folders where the images will be output
-step_being_stitched = subdir.split("/")[-2]
-outfolder = os.path.join(top_outfolder,(step_being_stitched + '_stitched'))
-tile_outdir = os.path.join(top_outfolder,(step_being_stitched + '_cropped'))
-downsample_outdir = os.path.join(top_outfolder,(step_being_stitched + '_stitched_10X'))
+outfolder = os.path.join(top_outfolder,(step_to_stitch + '_stitched'))
+tile_outdir = os.path.join(top_outfolder,(step_to_stitch + '_cropped'))
+downsample_outdir = os.path.join(top_outfolder,(step_to_stitch + '_stitched_10X'))
 if not os.path.exists(outfolder):
         os.mkdir(outfolder)
 if not os.path.exists(tile_outdir):

@@ -178,6 +178,7 @@ def create_batch_jobs_4(
     yoffset_tiles=0,
     compress="False",
 ):
+    step_to_stitch = "images_corrected"
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
         round_or_square = metadata["round_or_square"]
@@ -189,6 +190,7 @@ def create_batch_jobs_4(
         "output_file_location": posixpath.join(startpath, batchsuffix),
         "shared_metadata": {
             "input_file_location": local_start_path,
+            "step_to_stitch": step_to_stitch,
             "scalingstring": "1",
             "overlap_pct": metadata["overlap_pct"],
             "size": "1480",
@@ -216,7 +218,7 @@ def create_batch_jobs_4(
         stitchMessage["Metadata"] = {
             "subdir": posixpath.join(
                 batchsuffix,
-                "images_corrected",
+                step_to_stitch,
                 "painting",
                 tostitch[0] + "-" + tostitch[1],
             ),
@@ -434,6 +436,7 @@ def create_batch_jobs_8(
     yoffset_tiles=0,
     compress="False",
 ):
+    step_to_stitch = "images_corrected"
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
         round_or_square = metadata["round_or_square"]
@@ -445,6 +448,7 @@ def create_batch_jobs_8(
         "output_file_location": posixpath.join(startpath, batchsuffix),
         "shared_metadata": {
             "input_file_location": local_start_path,
+            "step_to_stitch": step_to_stitch,
             "scalingstring": "1.99",
             "overlap_pct": metadata["overlap_pct"],
             "size": "1480",
@@ -470,7 +474,7 @@ def create_batch_jobs_8(
         else:
             well = tostitch[1]
         stitchMessage["Metadata"] = {
-            "subdir": posixpath.join(batchsuffix, "images_corrected", "barcoding",),
+            "subdir": posixpath.join(batchsuffix, step_to_stitch, "barcoding",),
             "out_subdir_tag": tostitch[0] + "_" + tostitch[1],
             "filterstring": well,
             "downloadfilter": tostitch[0] + "-" + tostitch[1] + "*",
@@ -492,6 +496,7 @@ def create_batch_jobs_8Z(
     yoffset_tiles=0,
     compress="False",
 ):
+    step_to_stitch = "images_aligned"
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
     if "round_or_square" in list(metadata.keys()):
         round_or_square = metadata["round_or_square"]
@@ -503,6 +508,7 @@ def create_batch_jobs_8Z(
         "output_file_location": posixpath.join(startpath, batchsuffix),
         "shared_metadata": {
             "input_file_location": local_start_path,
+            "step_to_stitch": step_to_stitch,
             "scalingstring": "1.99",
             "overlap_pct": metadata["overlap_pct"],
             "size": "1480",
@@ -528,7 +534,7 @@ def create_batch_jobs_8Z(
         else:
             well = tostitch[1]
         stitchMessage["Metadata"] = {
-            "subdir": posixpath.join(batchsuffix, "images_aligned", "barcoding",),
+            "subdir": posixpath.join(batchsuffix, step_to_stitch, "barcoding",),
             "out_subdir_tag": tostitch[0] + "_" + tostitch[1],
             "filterstring": well,
             "downloadfilter": tostitch[0] + "-" + tostitch[1] + "*",
