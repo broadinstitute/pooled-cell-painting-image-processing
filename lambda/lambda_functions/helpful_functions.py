@@ -54,23 +54,13 @@ def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1
                         files_per_well * 5,
                     ):
                         has_all_files = False
-                        print(
-                            "Plate",
-                            eachplate,
-                            "Well",
-                            eachwell,
-                            "Cycle",
-                            cycle,
-                            "only had",
-                            len(platedict[eachwell][cycle]),
-                            "files",
-                        )
+                        print(f"{eachplate} {eachwell} {cycle} only had {len(platedict[eachwell][cycle])} files")
                 if has_all_files:
                     full_wells.append(eachwell)
 
         # Initialize our output dictionary for the plate
         print(
-            "Writing out the output for plate", eachplate, "has full wells", full_wells
+            f"Writing out the output for plate {eachplate} has full wells {full_wells}"
         )
         per_cycle_dict = {}
         for cycle in range(1, expected_cycles + 1):

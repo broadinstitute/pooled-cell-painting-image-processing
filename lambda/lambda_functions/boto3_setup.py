@@ -76,7 +76,28 @@ def generate_task_definition(config_dict):
 
 
 def generate_fiji_task_definition(config_dict):
-    task_definition = TASK_DEFINITION.copy()
+    task_definition = {
+        "family": config_dict["APP_NAME"],
+        "containerDefinitions": [
+            {
+                "environment": [{"name": "AWS_REGION", "value": AWS_REGION}],
+                "name": config_dict["APP_NAME"],
+                "image": config_dict["DOCKERHUB_TAG"],
+                "cpu": CPU_SHARES,
+                "memory": int(config_dict["MEMORY"]),
+                "essential": True,
+                "privileged": True,
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": config_dict["APP_NAME"] + "_perInstance",
+                        "awslogs-region": AWS_REGION,
+                        "awslogs-stream-prefix": config_dict["APP_NAME"],
+                    },
+                },
+            }
+        ],
+    }
     sqs = boto3.client("sqs")
     queue_name = get_queue_url(sqs, config_dict)
     task_definition["containerDefinitions"][0]["environment"] += [

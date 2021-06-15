@@ -11,6 +11,9 @@ import run_DCP
 import create_batch_jobs
 import helpful_functions
 
+s3 = boto3.client("s3")
+sqs = boto3.client("sqs")
+
 # Step Information
 metadata_file_name = "/tmp/metadata.json"
 step = "8"
@@ -42,8 +45,6 @@ def lambda_handler(event, context):
     batch = key.split("/")[-5]
     image_prefix = key.split(batch)[0]
     prefix = os.path.join(image_prefix, "workspace/")
-
-    print(plate, batch, image_prefix, prefix)
 
     # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
@@ -112,7 +113,7 @@ def lambda_handler(event, context):
 
         # Start a cluster
         run_DCP.run_cluster(
-            bucket_name, prefix, batch, len(plate_and_well_list, config_dict)
+            bucket_name, prefix, batch, len(plate_and_well_list), config_dict
         )
 
         # Run the monitor
