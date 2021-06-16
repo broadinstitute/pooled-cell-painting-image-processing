@@ -26,7 +26,7 @@ config_dict = {
     "SCRIPT_DOWNLOAD_URL": "https://raw.githubusercontent.com/broadinstitute/pooled-cell-painting-image-processing/master/FIJI/BatchStitchPooledCellPainting_StitchAndCrop_Headless.py",
     "TASKS_PER_MACHINE": "1",
     "MACHINE_TYPE": ["m4.2xlarge"],
-    "MACHINE_PRICE": "0.20",
+    "MACHINE_PRICE": "0.25",
     "EBS_VOL_SIZE": "400",
     "DOWNLOAD_FILES": "False",
     "MEMORY": "31000",
