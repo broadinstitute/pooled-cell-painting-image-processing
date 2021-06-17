@@ -31,11 +31,9 @@ config_dict = {
     "DOWNLOAD_FILES": "False",
     "MEMORY": "31000",
     "SQS_MESSAGE_VISIBILITY": "43200",
-    "EXPECTED_NUMBER_FILES": "510",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
 }
-
 
 def lambda_handler(event, context):
     # Log the received event
@@ -63,6 +61,13 @@ def lambda_handler(event, context):
             num_series = int(metadata["painting_imperwell"])
     expected_files_per_well = np.ceil(float(num_series) / int(metadata["range_skip"]))
     plate_and_well_list = metadata["painting_plate_and_well_list"]
+
+    # Calculate EXPECTED_NUMBER_FILES per well
+    number_channels = len(metadata["channel_list"])
+    cropped_CP_files = number_channels * (int(metadata["tileperside"])**2)
+    stitched_CP_files = stitched10X_CP_files = 4 * number_channels # 4 quadrants
+    expected_number_CP_files = cropped_CP_files + stitched_CP_files + stitched10X_CP_files
+    config_dict["EXPECTED_NUMBER_FILES"] = expected_number_CP_files
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
