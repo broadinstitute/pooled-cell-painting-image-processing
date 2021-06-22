@@ -476,6 +476,61 @@ def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_l
     df.to_csv(file_out_name, index=False)
     return file_out_name
 
+def create_CSV_pipeline8Y(platename, numsites, path, well_list):
+    columns = [
+        "Metadata_Plate",
+        "Metadata_Site",
+        "Metadata_Well",
+        "Metadata_Well_Value",
+    ]
+    columns += ["PathName_Cycle01_DAPI", "FileName_Cycle01_DAPI"]
+    columns += ["PathName_CorrDNA", "FileName_CorrDNA"]
+    df = pandas.DataFrame(columns=columns)
+    total_file_count = numsites * len(well_list)
+    df["Metadata_Plate"] = [platename] * total_file_count
+    df["Metadata_Site"] = list(range(1, numsites + 1)) * len(
+        well_list
+    )  # tile counting starts at 1 not 0
+    pathlist = []
+    namesuflist = []
+    for well in well_list:
+        for site in range(1, numsites + 1):
+            pathlist.append(path + "/" + platename + "_" + well + "/")
+            namesuflist.append("_Site_" + str(site) + ".tiff")
+    pathnamelist = [path + 'CorrDNA' for path in pathlist]
+    df["PathName_CorrDNA"] = pathnamelist
+    namelist = ['CorrDNA' + name for name in namesuflist]
+    df["FileName_CorrDNA"] = namelist
+
+    well_df_list = []
+    well_val_df_list = []
+    parsed_well_list = []
+    pathlist = []
+    for eachwell in well_list:
+        well_df_list += [eachwell] * numsites
+        pathlist += [os.path.join(path, platename + "_" + eachwell)] * numsites
+        if "Well" not in eachwell:
+            well_val = eachwell
+        else:
+            if "Well_" in eachwell:
+                well_val = eachwell[5:]
+            else:
+                well_val = eachwell[4:]
+        parsed_well_list.append(well_val)
+        well_val_df_list += [well_val] * numsites
+    df["Metadata_Well"] = well_df_list
+    df["Metadata_Well_Value"] = well_val_df_list
+
+    pathnamelist = [path + "/Cycle01_DAPI" for path in pathlist]
+    df["PathName_Cycle01_DAPI"] = pathnamelist
+    df["FileName_Cycle01_DAPI"] = [
+        "Cycle01_DAPI_Site_" + str(site) + ".tiff"
+        for well in parsed_well_list
+        for site in range(1, numsites + 1)
+    ]
+    file_out_name = "/tmp/" + str(platename) + ".csv"
+    df.to_csv(file_out_name, index=False)
+    return file_out_name
 
 def create_CSV_pipeline9(platename, numsites, expected_cycles, path, well_list):
     expected_cycles = int(expected_cycles)

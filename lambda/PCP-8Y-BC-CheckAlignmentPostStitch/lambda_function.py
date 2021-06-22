@@ -16,35 +16,39 @@ sqs = boto3.client("sqs")
 
 # Step information
 metadata_file_name = "/tmp/metadata.json"
-pipeline_name = "9_Analysis.cppipe"
-step = "9"
+pipeline_name = "8Y_CheckAlignmentPostStitching.cppipe"
+step = "8Y"
 
 # AWS Configuration Specific to this Function
 config_dict = {
-    "APP_NAME": "2018_11_20_Periscope_X_Analysis",
+    "APP_NAME": "2018_11_20_Periscope_X_PostStitchAlignmentCheck",
     "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
     "TASKS_PER_MACHINE": "1",
-    "MACHINE_TYPE": ["m5.4xlarge"],
-    "MACHINE_PRICE": "0.50",
-    "EBS_VOL_SIZE": "60",
+    "MACHINE_TYPE": ["r4.2xlarge"],
+    "MACHINE_PRICE": "0.40",
+    "EBS_VOL_SIZE": "200",
     "DOWNLOAD_FILES": "False",
-    "DOCKER_CORES": "2",
-    "MEMORY": "62500",
+    "DOCKER_CORES": "4",
+    "MEMORY": "15000",
     "SECONDS_TO_START": "180",
-    "SQS_MESSAGE_VISIBILITY": "14400",
+    "SQS_MESSAGE_VISIBILITY": "1800",
     "CHECK_IF_DONE_BOOL": "True",
-    "EXPECTED_NUMBER_FILES": "5",
+    "EXPECTED_NUMBER_FILES": "2",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
 }
 
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 def lambda_handler(event, context):
-    # Manual trigger
-    batch = "BATCH_STRING/"
-    image_prefix = "2018_11_20_Periscope_X"
-    prefix = "2018_11_20_Periscope_X/workspace"
-    bucket_name = "BUCKET"
+    # Log the received event
+    batch = "20200805_A549_WG_Screen/"
+    image_prefix = 'projects/2018_11_20_Periscope_X/'
+    prefix = 'projects/2018_11_20_Periscope_X/workspace/'
+    bucket_name = 'pooled-cell-painting'
 
     # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
@@ -57,7 +61,14 @@ def lambda_handler(event, context):
     image_dict = metadata["wells_with_all_cycles"]
     expected_cycles = metadata["barcoding_cycles"]
     platelist = list(image_dict.keys())
-    num_sites = int(metadata["tileperside"] * metadata["tileperside"])
+    # Apply filters to plate and well lists
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+        plate_and_well_list = helpful_functions.make_plate_and_well_list(platelist, image_dict)
+    if include_plates:
+        platelist = include_plates
+        plate_and_well_list = helpful_functions.make_plate_and_well_list(platelist, image_dict)
+    num_sites = int(metadata["tileperside"]) * int(metadata["tileperside"])
 
     # Pull the file names we care about, and make the CSV
     for eachplate in platelist:
@@ -66,8 +77,8 @@ def lambda_handler(event, context):
         bucket_folder = (
             "/home/ubuntu/bucket/" + image_prefix + batch + "/images_corrected_cropped"
         )
-        per_plate_csv = create_CSVs.create_CSV_pipeline9(
-            eachplate, num_sites, expected_cycles, bucket_folder, well_list
+        per_plate_csv = create_CSVs.create_CSV_pipeline8Y(
+            eachplate, num_sites, bucket_folder, well_list
         )
         csv_on_bucket_name = (
             prefix
@@ -75,7 +86,7 @@ def lambda_handler(event, context):
             + batch
             + "/"
             + eachplate
-            + "/load_data_pipeline9.csv"
+            + "/load_data_pipeline8Y.csv"
         )
         print("Created", csv_on_bucket_name)
         with open(per_plate_csv, "rb") as a:
@@ -85,7 +96,7 @@ def lambda_handler(event, context):
     app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_dict)
 
     # make the jobs
-    create_batch_jobs.create_batch_jobs_9(
+    create_batch_jobs.create_batch_jobs_8Y(
         image_prefix,
         batch,
         pipeline_name,
