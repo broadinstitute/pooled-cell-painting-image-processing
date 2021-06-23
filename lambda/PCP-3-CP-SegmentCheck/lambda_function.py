@@ -27,7 +27,7 @@ config_dict = {
     "TASKS_PER_MACHINE": "1",
     "MACHINE_TYPE": ["m4.xlarge"],
     "MACHINE_PRICE": "0.10",
-    "EBS_VOL_SIZE": "200",
+    "EBS_VOL_SIZE": "22",
     "DOWNLOAD_FILES": "False",
     "DOCKER_CORES": "4",
     "MEMORY": "15000",
@@ -43,6 +43,11 @@ config_dict = {
 upper_percentile = 90
 lower_percentile = 10
 segmentation_channel = "Phalloidin"
+
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 
 def lambda_handler(event, context):
@@ -75,6 +80,17 @@ def lambda_handler(event, context):
     out_range = list(range(0, num_series, int(metadata["range_skip"])))
     expected_files_per_well = (num_series * len(metadata["channel_list"])) + 6
     platelist = list(image_dict.keys())
+    # Apply filters to plate and well lists
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+        plate_and_well_list = helpful_functions.make_plate_and_well_list(
+            platelist, image_dict
+        )
+    if include_plates:
+        platelist = include_plates
+        plate_and_well_list = helpful_functions.make_plate_and_well_list(
+            platelist, image_dict
+        )
     plate_and_well_list = []
     for eachplate in platelist:
         platedict = image_dict[eachplate]
@@ -128,17 +144,11 @@ def lambda_handler(event, context):
         threshes = image_df["Threshold_FinalThreshold_Cells"]
         calc_upper_percentile = numpy.percentile(threshes, upper_percentile)
         print(
-            "In ",
-            len(image_csv_list) * num_series,
-            f"images, the {upper_percentile} percentile was",
-            calc_upper_percentile,
+            f"In {len(image_csv_list) * num_series} images, the {upper_percentile} percentile was {calc_upper_percentile}"
         )
         calc_lower_percentile = numpy.percentile(threshes, lower_percentile)
         print(
-            "In ",
-            len(image_csv_list) * num_series,
-            f"images, the {lower_percentile} percentile was",
-            calc_lower_percentile,
+            f"In {len(image_csv_list) * num_series} images, the {lower_percentile} percentile was {calc_lower_percentile}"
         )
 
         pipeline_on_bucket_name = os.path.join(
@@ -173,7 +183,12 @@ def lambda_handler(event, context):
                 + "/images_corrected/painting"
             )
             per_plate_csv = create_CSVs.create_CSV_pipeline3(
-                eachplate, num_series, bucket_folder, well_list, metadata["range_skip"], segmentation_channel
+                eachplate,
+                num_series,
+                bucket_folder,
+                well_list,
+                metadata["range_skip"],
+                segmentation_channel,
             )
             csv_on_bucket_name = (
                 prefix
@@ -200,7 +215,7 @@ def lambda_handler(event, context):
             bucket_name,
             prefix,
             batch,
-            len(plate_and_well_list) * len(out_range),
+            len(plate_and_well_list),
             config_dict,
         )
 

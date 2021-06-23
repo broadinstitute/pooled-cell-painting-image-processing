@@ -274,7 +274,7 @@ def make_plate_and_well_list(platelist, image_dict):
     plate_and_well_list = []
     for eachplate in platelist:
         platedict = image_dict[eachplate]
-        well_list = list(platedict["1"].keys())
+        well_list = list(platedict.keys())
         for eachwell in well_list:
             plate_and_well_list.append((eachplate, eachwell))
     return plate_and_well_list
