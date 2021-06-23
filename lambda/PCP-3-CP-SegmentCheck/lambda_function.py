@@ -82,7 +82,7 @@ def lambda_handler(event, context):
     platelist = list(image_dict.keys())
     # Create and write full plate_and_well_list
     metadata[
-        "barcoding_plate_and_well_list"
+        "painting_plate_and_well_list"
     ] = plate_and_well_list = helpful_functions.make_plate_and_well_list(
         platelist, image_dict
     )
