@@ -37,6 +37,11 @@ config_dict = {
     "NECESSARY_STRING": "",
 }
 
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
+
 
 def lambda_handler(event, context):
     # Log the received event
@@ -79,6 +84,11 @@ def lambda_handler(event, context):
         print("SABER experiment")
 
     platelist = list(image_dict.keys())
+    # Apply filters to platelist
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+    if include_plates:
+        platelist = include_plates
     platedict = image_dict[plate]
     well_list = list(platedict.keys())
 

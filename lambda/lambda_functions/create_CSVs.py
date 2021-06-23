@@ -90,7 +90,9 @@ def create_CSV_pipeline1(
     return file_out_name, file_out_name_2
 
 
-def create_CSV_pipeline3(platename, seriesperwell, path, well_list, range_skip, segmentation_channel):
+def create_CSV_pipeline3(
+    platename, seriesperwell, path, well_list, range_skip, segmentation_channel
+):
     columns = [
         "Metadata_Plate",
         "Metadata_Site",
@@ -476,6 +478,7 @@ def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_l
     df.to_csv(file_out_name, index=False)
     return file_out_name
 
+
 def create_CSV_pipeline8Y(platename, numsites, path, well_list):
     columns = [
         "Metadata_Plate",
@@ -497,9 +500,9 @@ def create_CSV_pipeline8Y(platename, numsites, path, well_list):
         for site in range(1, numsites + 1):
             pathlist.append(path + "/" + platename + "_" + well + "/")
             namesuflist.append("_Site_" + str(site) + ".tiff")
-    pathnamelist = [path + 'CorrDNA' for path in pathlist]
+    pathnamelist = [path + "CorrDNA" for path in pathlist]
     df["PathName_CorrDNA"] = pathnamelist
-    namelist = ['CorrDNA' + name for name in namesuflist]
+    namelist = ["CorrDNA" + name for name in namesuflist]
     df["FileName_CorrDNA"] = namelist
 
     well_df_list = []
@@ -531,6 +534,7 @@ def create_CSV_pipeline8Y(platename, numsites, path, well_list):
     file_out_name = "/tmp/" + str(platename) + ".csv"
     df.to_csv(file_out_name, index=False)
     return file_out_name
+
 
 def create_CSV_pipeline9(platename, numsites, expected_cycles, path, well_list):
     expected_cycles = int(expected_cycles)

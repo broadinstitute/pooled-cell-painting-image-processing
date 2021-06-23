@@ -36,6 +36,11 @@ config_dict = {
     "NECESSARY_STRING": "",
 }
 
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
+
 
 def lambda_handler(event, context):
     bucket = event["Records"][0]["s3"]["bucket"]["name"]
@@ -103,8 +108,13 @@ def lambda_handler(event, context):
     else:
         full_well_files = num_series
 
-    # Pull the file names we care about, and make the CSV
     platelist = list(image_dict.keys())
+    # Apply filters to platelist
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+    if include_plates:
+        platelist = include_plates
+    # Pull the file names we care about, and make the CSV
     for eachplate in platelist:
         platedict = image_dict[eachplate]
         well_list = list(platedict.keys())

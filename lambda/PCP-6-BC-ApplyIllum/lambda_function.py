@@ -43,6 +43,7 @@ exclude_plates = []
 # List plates if you want to only run them and exclude all others from run.
 include_plates = []
 
+
 def lambda_handler(event, context):
     # Log the received event
     bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
@@ -67,6 +68,24 @@ def lambda_handler(event, context):
             num_series = int(metadata["barcoding_imperwell"])
     expected_cycles = int(metadata["barcoding_cycles"])
     platelist = list(image_dict.keys())
+    # Create and write full plate_and_well_list
+    metadata[
+        "barcoding_plate_and_well_list"
+    ] = plate_and_well_list = helpful_functions.make_plate_and_well_list(
+        platelist, image_dict
+    )
+    helpful_functions.write_metadata_file(
+        s3, bucket_name, metadata, metadata_file_name, metadata_on_bucket_name
+    )
+    # Apply filters to active plate_and_well_list
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
+    if include_plates:
+        platelist = include_plates
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
     # Default pipeline is slow. If images acquired in fast mode, pulls alternate pipeline.
     pipe_name = pipeline_name
@@ -102,20 +121,6 @@ def lambda_handler(event, context):
         print("Still work ongoing")
         return "Still work ongoing"
     else:
-        # Make an easier-to-use complete plate and well list and save it
-        metadata["barcoding_plate_and_well_list"] = helpful_functions.make_plate_and_well_list(platelist, image_dict)
-        helpful_functions.write_metadata_file(
-            s3, bucket_name, metadata, metadata_file_name, metadata_on_bucket_name
-        )
-        # Filter the list of plates to be processed
-        if exclude_plates:
-            platelist = [i for i in platelist if i not in exclude_plates]
-            # Overwrite complete plate and well list with filtered list
-            metadata["barcoding_plate_and_well_list"] = helpful_functions.make_plate_and_well_list(platelist, image_dict)
-        if include_plates:
-            platelist = include_plates
-            # Overwrite complete plate and well list with filtered list
-            metadata["barcoding_plate_and_well_list"] = helpful_functions.make_plate_and_well_list(platelist, image_dict)
         # Pull the file names we care about, and make the CSV
         for eachplate in platelist:
             platedict = image_dict[eachplate]
@@ -155,7 +160,7 @@ def lambda_handler(event, context):
             image_prefix,
             batch,
             pipeline_name,
-            metadata["barcoding_plate_and_well_list"],
+            plate_and_well_list,
             app_name,
             metadata["one_or_many_files"],
             num_series,
@@ -163,9 +168,9 @@ def lambda_handler(event, context):
 
         # Start a cluster
         if metadata["one_or_many_files"] == "one":
-            njobs = len(metadata["barcoding_plate_and_well_list"]) * 19
+            njobs = len(plate_and_well_list) * 19
         else:
-            njobs = len(metadata["barcoding_plate_and_well_list"]) * num_series
+            njobs = len(plate_and_well_list) * num_series
         run_DCP.run_cluster(bucket_name, prefix, batch, njobs, config_dict)
 
         # Run the monitor

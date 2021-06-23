@@ -542,13 +542,16 @@ def create_batch_jobs_8Z(
         stitchqueue.scheduleBatch(stitchMessage)
     print("Stitching job submitted. Check your queue")
 
+
 def create_batch_jobs_8Y(
     startpath, batchsuffix, pipename, plate_and_well_list, site_list, app_name
 ):
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
-    outpath = posixpath.join(startpath, os.path.join("workspace/aligncheck", batchsuffix))
+    outpath = posixpath.join(
+        startpath, os.path.join("workspace/aligncheck", batchsuffix)
+    )
     inpath = posixpath.join(startpath, os.path.join("workspace/metadata", batchsuffix))
     datafilepath = posixpath.join(
         startpath, os.path.join("workspace/load_data_csv", batchsuffix)

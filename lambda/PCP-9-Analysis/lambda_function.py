@@ -38,10 +38,15 @@ config_dict = {
     "NECESSARY_STRING": "",
 }
 
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
+
 
 def lambda_handler(event, context):
     # Manual trigger
-    batch = "BATCH_STRING/"
+    batch = "BATCH_STRING"
     image_prefix = "2018_11_20_Periscope_X"
     prefix = "2018_11_20_Periscope_X/workspace"
     bucket_name = "BUCKET"
@@ -52,11 +57,20 @@ def lambda_handler(event, context):
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
-
-    plate_and_well_list = metadata["barcoding_plate_and_well_list"]
     image_dict = metadata["wells_with_all_cycles"]
-    expected_cycles = metadata["barcoding_cycles"]
     platelist = list(image_dict.keys())
+    plate_and_well_list = metadata["barcoding_plate_and_well_list"]
+    # Apply filters to plate and well lists
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
+    if include_plates:
+        platelist = include_plates
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
+
+    expected_cycles = metadata["barcoding_cycles"]
     num_sites = int(metadata["tileperside"] * metadata["tileperside"])
 
     # Pull the file names we care about, and make the CSV

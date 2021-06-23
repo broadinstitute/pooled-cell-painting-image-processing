@@ -80,27 +80,24 @@ def lambda_handler(event, context):
     out_range = list(range(0, num_series, int(metadata["range_skip"])))
     expected_files_per_well = (num_series * len(metadata["channel_list"])) + 6
     platelist = list(image_dict.keys())
-    # Apply filters to plate and well lists
-    if exclude_plates:
-        platelist = [i for i in platelist if i not in exclude_plates]
-        plate_and_well_list = helpful_functions.make_plate_and_well_list(
-            platelist, image_dict
-        )
-    if include_plates:
-        platelist = include_plates
-        plate_and_well_list = helpful_functions.make_plate_and_well_list(
-            platelist, image_dict
-        )
-    plate_and_well_list = []
-    for eachplate in platelist:
-        platedict = image_dict[eachplate]
-        well_list = list(platedict.keys())
-        for eachwell in well_list:
-            plate_and_well_list.append((eachplate, eachwell))
-    metadata["painting_plate_and_well_list"] = plate_and_well_list
+    # Create and write full plate_and_well_list
+    metadata[
+        "barcoding_plate_and_well_list"
+    ] = plate_and_well_list = helpful_functions.make_plate_and_well_list(
+        platelist, image_dict
+    )
     helpful_functions.write_metadata_file(
         s3, bucket_name, metadata, metadata_file_name, metadata_on_bucket_name
     )
+    # Apply filters to active plate_and_well_list
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
+    if include_plates:
+        platelist = include_plates
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
@@ -212,11 +209,7 @@ def lambda_handler(event, context):
 
         # Start a cluster
         run_DCP.run_cluster(
-            bucket_name,
-            prefix,
-            batch,
-            len(plate_and_well_list),
-            config_dict,
+            bucket_name, prefix, batch, len(plate_and_well_list), config_dict,
         )
 
         # Run the monitor

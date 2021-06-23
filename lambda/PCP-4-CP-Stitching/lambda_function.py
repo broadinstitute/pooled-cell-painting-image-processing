@@ -35,6 +35,12 @@ config_dict = {
     "NECESSARY_STRING": "",
 }
 
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
+
+
 def lambda_handler(event, context):
     # Log the received event
     bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
@@ -44,8 +50,6 @@ def lambda_handler(event, context):
     batch = key.split("/")[-4]
     image_prefix = key.split(batch)[0]
     prefix = os.path.join(image_prefix, "workspace/")
-
-    print(plate, batch, image_prefix, prefix)
 
     # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
@@ -61,12 +65,21 @@ def lambda_handler(event, context):
             num_series = int(metadata["painting_imperwell"])
     expected_files_per_well = np.ceil(float(num_series) / int(metadata["range_skip"]))
     plate_and_well_list = metadata["painting_plate_and_well_list"]
+    # Apply filters to active plate_and_well_list
+    if exclude_plates:
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
+    if include_plates:
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
     # Calculate EXPECTED_NUMBER_FILES per well
     number_channels = len(metadata["channel_list"])
-    cropped_CP_files = number_channels * (int(metadata["tileperside"])**2)
-    stitched_CP_files = stitched10X_CP_files = 4 * number_channels # 4 quadrants
-    expected_number_CP_files = cropped_CP_files + stitched_CP_files + stitched10X_CP_files
+    cropped_CP_files = number_channels * (int(metadata["tileperside"]) ** 2)
+    stitched_CP_files = stitched10X_CP_files = 4 * number_channels  # 4 quadrants
+    expected_number_CP_files = (
+        cropped_CP_files + stitched_CP_files + stitched10X_CP_files
+    )
     config_dict["EXPECTED_NUMBER_FILES"] = expected_number_CP_files
 
     # First let's check if it seems like the whole thing is done or not

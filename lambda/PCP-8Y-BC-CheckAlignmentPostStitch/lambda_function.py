@@ -43,12 +43,13 @@ exclude_plates = []
 # List plates if you want to only run them and exclude all others from run.
 include_plates = []
 
+
 def lambda_handler(event, context):
     # Log the received event
     batch = "20200805_A549_WG_Screen/"
-    image_prefix = 'projects/2018_11_20_Periscope_X/'
-    prefix = 'projects/2018_11_20_Periscope_X/workspace/'
-    bucket_name = 'pooled-cell-painting'
+    image_prefix = "projects/2018_11_20_Periscope_X/"
+    prefix = "projects/2018_11_20_Periscope_X/workspace/"
+    bucket_name = "pooled-cell-painting"
 
     # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
@@ -64,10 +65,13 @@ def lambda_handler(event, context):
     # Apply filters to plate and well lists
     if exclude_plates:
         platelist = [i for i in platelist if i not in exclude_plates]
-        plate_and_well_list = helpful_functions.make_plate_and_well_list(platelist, image_dict)
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
     if include_plates:
         platelist = include_plates
-        plate_and_well_list = helpful_functions.make_plate_and_well_list(platelist, image_dict)
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
+
     num_sites = int(metadata["tileperside"]) * int(metadata["tileperside"])
 
     # Pull the file names we care about, and make the CSV

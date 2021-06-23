@@ -35,6 +35,10 @@ config_dict = {
     "NECESSARY_STRING": "",
 }
 
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 def lambda_handler(event, context):
     # Set up for Manual Trigger
@@ -60,14 +64,20 @@ def lambda_handler(event, context):
     # number of site * 4 channels barcoding * number of cycles. doesn't include 1 DAPI/site
     expected_files_per_well = int(num_series) * 4 * int(metadata["barcoding_cycles"])
     plate_and_well_list = metadata["barcoding_plate_and_well_list"]
+    # Apply filters to plate and well lists
+    if exclude_plates:
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
+    if include_plates:
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
-    # Removed Check if Run Done
-    # now let's do our stuff!
+    # Setup run
     app_name = run_DCP.run_setup(
         bucket_name, prefix, batch, config_dict, cellprofiler=False
     )
 
-    # make the jobs
+    # Make the jobs
     create_batch_jobs.create_batch_jobs_8Z(
         bucket_name,
         image_prefix,

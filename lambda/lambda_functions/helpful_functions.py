@@ -54,7 +54,9 @@ def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1
                         files_per_well * 5,
                     ):
                         has_all_files = False
-                        print(f"{eachplate} {eachwell} {cycle} only had {len(platedict[eachwell][cycle])} files")
+                        print(
+                            f"{eachplate} {eachwell} {cycle} only had {len(platedict[eachwell][cycle])} files"
+                        )
                 if has_all_files:
                     full_wells.append(eachwell)
 
@@ -269,6 +271,7 @@ def concat_some_csvs(s3, bucket_name, file_list, csvname):
             print(count)
     df_merged = pandas.concat(df_dict, ignore_index=True)
     return df_merged
+
 
 def make_plate_and_well_list(platelist, image_dict):
     plate_and_well_list = []

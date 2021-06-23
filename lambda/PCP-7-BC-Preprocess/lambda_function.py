@@ -43,6 +43,7 @@ exclude_plates = []
 # List plates if you want to only run them and exclude all others from run.
 include_plates = []
 
+
 def lambda_handler(event, context):
     # Log the received event
     bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
@@ -65,7 +66,7 @@ def lambda_handler(event, context):
     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=barcodepath)
     filelist = []
     for obj in response.get("Contents", []):
-        filelist.append(obj['Key'])
+        filelist.append(obj["Key"])
     if not any(".csv" in file for file in filelist):
         print(f"No Barcodes.csv in {barcodepath}")
         return "Barcodes.csv is missing"
@@ -84,10 +85,12 @@ def lambda_handler(event, context):
     # Apply filters to plate and well lists
     if exclude_plates:
         platelist = [i for i in platelist if i not in exclude_plates]
-        plate_and_well_list = helpful_functions.make_plate_and_well_list(platelist, image_dict)
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
     if include_plates:
         platelist = include_plates
-        plate_and_well_list = helpful_functions.make_plate_and_well_list(platelist, image_dict)
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
     num_series = int(metadata["barcoding_rows"]) * int(metadata["barcoding_columns"])
     if metadata["barcoding_imperwell"] != "":
