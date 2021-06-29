@@ -1,6 +1,6 @@
 CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
-DateRevision:407
+DateRevision:413
 GitHash:
 ModuleCount:22
 HasImagePlaneDetails:False
@@ -40,7 +40,7 @@ CorrectIlluminationCalculate:[module_num:3|svn_version:'Unknown'|variable_revisi
     Smoothing method:Median Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
-    Smoothing filter size:20
+    Smoothing filter size:10
     Retain the averaged image?:No
     Name the averaged image:IllumBlueAvg
     Retain the dilated image?:No
@@ -89,7 +89,7 @@ CorrectIlluminationCalculate:[module_num:6|svn_version:'Unknown'|variable_revisi
     Smoothing method:Median Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
-    Smoothing filter size:20
+    Smoothing filter size:10
     Retain the averaged image?:No
     Name the averaged image:IllumBlueAvg
     Retain the dilated image?:No
@@ -138,7 +138,7 @@ CorrectIlluminationCalculate:[module_num:9|svn_version:'Unknown'|variable_revisi
     Smoothing method:Median Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
-    Smoothing filter size:20
+    Smoothing filter size:10
     Retain the averaged image?:No
     Name the averaged image:IllumBlueAvg
     Retain the dilated image?:No
@@ -187,7 +187,7 @@ CorrectIlluminationCalculate:[module_num:12|svn_version:'Unknown'|variable_revis
     Smoothing method:Median Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
-    Smoothing filter size:20
+    Smoothing filter size:10
     Retain the averaged image?:No
     Name the averaged image:IllumBlueAvg
     Retain the dilated image?:No
@@ -236,7 +236,7 @@ CorrectIlluminationCalculate:[module_num:15|svn_version:'Unknown'|variable_revis
     Smoothing method:Median Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
-    Smoothing filter size:20
+    Smoothing filter size:10
     Retain the averaged image?:No
     Name the averaged image:IllumBlueAvg
     Retain the dilated image?:No
