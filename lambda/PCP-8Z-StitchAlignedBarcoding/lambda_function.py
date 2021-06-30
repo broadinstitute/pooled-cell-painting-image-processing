@@ -40,6 +40,7 @@ exclude_plates = []
 # List plates if you want to only run them and exclude all others from run.
 include_plates = []
 
+
 def lambda_handler(event, context):
     # Set up for Manual Trigger
     bucket_name = "pooled-cell-painting"

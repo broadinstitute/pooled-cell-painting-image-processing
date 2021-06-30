@@ -71,8 +71,8 @@ def lambda_handler(event, context):
         plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
     expected_cycles = metadata["barcoding_cycles"]
-    num_sites_perwell = int(metadata["tileperside"])**2
-    num_sites_total = len(plate_and_well_list)*num_sites_perwell
+    num_sites_perwell = int(metadata["tileperside"]) ** 2
+    num_sites_total = len(plate_and_well_list) * num_sites_perwell
 
     # Pull the file names we care about, and make the CSV
     for eachplate in platelist:
