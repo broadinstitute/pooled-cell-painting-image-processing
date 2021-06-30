@@ -47,8 +47,8 @@ include_plates = []
 def lambda_handler(event, context):
     # Manual trigger
     batch = "BATCH_STRING"
-    image_prefix = "2018_11_20_Periscope_X"
-    prefix = "2018_11_20_Periscope_X/workspace"
+    image_prefix = "projects/2018_11_20_Periscope_X/"
+    prefix = "projects/2018_11_20_Periscope_X/workspace/"
     bucket_name = "BUCKET"
 
     # Get the metadata file
@@ -71,7 +71,8 @@ def lambda_handler(event, context):
         plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
     expected_cycles = metadata["barcoding_cycles"]
-    num_sites = int(metadata["tileperside"] * metadata["tileperside"])
+    num_sites_perwell = int(metadata["tileperside"])**2
+    num_sites_total = len(plate_and_well_list)*num_sites_perwell
 
     # Pull the file names we care about, and make the CSV
     for eachplate in platelist:
@@ -81,7 +82,7 @@ def lambda_handler(event, context):
             "/home/ubuntu/bucket/" + image_prefix + batch + "/images_corrected_cropped"
         )
         per_plate_csv = create_CSVs.create_CSV_pipeline9(
-            eachplate, num_sites, expected_cycles, bucket_folder, well_list
+            eachplate, num_sites_perwell, expected_cycles, bucket_folder, well_list
         )
         csv_on_bucket_name = (
             prefix
@@ -104,12 +105,12 @@ def lambda_handler(event, context):
         batch,
         pipeline_name,
         plate_and_well_list,
-        list(range(1, num_sites + 1)),
+        list(range(1, num_sites_perwell + 1)),
         app_name,
     )
 
     # Start a cluster
-    run_DCP.run_cluster(bucket_name, prefix, batch, num_sites, config_dict)
+    run_DCP.run_cluster(bucket_name, prefix, batch, num_sites_total, config_dict)
 
     # Run the monitor
     run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)
