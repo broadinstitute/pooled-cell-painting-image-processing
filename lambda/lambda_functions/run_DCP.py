@@ -40,7 +40,7 @@ def grab_batch_config(bucket_name, prefix, batch):
         with open("/tmp/configAWS.py", "wb") as f:
             s3.download_fileobj(bucket_name, our_config, f)
     except botocore.exceptions.ClientError as error:
-        print("Config files for this batch haven't been uploaded to S3.")
+        print(f"Config files for this batch haven't been uploaded to S3. Looking at {our_config}")
         return
 
 

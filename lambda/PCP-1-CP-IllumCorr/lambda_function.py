@@ -132,7 +132,8 @@ def lambda_handler(event, context):
                         )
             if not SABER:
                 platename = list(Channeldict.keys())[0] + "_" + eachplate
-                per_well = platedict[eachwell][platename]
+                paint_cycle_name = list(platedict[well_list[0]].keys())[0]
+                per_well = platedict[eachwell][paint_cycle_name]
                 if len(per_well) != full_well_files:
                     incomplete_wells.append(eachwell)
                     print(
