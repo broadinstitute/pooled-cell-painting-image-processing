@@ -1,4 +1,5 @@
 #@String input_file_location
+#@String step_to_stitch
 #@String subdir
 #@String out_subdir_tag
 #@String rows
@@ -63,10 +64,9 @@ if not os.path.exists(top_outfolder):
         os.mkdir(top_outfolder)
 
 # Define and create the parent folders where the images will be output
-step_being_stitched = subdir.split("/")[-2]
-outfolder = os.path.join(top_outfolder,(step_being_stitched + '_stitched'))
-tile_outdir = os.path.join(top_outfolder,(step_being_stitched + '_cropped'))
-downsample_outdir = os.path.join(top_outfolder,(step_being_stitched + '_stitched_10X'))
+outfolder = os.path.join(top_outfolder,(step_to_stitch + '_stitched'))
+tile_outdir = os.path.join(top_outfolder,(step_to_stitch + '_cropped'))
+downsample_outdir = os.path.join(top_outfolder,(step_to_stitch + '_stitched_10X'))
 if not os.path.exists(outfolder):
         os.mkdir(outfolder)
 if not os.path.exists(tile_outdir):
@@ -229,6 +229,13 @@ if os.path.isdir(subdir):
                         40,40,40,40,40,40,40,
                         38,38,36,36,34,34,32,
                         30,28,26,22,18,14]
+                elif imperwell == '1396':
+                        row_widths = [18,22,26,28,30,
+                        32,34,36,36,38,38,
+                        40,40,40,40,40,40,40,40,40,
+                        40,40,40,40,40,40,40,40,40,
+                        38,38,36,36,34,32,
+                        30,28,26,22,18]
                 elif imperwell == '320':
                         row_widths = [4, 8, 12, 14, 16,
                         18, 18, 20, 20, 20,
