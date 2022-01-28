@@ -69,11 +69,17 @@ def lambda_handler(event, context):
     expected_cycles = int(metadata["barcoding_cycles"])
     platelist = list(image_dict.keys())
     # Create and write full plate_and_well_list
+    plate_and_well_list = []
+    for plate in platelist:
+        platedict = image_dict[plate]
+        for cycle in range(1, expected_cycles+1):
+            cyclestr = str(cycle)
+            well_list = list(platedict[cyclestr].keys())
+            for well in well_list:
+                plate_and_well_list.append((plate,well))
     metadata[
         "barcoding_plate_and_well_list"
-    ] = plate_and_well_list = helpful_functions.make_plate_and_well_list(
-        platelist, image_dict
-    )
+    ] = plate_and_well_list = list(set(plate_and_well_list))
     helpful_functions.write_metadata_file(
         s3, bucket_name, metadata, metadata_file_name, metadata_on_bucket_name
     )
