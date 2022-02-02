@@ -18,6 +18,7 @@ sqs = boto3.client("sqs")
 metadata_file_name = "/tmp/metadata.json"
 pipeline_name = "7_BC_Preprocess_Troubleshoot.cppipe"
 step = "7A"
+skip = 15
 
 # AWS Configuration Specific to this Function
 config_dict = {
