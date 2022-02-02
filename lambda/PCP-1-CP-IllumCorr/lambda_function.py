@@ -20,7 +20,7 @@ step = "1"
 # AWS Configuration Specific to this Function
 config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_IllumPainting",
-    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.1.3",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
     "TASKS_PER_MACHINE": "1",
     "MACHINE_TYPE": ["m4.xlarge"],
     "MACHINE_PRICE": "0.10",
