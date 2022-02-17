@@ -10,15 +10,22 @@ import create_CSVs
 import run_DCP
 import create_batch_jobs
 import helpful_functions
+import make_pipelines
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
 
 # Step information
 metadata_file_name = "/tmp/metadata.json"
-pipeline_name = "7_BC_Preprocess_Troubleshoot.cppipe"
+pipeline_name = "7A_BC_Preprocess_Troubleshoot.json"
+orig_pipeline_name = "7_BC_Preprocess.json"
 step = "7A"
 skip = 15
+
+compensation_methods = ['Percent99', 'Percent999', 'Percent999Rescale', 'Percent999RescaleLog1',
+'MaskHistARescale', 'MaskHistCRescale', 'MaskHistGRescale', 'MaskHistTRescale',
+'MaskHistALog1', 'MaskHistALog2', 'MaskHistALog3', 'MaskHistCLog1', 'MaskHistGLog1', 'MaskHistTLog1',
+'MaskHistTTop1', 'MaskHistTTop3', 'MaskHistTTop6']
 
 # AWS Configuration Specific to this Function
 config_dict = {
@@ -82,6 +89,13 @@ def lambda_handler(event, context):
         num_series * ((int(metadata["barcoding_cycles"]) * 4) + 1)
     ) + 3
     num_sites = round(len(plate_and_well_list) * num_series / skip)
+
+    # Make the pipeline
+    orig_pipeline_on_bucket_name = os.path.join(prefix, "pipelines", batch, orig_pipeline_name)
+    helpful_functions.download_orig_pipeline_file(s3, bucket_name, orig_pipeline_name, orig_pipeline_on_bucket_name)
+    make_pipelines.make_7A_pipeline(compensation_methods, orig_pipeline_name, pipeline_name)
+    pipeline_on_bucket_name = os.path.join(prefix, "pipelines", batch, pipeline_name)
+    helpful_functions.write_pipeline_file(s3, bucket_name, pipeline_name, pipeline_on_bucket_name)
 
     # Setup DCP
     app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_dict)

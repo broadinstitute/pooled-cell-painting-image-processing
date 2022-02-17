@@ -113,6 +113,14 @@ def write_metadata_file(
             Body=metadatafile, Bucket=bucket_name, Key=metadata_on_bucket_name
         )
 
+def download_orig_pipeline_file(s3, bucket_name, orig_pipeline_file_name, orig_pipeline_on_bucket_name):
+    with open(f"/tmp/{orig_pipeline_file_name}", "wb") as f:
+        s3.download_fileobj(bucket_name, orig_pipeline_on_bucket_name, f)
+
+
+def write_pipeline_file(s3, bucket_name, pipeline_file_name, pipeline_on_bucket_name):
+    with open(f"/tmp/{pipeline_file_name}", "rb") as f:
+        s3.put_object(body=f, Bucket=bucket_name, Key=pipeline_on_bucket_name)
 
 def paginate_a_folder(s3, bucket_name, prefix):
     paginator = s3.get_paginator("list_objects_v2")
