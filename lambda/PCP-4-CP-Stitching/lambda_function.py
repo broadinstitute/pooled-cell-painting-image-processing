@@ -14,17 +14,31 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
+
+# Step Information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "stitchFleet.json"
-current_app_name = "2018_11_20_Periscope_X_PaintingStitching"
-prev_step_app_name = "2018_11_20_Periscope_X_PaintingSegmentationCheck"
-prev_step_num = "3"
-duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
 step = "4"
-# Make sure that range_skip matches that set in PCP-3-CP-SegmentCheck lambda function
-range_skip = 16
-tileperside = 10
-final_tile_size = 5500
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_PaintingStitching",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-fiji:latest",
+    "SCRIPT_DOWNLOAD_URL": "https://raw.githubusercontent.com/broadinstitute/pooled-cell-painting-image-processing/master/FIJI/BatchStitchPooledCellPainting_StitchAndCrop_Headless.py",
+    "TASKS_PER_MACHINE": "1",
+    "MACHINE_TYPE": ["m4.2xlarge"],
+    "MACHINE_PRICE": "0.25",
+    "EBS_VOL_SIZE": "400",
+    "DOWNLOAD_FILES": "False",
+    "MEMORY": "31000",
+    "SQS_MESSAGE_VISIBILITY": "43200",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING": "",
+}
+
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 
 def lambda_handler(event, context):
@@ -37,52 +51,60 @@ def lambda_handler(event, context):
     image_prefix = key.split(batch)[0]
     prefix = os.path.join(image_prefix, "workspace/")
 
-    print(plate, batch, image_prefix, prefix)
-
-    # get the metadata file, so we can add stuff to it
+    # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
-    print("Loading", metadata_on_bucket_name)
+    print(f"Downloading metadata from {metadata_on_bucket_name}")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
 
     image_dict = metadata["painting_file_data"]
     num_series = int(metadata["painting_rows"]) * int(metadata["painting_columns"])
-    if "painting_imperwell" in list(metadata.keys()):
-        if metadata["painting_imperwell"] != "":
-            if int(metadata["painting_imperwell"]) != 0:
-                num_series = int(metadata["painting_imperwell"])
-    expected_files_per_well = np.ceil(float(num_series) / range_skip)
+    if metadata["painting_imperwell"] != "":
+        if int(metadata["painting_imperwell"]) != 0:
+            num_series = int(metadata["painting_imperwell"])
+    expected_files_per_well = np.ceil(float(num_series) / int(metadata["range_skip"]))
     plate_and_well_list = metadata["painting_plate_and_well_list"]
+    # Apply filters to active plate_and_well_list
+    if exclude_plates:
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
+    if include_plates:
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
-    if "painting_xoffset_tiles" in list(metadata.keys()):
-        painting_xoffset_tiles = metadata["painting_xoffset_tiles"]
-        painting_yoffset_tiles = metadata["painting_yoffset_tiles"]
-    else:
-        painting_xoffset_tiles = painting_yoffset_tiles = "0"
-
-    if "compress" in list(metadata.keys()):
-        compress = metadata["compress"]
-    else:
-        compress = "True"
-
+    # Calculate EXPECTED_NUMBER_FILES per well
+    number_channels = len(metadata["channel_list"])
+    cropped_CP_files = number_channels * (int(metadata["tileperside"]) ** 2)
+    stitched_CP_files = stitched10X_CP_files = 4 * number_channels  # 4 quadrants
+    expected_number_CP_files = (
+        cropped_CP_files + stitched_CP_files + stitched10X_CP_files
+    )
+    config_dict["EXPECTED_NUMBER_FILES"] = expected_number_CP_files
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
 
+    run_DCP.grab_batch_config(bucket_name, prefix, batch)
+    from configAWS import SQS_DUPLICATE_QUEUE
+
     filter_prefix = image_prefix + batch + "/images_corrected/painting"
     # Because this step is batched per site (not well) don't need to anticipate partial loading of jobs
-    expected_len = (len(plate_and_well_list) * expected_files_per_well + 5)
+    expected_len = len(plate_and_well_list) * expected_files_per_well + 5
 
+    print("Checking if all files are present")
+    prev_step_app_name = (
+        config_dict["APP_NAME"].rsplit("_", 1)[-2] + "_PaintingSegmentationCheck"
+    )
     done = helpful_functions.check_if_run_done(
         s3,
         bucket_name,
         filter_prefix,
         expected_len,
-        current_app_name,
+        config_dict["APP_NAME"],
         prev_step_app_name,
         sqs,
-        duplicate_queue_name,
+        SQS_DUPLICATE_QUEUE,
     )
 
     if not done:
@@ -91,7 +113,7 @@ def lambda_handler(event, context):
     else:
         # now let's do our stuff!
         app_name = run_DCP.run_setup(
-            bucket_name, prefix, batch, step, cellprofiler=False
+            bucket_name, prefix, batch, config_dict, cellprofiler=False
         )
 
         # make the jobs
@@ -102,19 +124,19 @@ def lambda_handler(event, context):
             metadata,
             plate_and_well_list,
             app_name,
-            tileperside=tileperside,
-            final_tile_size=final_tile_size,
-            xoffset_tiles=painting_xoffset_tiles,
-            yoffset_tiles=painting_yoffset_tiles,
-            compress=compress,
+            tileperside=metadata["tileperside"],
+            final_tile_size=metadata["final_tile_size"],
+            xoffset_tiles=metadata["painting_xoffset_tiles"],
+            yoffset_tiles=metadata["painting_yoffset_tiles"],
+            compress=metadata["compress"],
         )
 
         # Start a cluster
         run_DCP.run_cluster(
-            bucket_name, prefix, batch, step, fleet_file_name, len(plate_and_well_list)
+            bucket_name, prefix, batch, len(plate_and_well_list), config_dict
         )
 
         # Run the monitor
-        run_DCP.run_monitor(bucket_name, prefix, batch, step)
+        run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)
         print("Go run the monitor now")
         return "Cluster started"

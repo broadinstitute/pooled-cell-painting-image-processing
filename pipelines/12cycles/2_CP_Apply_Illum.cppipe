@@ -1,6 +1,6 @@
 CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
-DateRevision:407
+DateRevision:413
 GitHash:
 ModuleCount:14
 HasImagePlaneDetails:False
@@ -17,23 +17,23 @@ LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_win
     Rescale intensities?:Yes
 
 CorrectIlluminationApply:[module_num:2|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:Phalloidin
+    Select the input image:OrigPhalloidin
     Name the output image:CorrPhalloidin
     Select the illumination function:IllumPhalloidin
     Select how the illumination function is applied:Divide
-    Select the input image:WGA
+    Select the input image:OrigWGA
     Name the output image:CorrWGA
     Select the illumination function:IllumWGA
     Select how the illumination function is applied:Divide
-    Select the input image:Mito
+    Select the input image:OrigMito
     Name the output image:CorrMito
     Select the illumination function:IllumMito
     Select how the illumination function is applied:Divide
-    Select the input image:ER
+    Select the input image:OrigER
     Name the output image:CorrER
     Select the illumination function:IllumER
     Select how the illumination function is applied:Divide
-    Select the input image:DNA
+    Select the input image:OrigDNA
     Name the output image:CorrDNA
     Select the illumination function:IllumDNA
     Select how the illumination function is applied:Divide

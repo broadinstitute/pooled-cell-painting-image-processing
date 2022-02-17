@@ -1,7 +1,6 @@
 import json
 import os
 import sys
-
 import boto3
 
 sys.path.append("/opt/pooled-cell-painting-lambda")
@@ -11,13 +10,36 @@ import run_DCP
 import create_batch_jobs
 import helpful_functions
 
-print("Loading function")
-
 s3 = boto3.client("s3")
-pipeline_name = "5_BC_Illum.cppipe"
+
+# Step information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "illumFleet.json"
+pipeline_name = "5_BC_Illum.cppipe"
 step = "5"
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_IllumBarcoding",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
+    "TASKS_PER_MACHINE": "1",
+    "MACHINE_TYPE": ["m4.xlarge"],
+    "MACHINE_PRICE": "0.10",
+    "EBS_VOL_SIZE": "200",
+    "DOWNLOAD_FILES": "False",
+    "DOCKER_CORES": "4",
+    "MEMORY": "15000",
+    "SECONDS_TO_START": "180",
+    "SQS_MESSAGE_VISIBILITY": "43200",
+    "CHECK_IF_DONE_BOOL": "True",
+    "EXPECTED_NUMBER_FILES": "6",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING": "",
+}
+
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 
 def lambda_handler(event, context):
@@ -29,16 +51,16 @@ def lambda_handler(event, context):
     image_prefix = prefix.split("workspace")[0]
     batch = batchAndPipe.split(pipeline_name)[0][:-1]
 
-    # get the metadata file, so we can add stuff to it
+    # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
+    print(f"Downloading metadata from {metadata_on_bucket_name}")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket, metadata_file_name, metadata_on_bucket_name
     )
     num_series = int(metadata["barcoding_rows"]) * int(metadata["barcoding_columns"])
-    if "barcoding_imperwell" in list(metadata.keys()):
-        if metadata["barcoding_imperwell"] != "":
-            if int(metadata["barcoding_imperwell"]) != 0:
-                num_series = int(metadata["barcoding_imperwell"])
+    if metadata["barcoding_imperwell"] != "":
+        if int(metadata["barcoding_imperwell"]) != 0:
+            num_series = int(metadata["barcoding_imperwell"])
     expected_cycles = int(metadata["barcoding_cycles"])
 
     # Get the list of images in this experiment - this can take a long time for big experiments so let's add some prints
@@ -70,9 +92,15 @@ def lambda_handler(event, context):
         s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name
     )
 
-    # Pull the file names we care about, and make the CSV
-    print("Making the CSVs")
+    # Create list of plates to be processed
     platelist = list(image_dict.keys())
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+    if include_plates:
+        platelist = include_plates
+
+    # Pull the file names we care about and make the CSVs
+    print("Making the CSVs")
     for eachplate in platelist:
         platedict = parsed_image_dict[eachplate]
         well_list = list(platedict.keys())
@@ -100,9 +128,7 @@ def lambda_handler(event, context):
             s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
 
     # Now it's time to run DCP
-    # Replacement for 'fab setup'
-    app_name = run_DCP.run_setup(bucket, prefix, batch, step)
-    # run_DCP.grab_batch_config(bucket,prefix,batch,step)
+    app_name = run_DCP.run_setup(bucket, prefix, batch, config_dict)
 
     # Make a batch
     create_batch_jobs.create_batch_jobs_5(
@@ -111,9 +137,9 @@ def lambda_handler(event, context):
 
     # Start a cluster
     run_DCP.run_cluster(
-        bucket, prefix, batch, step, fleet_file_name, len(platelist) * expected_cycles
+        bucket, prefix, batch, len(platelist) * expected_cycles, config_dict
     )
 
     # Run the monitor
-    run_DCP.run_monitor(bucket, prefix, batch, step)
+    run_DCP.run_monitor(bucket, prefix, batch, step, config_dict)
     print("Go run the monitor now")

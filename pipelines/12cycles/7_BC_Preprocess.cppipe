@@ -1,13 +1,13 @@
 CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
-DateRevision:407
+DateRevision:413
 GitHash:
 ModuleCount:89
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Input data file location:Elsewhere...|/Users/bcimini/Downloads/PCPTroubleshooting
-    Name of the file:load_data_pipeline7_checkseg.csv
+    Input data file location:Default Input Folder|/Users/bcimini/Downloads/PCPTroubleshooting
+    Name of the file:load_data_pipeline7.csv
     Load images based on this data?:Yes
     Base image location:None|
     Process just a range of rows?:No
@@ -1075,36 +1075,36 @@ CompensateColors:[module_num:24|svn_version:'Unknown'|variable_revision_number:1
     Select an image to measure:Cycle10_A_BackSub
     What compensation class does this image belong to?:1
     Select an output image name:CorrCycle10_A
-    Select an image to measure:Cycle10_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:CorrCycle10_C
-    Select an image to measure:Cycle10_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:CorrCycle10_G
-    Select an image to measure:Cycle10_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:CorrCycle10_T
     Select an image to measure:Cycle11_A_BackSub
     What compensation class does this image belong to?:1
     Select an output image name:CorrCycle11_A
-    Select an image to measure:Cycle11_C_BackSub
-    What compensation class does this image belong to?:2
-    Select an output image name:CorrCycle11_C
-    Select an image to measure:Cycle11_G_BackSub
-    What compensation class does this image belong to?:3
-    Select an output image name:CorrCycle11_G
-    Select an image to measure:Cycle11_T_BackSub
-    What compensation class does this image belong to?:4
-    Select an output image name:CorrCycle11_T
     Select an image to measure:Cycle12_A_BackSub
     What compensation class does this image belong to?:1
     Select an output image name:CorrCycle12_A
+    Select an image to measure:Cycle10_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle10_C
+    Select an image to measure:Cycle11_C_BackSub
+    What compensation class does this image belong to?:2
+    Select an output image name:CorrCycle11_C
     Select an image to measure:Cycle12_C_BackSub
     What compensation class does this image belong to?:2
     Select an output image name:CorrCycle12_C
+    Select an image to measure:Cycle10_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle10_G
+    Select an image to measure:Cycle11_G_BackSub
+    What compensation class does this image belong to?:3
+    Select an output image name:CorrCycle11_G
     Select an image to measure:Cycle12_G_BackSub
     What compensation class does this image belong to?:3
     Select an output image name:CorrCycle12_G
+    Select an image to measure:Cycle10_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle10_T
+    Select an image to measure:Cycle11_T_BackSub
+    What compensation class does this image belong to?:4
+    Select an output image name:CorrCycle11_T
     Select an image to measure:Cycle12_T_BackSub
     What compensation class does this image belong to?:4
     Select an output image name:CorrCycle12_T
@@ -1116,14 +1116,14 @@ CompensateColors:[module_num:24|svn_version:'Unknown'|variable_revision_number:1
     What compensation class should serve as the template histogram?:4
     Should images be rescaled 0-1 after compensating?:No
     Should the images be divided by a scalar based on group percentiles:No
-    What percentile should be used for multiplication:99.9
+    What percentile should be used for multiplication:4
     Should the images have a tophat filter applied before correction?:No
-    What size radius should be used for the tophat filter?:3
+    What size radius should be used for the tophat filter?:No
     Should the images have a Laplacian of Gaussian filter applied before correction?:Yes
     What size radius should be used for the LoG filter?:1
     Should the images have a Difference of Gaussians filter applied before correction?:No
-    What size sigma should be used for the DoG low sigma?:3
-    What size radius should be used for the DoG low sigma?:5
+    What size sigma should be used for the DoG low sigma?:Yes
+    What size radius should be used for the DoG low sigma?:1
 
 MeasureObjectIntensity:[module_num:25|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:CorrCycle01_A, CorrCycle01_C, CorrCycle01_G, CorrCycle01_T, CorrCycle02_A, CorrCycle02_C, CorrCycle02_G, CorrCycle02_T, CorrCycle03_A, CorrCycle03_C, CorrCycle03_G, CorrCycle03_T, CorrCycle04_A, CorrCycle04_C, CorrCycle04_G, CorrCycle04_T, CorrCycle05_A, CorrCycle05_C, CorrCycle05_G, CorrCycle05_T, CorrCycle06_A, CorrCycle06_C, CorrCycle06_G, CorrCycle06_T, CorrCycle07_A, CorrCycle07_C, CorrCycle07_G, CorrCycle07_T, CorrCycle08_A, CorrCycle08_C, CorrCycle08_G, CorrCycle08_T, CorrCycle09_A, CorrCycle09_C, CorrCycle09_G, CorrCycle09_T, CorrCycle10_A, CorrCycle10_C, CorrCycle10_G, CorrCycle10_T, CorrCycle11_A, CorrCycle11_C, CorrCycle11_G, CorrCycle11_T, CorrCycle12_A, CorrCycle12_C, CorrCycle12_G, CorrCycle12_T
@@ -1265,6 +1265,12 @@ RelateObjects:[module_num:30|svn_version:'Unknown'|variable_revision_number:5|sh
     Parent name:None
     Parent name:None
     Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
+    Parent name:None
 
 SaveImages:[module_num:31|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
@@ -1293,7 +1299,7 @@ SaveImages:[module_num:32|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle01_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle01_A
+    Text to append to the image name:__Cycle01_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1312,7 +1318,7 @@ SaveImages:[module_num:33|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle01_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle01_C
+    Text to append to the image name:__Cycle01_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1331,7 +1337,7 @@ SaveImages:[module_num:34|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle01_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle01_G
+    Text to append to the image name:__Cycle01_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1350,7 +1356,7 @@ SaveImages:[module_num:35|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle01_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle01_T
+    Text to append to the image name:__Cycle01_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1369,7 +1375,7 @@ SaveImages:[module_num:36|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle02_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle02_A
+    Text to append to the image name:__Cycle02_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1388,7 +1394,7 @@ SaveImages:[module_num:37|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle02_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle02_C
+    Text to append to the image name:__Cycle02_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1407,7 +1413,7 @@ SaveImages:[module_num:38|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle02_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle02_G
+    Text to append to the image name:__Cycle02_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1426,7 +1432,7 @@ SaveImages:[module_num:39|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle02_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle02_T
+    Text to append to the image name:__Cycle02_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1445,7 +1451,7 @@ SaveImages:[module_num:40|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle03_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle03_A
+    Text to append to the image name:__Cycle03_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1464,7 +1470,7 @@ SaveImages:[module_num:41|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle03_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle03_C
+    Text to append to the image name:__Cycle03_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1483,7 +1489,7 @@ SaveImages:[module_num:42|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle03_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle03_G
+    Text to append to the image name:__Cycle03_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1502,7 +1508,7 @@ SaveImages:[module_num:43|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle03_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle03_T
+    Text to append to the image name:__Cycle03_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1521,7 +1527,7 @@ SaveImages:[module_num:44|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle04_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle04_A
+    Text to append to the image name:__Cycle04_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1540,7 +1546,7 @@ SaveImages:[module_num:45|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle04_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle04_C
+    Text to append to the image name:__Cycle04_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1559,7 +1565,7 @@ SaveImages:[module_num:46|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle04_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle04_G
+    Text to append to the image name:__Cycle04_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1578,7 +1584,7 @@ SaveImages:[module_num:47|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle04_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle04_T
+    Text to append to the image name:__Cycle04_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1597,7 +1603,7 @@ SaveImages:[module_num:48|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle05_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle05_A
+    Text to append to the image name:__Cycle05_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1616,7 +1622,7 @@ SaveImages:[module_num:49|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle05_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle05_C
+    Text to append to the image name:__Cycle05_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1635,7 +1641,7 @@ SaveImages:[module_num:50|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle05_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle05_G
+    Text to append to the image name:__Cycle05_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1654,7 +1660,7 @@ SaveImages:[module_num:51|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle05_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle05_T
+    Text to append to the image name:__Cycle05_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1673,7 +1679,7 @@ SaveImages:[module_num:52|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle06_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle06_A
+    Text to append to the image name:__Cycle06_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1692,7 +1698,7 @@ SaveImages:[module_num:53|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle06_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle06_C
+    Text to append to the image name:__Cycle06_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1711,7 +1717,7 @@ SaveImages:[module_num:54|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle06_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle06_G
+    Text to append to the image name:__Cycle06_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1730,7 +1736,7 @@ SaveImages:[module_num:55|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle06_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle06_T
+    Text to append to the image name:__Cycle06_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1749,7 +1755,7 @@ SaveImages:[module_num:56|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle07_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle07_A
+    Text to append to the image name:__Cycle07_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1768,7 +1774,7 @@ SaveImages:[module_num:57|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle07_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle07_C
+    Text to append to the image name:__Cycle07_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1787,7 +1793,7 @@ SaveImages:[module_num:58|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle07_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle07_G
+    Text to append to the image name:__Cycle07_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1806,7 +1812,7 @@ SaveImages:[module_num:59|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle07_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle07_T
+    Text to append to the image name:__Cycle07_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1825,7 +1831,7 @@ SaveImages:[module_num:60|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle08_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle08_A
+    Text to append to the image name:__Cycle08_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1844,7 +1850,7 @@ SaveImages:[module_num:61|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle08_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle08_C
+    Text to append to the image name:__Cycle08_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1863,7 +1869,7 @@ SaveImages:[module_num:62|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle08_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle08_G
+    Text to append to the image name:__Cycle08_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1882,7 +1888,7 @@ SaveImages:[module_num:63|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle08_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle08_T
+    Text to append to the image name:__Cycle08_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1901,7 +1907,7 @@ SaveImages:[module_num:64|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle09_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle09_A
+    Text to append to the image name:__Cycle09_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1920,7 +1926,7 @@ SaveImages:[module_num:65|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle09_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle09_C
+    Text to append to the image name:__Cycle09_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1939,7 +1945,7 @@ SaveImages:[module_num:66|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle09_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle09_G
+    Text to append to the image name:__Cycle09_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1958,7 +1964,7 @@ SaveImages:[module_num:67|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle09_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle09_T
+    Text to append to the image name:__Cycle09_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1977,7 +1983,7 @@ SaveImages:[module_num:68|svn_version:'Unknown'|variable_revision_number:15|show
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle10_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_A
+    Text to append to the image name:__Cycle10_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -1990,13 +1996,13 @@ SaveImages:[module_num:68|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:69|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle10_C
+    Select the image to save:CorrCycle11_A
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_C_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle10_C
+    Select image name for file prefix:Cycle11_A_PreAligned
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle11_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_C
+    Text to append to the image name:__Cycle11_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2009,13 +2015,13 @@ SaveImages:[module_num:69|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:70|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle10_G
+    Select the image to save:CorrCycle12_A
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_G_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle10_G
+    Select image name for file prefix:Cycle12_A_PreAligned
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle12_A
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_G
+    Text to append to the image name:__Cycle12_A
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2028,13 +2034,13 @@ SaveImages:[module_num:70|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:71|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle10_T
+    Select the image to save:CorrCycle10_C
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_T_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle10_T
+    Select image name for file prefix:Cycle10_C_PreAligned
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle10_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_T
+    Text to append to the image name:__Cycle10_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2047,13 +2053,13 @@ SaveImages:[module_num:71|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:72|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle11_A
+    Select the image to save:CorrCycle11_C
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_A_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle11_A
+    Select image name for file prefix:Cycle11_C_PreAligned
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle11_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_A
+    Text to append to the image name:__Cycle11_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2066,13 +2072,13 @@ SaveImages:[module_num:72|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:73|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle11_C
+    Select the image to save:CorrCycle12_C
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_C_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle11_C
+    Select image name for file prefix:Cycle12_C_PreAligned
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle12_C
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_C
+    Text to append to the image name:__Cycle12_C
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2085,13 +2091,13 @@ SaveImages:[module_num:73|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:74|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle11_G
+    Select the image to save:CorrCycle10_G
     Select method for constructing file names:Single name
     Select image name for file prefix:Cycle10_G_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle11_G
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle10_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_G
+    Text to append to the image name:__Cycle10_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2104,13 +2110,13 @@ SaveImages:[module_num:74|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:75|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle11_T
+    Select the image to save:CorrCycle11_G
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_T_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle11_T
+    Select image name for file prefix:Cycle11_G_PreAligned
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle11_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_T
+    Text to append to the image name:__Cycle11_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2123,13 +2129,13 @@ SaveImages:[module_num:75|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:76|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle12_A
+    Select the image to save:CorrCycle12_G
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_A_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle12_A
+    Select image name for file prefix:Cycle12_G_PreAligned
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle12_G
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_A
+    Text to append to the image name:__Cycle12_G
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2142,13 +2148,13 @@ SaveImages:[module_num:76|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:77|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle12_C
+    Select the image to save:CorrCycle10_T
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_C_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle12_C
+    Select image name for file prefix:Cycle10_T_PreAligned
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle10_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_C
+    Text to append to the image name:__Cycle10_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2161,13 +2167,13 @@ SaveImages:[module_num:77|svn_version:'Unknown'|variable_revision_number:15|show
 
 SaveImages:[module_num:78|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:CorrCycle12_G
+    Select the image to save:CorrCycle11_T
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_G_PreAligned
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle12_G
+    Select image name for file prefix:Cycle11_T_PreAligned
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle11_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_G
+    Text to append to the image name:__Cycle11_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer
@@ -2182,11 +2188,11 @@ SaveImages:[module_num:79|svn_version:'Unknown'|variable_revision_number:15|show
     Select the type of image to save:Image
     Select the image to save:CorrCycle12_T
     Select method for constructing file names:Single name
-    Select image name for file prefix:Cycle10_T_PreAligned
+    Select image name for file prefix:Cycle12_T_PreAligned
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Cycle12_T
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:__Cyle10_T
+    Text to append to the image name:__Cycle12_T
     Saved file format:tiff
     Output file location:Default Output Folder|Cycle01
     Image bit depth:16-bit integer

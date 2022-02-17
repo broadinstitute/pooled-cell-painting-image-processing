@@ -11,12 +11,35 @@ import run_DCP
 import create_batch_jobs
 import helpful_functions
 
-print("Loading function")
-
 s3 = boto3.client("s3")
+
+# Step information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "illumFleet.json"
 step = "1"
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_IllumPainting",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
+    "TASKS_PER_MACHINE": "1",
+    "MACHINE_TYPE": ["m4.xlarge"],
+    "MACHINE_PRICE": "0.10",
+    "EBS_VOL_SIZE": "22",
+    "DOWNLOAD_FILES": "False",
+    "DOCKER_CORES": "4",
+    "MEMORY": "15000",
+    "SECONDS_TO_START": "180",
+    "SQS_MESSAGE_VISIBILITY": "7200",
+    "CHECK_IF_DONE_BOOL": "True",
+    "EXPECTED_NUMBER_FILES": "5",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING": "",
+}
+
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 
 def lambda_handler(event, context):
@@ -32,9 +55,6 @@ def lambda_handler(event, context):
         s3, bucket, metadata_file_name, metadata_on_bucket_name
     )
     # Standard vs. SABER configs
-    if "Channeldict" not in list(metadata.keys()):
-        print("Update your metadata.json to include Channeldict")
-        return "Update your metadata.json to include Channeldict"
     Channeldict = ast.literal_eval(metadata["Channeldict"])
     if len(Channeldict.keys()) == 1:
         SABER = False
@@ -46,10 +66,9 @@ def lambda_handler(event, context):
     # Calculate number of images from rows and columns in metadata
     num_series = int(metadata["painting_rows"]) * int(metadata["painting_columns"])
     # Overwrite rows x columns number series if images per well set in metadata
-    if "painting_imperwell" in list(metadata.keys()):
-        if metadata["painting_imperwell"] != "":
-            if int(metadata["painting_imperwell"]) != 0:
-                num_series = int(metadata["painting_imperwell"])
+    if metadata["painting_imperwell"] != "":
+        if int(metadata["painting_imperwell"]) != 0:
+            num_series = int(metadata["painting_imperwell"])
 
     # Get the list of images in this experiment
     if not SABER:
@@ -62,6 +81,23 @@ def lambda_handler(event, context):
         image_list, filter_in=parse_name_filter, filter_out="copy"
     )
     metadata["painting_file_data"] = image_dict
+
+    # Get the final list of channels in this experiment
+    Channelrounds = list(Channeldict.keys())
+    channels = []
+    for eachround in Channelrounds:
+        templist = []
+        templist += Channeldict[eachround].values()
+        channels += list(i[0] for i in templist)
+    for index, chan in enumerate(channels):
+        if "round" in chan:
+            if "round0" in chan:
+                channels[index] = chan.split("_")[0]
+            else:
+                channels.remove(chan)
+    metadata["channel_list"] = channels
+
+    # Add image list and channel list to metadata file
     helpful_functions.write_metadata_file(
         s3, bucket, metadata, metadata_file_name, metadata_on_bucket_name
     )
@@ -72,18 +108,32 @@ def lambda_handler(event, context):
     else:
         full_well_files = num_series
 
-    # Pull the file names we care about, and make the CSV
     platelist = list(image_dict.keys())
+    # Apply filters to platelist
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+    if include_plates:
+        platelist = include_plates
+    # Pull the file names we care about, and make the CSV
     for eachplate in platelist:
         platedict = image_dict[eachplate]
         well_list = list(platedict.keys())
-        Channelrounds = list(Channeldict.keys())
         # Only keep full wells
-        print(f"{full_well_files} expect files per well and round for {eachplate}")
+        print(f"{full_well_files} expected files per well and round for {eachplate}")
         incomplete_wells = []
         for eachwell in well_list:
-            for eachround in Channelrounds:
-                per_well = platedict[eachwell][eachround]
+            if SABER:
+                for eachround in Channelrounds:
+                    per_well = platedict[eachwell][eachround]
+                    if len(per_well) != full_well_files:
+                        incomplete_wells.append(eachwell)
+                        print(
+                            f"{eachwell} {eachround} doesn't have full well files. {len(per_well)} files found."
+                        )
+            if not SABER:
+                platename = list(Channeldict.keys())[0] + "_" + eachplate
+                paint_cycle_name = list(platedict[well_list[0]].keys())[0]
+                per_well = platedict[eachwell][paint_cycle_name]
                 if len(per_well) != full_well_files:
                     incomplete_wells.append(eachwell)
                     print(
@@ -129,7 +179,7 @@ def lambda_handler(event, context):
             s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
 
     # Now it's time to run DCP
-    app_name = run_DCP.run_setup(bucket, prefix, batch, step)
+    app_name = run_DCP.run_setup(bucket, prefix, batch, config_dict)
 
     # Make a batch
     if not SABER:
@@ -141,8 +191,8 @@ def lambda_handler(event, context):
     )
 
     # Start a cluster
-    run_DCP.run_cluster(bucket, prefix, batch, step, fleet_file_name, len(platelist))
+    run_DCP.run_cluster(bucket, prefix, batch, len(platelist), config_dict)
 
     # Run the monitor
-    run_DCP.run_monitor(bucket, prefix, batch, step)
+    run_DCP.run_monitor(bucket, prefix, batch, step, config_dict)
     print("Go run the monitor now")

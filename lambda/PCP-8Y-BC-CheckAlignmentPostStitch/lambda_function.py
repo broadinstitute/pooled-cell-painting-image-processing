@@ -16,24 +16,24 @@ sqs = boto3.client("sqs")
 
 # Step information
 metadata_file_name = "/tmp/metadata.json"
-pipeline_name = "9_Analysis.cppipe"
-step = "9"
+pipeline_name = "8Y_CheckAlignmentPostStitching.cppipe"
+step = "8Y"
 
 # AWS Configuration Specific to this Function
 config_dict = {
-    "APP_NAME": "2018_11_20_Periscope_X_Analysis",
+    "APP_NAME": "2018_11_20_Periscope_X_PostStitchAlignmentCheck",
     "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
     "TASKS_PER_MACHINE": "1",
-    "MACHINE_TYPE": ["m5.4xlarge"],
-    "MACHINE_PRICE": "0.50",
-    "EBS_VOL_SIZE": "60",
+    "MACHINE_TYPE": ["r4.2xlarge"],
+    "MACHINE_PRICE": "0.40",
+    "EBS_VOL_SIZE": "200",
     "DOWNLOAD_FILES": "False",
-    "DOCKER_CORES": "1",
-    "MEMORY": "62500",
-    "SECONDS_TO_START": "600",
-    "SQS_MESSAGE_VISIBILITY": "28800",
+    "DOCKER_CORES": "4",
+    "MEMORY": "15000",
+    "SECONDS_TO_START": "180",
+    "SQS_MESSAGE_VISIBILITY": "1800",
     "CHECK_IF_DONE_BOOL": "True",
-    "EXPECTED_NUMBER_FILES": "5",
+    "EXPECTED_NUMBER_FILES": "2",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
 }
@@ -45,11 +45,11 @@ include_plates = []
 
 
 def lambda_handler(event, context):
-    # Manual trigger
-    batch = "BATCH_STRING"
+    # Log the received event
+    batch = "20200805_A549_WG_Screen/"
     image_prefix = "projects/2018_11_20_Periscope_X/"
     prefix = "projects/2018_11_20_Periscope_X/workspace/"
-    bucket_name = "BUCKET"
+    bucket_name = "pooled-cell-painting"
 
     # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
@@ -57,9 +57,11 @@ def lambda_handler(event, context):
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
-    image_dict = metadata["wells_with_all_cycles"]
-    platelist = list(image_dict.keys())
+
     plate_and_well_list = metadata["barcoding_plate_and_well_list"]
+    image_dict = metadata["wells_with_all_cycles"]
+    expected_cycles = metadata["barcoding_cycles"]
+    platelist = list(image_dict.keys())
     # Apply filters to plate and well lists
     if exclude_plates:
         platelist = [i for i in platelist if i not in exclude_plates]
@@ -70,9 +72,7 @@ def lambda_handler(event, context):
         platelist = include_plates
         plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
-    expected_cycles = metadata["barcoding_cycles"]
-    num_sites_perwell = int(metadata["tileperside"]) ** 2
-    num_sites_total = len(plate_and_well_list) * num_sites_perwell
+    num_sites = int(metadata["tileperside"]) * int(metadata["tileperside"])
 
     # Pull the file names we care about, and make the CSV
     for eachplate in platelist:
@@ -81,8 +81,8 @@ def lambda_handler(event, context):
         bucket_folder = (
             "/home/ubuntu/bucket/" + image_prefix + batch + "/images_corrected_cropped"
         )
-        per_plate_csv = create_CSVs.create_CSV_pipeline9(
-            eachplate, num_sites_perwell, expected_cycles, bucket_folder, well_list
+        per_plate_csv = create_CSVs.create_CSV_pipeline8Y(
+            eachplate, num_sites, bucket_folder, well_list
         )
         csv_on_bucket_name = (
             prefix
@@ -90,7 +90,7 @@ def lambda_handler(event, context):
             + batch
             + "/"
             + eachplate
-            + "/load_data_pipeline9.csv"
+            + "/load_data_pipeline8Y.csv"
         )
         print("Created", csv_on_bucket_name)
         with open(per_plate_csv, "rb") as a:
@@ -100,17 +100,17 @@ def lambda_handler(event, context):
     app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_dict)
 
     # make the jobs
-    create_batch_jobs.create_batch_jobs_9(
+    create_batch_jobs.create_batch_jobs_8Y(
         image_prefix,
         batch,
         pipeline_name,
         plate_and_well_list,
-        list(range(1, num_sites_perwell + 1)),
+        list(range(1, num_sites + 1)),
         app_name,
     )
 
     # Start a cluster
-    run_DCP.run_cluster(bucket_name, prefix, batch, num_sites_total, config_dict)
+    run_DCP.run_cluster(bucket_name, prefix, batch, num_sites, config_dict)
 
     # Run the monitor
     run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)

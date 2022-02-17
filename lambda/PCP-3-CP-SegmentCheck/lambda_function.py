@@ -1,7 +1,6 @@
 import datetime
 import os, sys
 import json
-
 import boto3
 import numpy
 import pandas
@@ -15,18 +14,40 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "3_CP_SegmentationCheck.cppipe"
+
+# Step information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "segmentFleet.json"
-current_app_name = "2018_11_20_Periscope_X_PaintingSegmentationCheck"
-prev_step_app_name = "2018_11_20_Periscope_X_ApplyIllumPainting"
-duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
+pipeline_name = "3_CP_SegmentationCheck.cppipe"
 step = "3"
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_PaintingSegmentationCheck",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
+    "TASKS_PER_MACHINE": "1",
+    "MACHINE_TYPE": ["m4.xlarge"],
+    "MACHINE_PRICE": "0.10",
+    "EBS_VOL_SIZE": "22",
+    "DOWNLOAD_FILES": "False",
+    "DOCKER_CORES": "4",
+    "MEMORY": "15000",
+    "SECONDS_TO_START": "180",
+    "SQS_MESSAGE_VISIBILITY": "1800",
+    "CHECK_IF_DONE_BOOL": "False",
+    "EXPECTED_NUMBER_FILES": "5",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING": "",
+}
+
 # Default percentiles are 10 and 90. Change only to troubleshoot troublesome datasets.
 upper_percentile = 90
 lower_percentile = 10
-# If you change range_skip, you must also change it in PCP-4-CP lambda function
-range_skip = 16
+segmentation_channel = "Phalloidin"
+
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 
 def lambda_handler(event, context):
@@ -44,50 +65,63 @@ def lambda_handler(event, context):
     prefix = os.path.join(image_prefix, "workspace/")
     print(batch, prefix)
 
-    # get the metadata file, so we can add stuff to it
+    # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
-    print("Loading", metadata_on_bucket_name)
+    print(f"Downloading metadata from {metadata_on_bucket_name}")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
 
     image_dict = metadata["painting_file_data"]
     num_series = int(metadata["painting_rows"]) * int(metadata["painting_columns"])
-    if "painting_imperwell" in list(metadata.keys()):
-        if metadata["painting_imperwell"] != "":
-            if int(metadata["painting_imperwell"]) != 0:
-                num_series = int(metadata["painting_imperwell"])
-    out_range = list(range(0, num_series, range_skip))
-    expected_files_per_well = (num_series * int(metadata["painting_channels"])) + 6
+    if metadata["painting_imperwell"] != "":
+        if int(metadata["painting_imperwell"]) != 0:
+            num_series = int(metadata["painting_imperwell"])
+    out_range = list(range(0, num_series, int(metadata["range_skip"])))
+    expected_files_per_well = (num_series * len(metadata["channel_list"])) + 6
     platelist = list(image_dict.keys())
-    plate_and_well_list = []
-    for eachplate in platelist:
-        platedict = image_dict[eachplate]
-        well_list = list(platedict.keys())
-        for eachwell in well_list:
-            plate_and_well_list.append((eachplate, eachwell))
-    metadata["painting_plate_and_well_list"] = plate_and_well_list
+    # Create and write full plate_and_well_list
+    metadata[
+        "painting_plate_and_well_list"
+    ] = plate_and_well_list = helpful_functions.make_plate_and_well_list(
+        platelist, image_dict
+    )
     helpful_functions.write_metadata_file(
         s3, bucket_name, metadata, metadata_file_name, metadata_on_bucket_name
     )
+    # Apply filters to active plate_and_well_list
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
+    if include_plates:
+        platelist = include_plates
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
 
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
+
+    run_DCP.grab_batch_config(bucket_name, prefix, batch)
+    from configAWS import SQS_DUPLICATE_QUEUE
 
     filter_prefix = image_prefix + batch + "/images_corrected/painting"
     # Expected length shows that all transfers (i.e. all wells) have at least started
     expected_len = ((len(plate_and_well_list) - 1) * expected_files_per_well) + 1
 
     print("Checking if all files are present")
+    prev_step_app_name = (
+        config_dict["APP_NAME"].rsplit("_", 1)[-2] + "_ApplyIllumPainting"
+    )
     done = helpful_functions.check_if_run_done(
         s3,
         bucket_name,
         filter_prefix,
         expected_len,
-        current_app_name,
+        config_dict["APP_NAME"],
         prev_step_app_name,
         sqs,
-        duplicate_queue_name,
+        SQS_DUPLICATE_QUEUE,
     )
 
     if not done:
@@ -107,17 +141,11 @@ def lambda_handler(event, context):
         threshes = image_df["Threshold_FinalThreshold_Cells"]
         calc_upper_percentile = numpy.percentile(threshes, upper_percentile)
         print(
-            "In ",
-            len(image_csv_list) * num_series,
-            f"images, the {upper_percentile} percentile was",
-            calc_upper_percentile,
+            f"In {len(image_csv_list) * num_series} images, the {upper_percentile} percentile was {calc_upper_percentile}"
         )
         calc_lower_percentile = numpy.percentile(threshes, lower_percentile)
         print(
-            "In ",
-            len(image_csv_list) * num_series,
-            f"images, the {lower_percentile} percentile was",
-            calc_lower_percentile,
+            f"In {len(image_csv_list) * num_series} images, the {lower_percentile} percentile was {calc_lower_percentile}"
         )
 
         pipeline_on_bucket_name = os.path.join(
@@ -129,7 +157,12 @@ def lambda_handler(event, context):
         )
         with open(local_pipeline_name, "wb") as f:
             s3.download_fileobj(bucket_name, pipeline_on_bucket_name, f)
-        edit_id_secondary(local_pipeline_name, local_temp_pipeline_name, calc_lower_percentile, calc_upper_percentile)
+        edit_id_secondary(
+            local_pipeline_name,
+            local_temp_pipeline_name,
+            calc_lower_percentile,
+            calc_upper_percentile,
+        )
         with open(local_temp_pipeline_name, "rb") as pipeline:
             s3.put_object(
                 Body=pipeline, Bucket=bucket_name, Key=pipeline_on_bucket_name
@@ -147,7 +180,12 @@ def lambda_handler(event, context):
                 + "/images_corrected/painting"
             )
             per_plate_csv = create_CSVs.create_CSV_pipeline3(
-                eachplate, num_series, bucket_folder, well_list, range_skip
+                eachplate,
+                num_series,
+                bucket_folder,
+                well_list,
+                metadata["range_skip"],
+                segmentation_channel,
             )
             csv_on_bucket_name = (
                 prefix
@@ -162,25 +200,20 @@ def lambda_handler(event, context):
                 s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
         # now let's do our stuff!
-        app_name = run_DCP.run_setup(bucket_name, prefix, batch, step)
+        app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_dict)
 
         # make the jobs
         create_batch_jobs.create_batch_jobs_3(
-            image_prefix, batch, pipeline_name, plate_and_well_list, out_range, app_name
+            image_prefix, batch, pipeline_name, plate_and_well_list, app_name
         )
 
         # Start a cluster
         run_DCP.run_cluster(
-            bucket_name,
-            prefix,
-            batch,
-            step,
-            fleet_file_name,
-            len(plate_and_well_list) * len(out_range),
+            bucket_name, prefix, batch, len(plate_and_well_list), config_dict,
         )
 
         # Run the monitor
-        run_DCP.run_monitor(bucket_name, prefix, batch, step)
+        run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)
         print("Go run the monitor now")
         return "Cluster started"
 
@@ -195,5 +228,5 @@ def edit_id_secondary(file_in_name, file_out_name, lower_value, upper_value):
                 if "Lower and upper bounds on" in line and IDSecond == True:
                     prompt, answer = line.split(":")
                     new_answer = str(lower_value) + "," + str(upper_value)
-                    line = prompt + ":" + new_answer +"\n"
+                    line = prompt + ":" + new_answer + "\n"
                 outfile.write(line)

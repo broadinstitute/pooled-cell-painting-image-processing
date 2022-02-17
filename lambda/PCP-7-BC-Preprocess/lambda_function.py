@@ -2,7 +2,6 @@ import json
 import os
 import sys
 import time
-
 import boto3
 
 sys.path.append("/opt/pooled-cell-painting-lambda")
@@ -14,14 +13,35 @@ import helpful_functions
 
 s3 = boto3.client("s3")
 sqs = boto3.client("sqs")
-pipeline_name = "7_BC_Preprocess.cppipe"
+
+# Step information
 metadata_file_name = "/tmp/metadata.json"
-fleet_file_name = "preprocessFleet.json"
-current_app_name = "2018_11_20_Periscope_X_PreprocessBarcoding"
-prev_step_app_name = "2018_11_20_Periscope_X_ApplyIllumBarcoding"
-prev_step_num = "6"
-duplicate_queue_name = "2018_11_20_Periscope_PreventOverlappingStarts.fifo"
+pipeline_name = "7_BC_Preprocess.cppipe"
 step = "7"
+
+# AWS Configuration Specific to this Function
+config_dict = {
+    "APP_NAME": "2018_11_20_Periscope_X_PreprocessBarcoding",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
+    "TASKS_PER_MACHINE": "2",
+    "MACHINE_TYPE": ["r4.2xlarge"],
+    "MACHINE_PRICE": "0.40",
+    "EBS_VOL_SIZE": "800",
+    "DOWNLOAD_FILES": "False",
+    "DOCKER_CORES": "2",
+    "MEMORY": "30000",
+    "SECONDS_TO_START": "180",
+    "SQS_MESSAGE_VISIBILITY": "7200",
+    "CHECK_IF_DONE_BOOL": "True",
+    "EXPECTED_NUMBER_FILES": "49",
+    "MIN_FILE_SIZE_BYTES": "1",
+    "NECESSARY_STRING": "",
+}
+
+# List plates if you want to exclude them from run.
+exclude_plates = []
+# List plates if you want to only run them and exclude all others from run.
+include_plates = []
 
 
 def lambda_handler(event, context):
@@ -45,15 +65,15 @@ def lambda_handler(event, context):
     barcodepath = os.path.join(prefix, "metadata", batch)
     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=barcodepath)
     filelist = []
-    for obj in response.get('Contents', []):
-        filelist += obj
-    if ".csv" not in filelist:
-        print (f"No Barcodes.csv in {barcodepath}")
-        return("Barcodes.csv is missing")
+    for obj in response.get("Contents", []):
+        filelist.append(obj["Key"])
+    if not any(".csv" in file for file in filelist):
+        print(f"No Barcodes.csv in {barcodepath}")
+        return "Barcodes.csv is missing"
 
-    # get the metadata file, so we can add stuff to it
+    # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
-    print(("Loading", metadata_on_bucket_name))
+    print(f"Downloading metadata from {metadata_on_bucket_name}")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket_name, metadata_file_name, metadata_on_bucket_name
     )
@@ -62,11 +82,20 @@ def lambda_handler(event, context):
     image_dict = metadata["wells_with_all_cycles"]
     expected_cycles = metadata["barcoding_cycles"]
     platelist = list(image_dict.keys())
+    # Apply filters to plate and well lists
+    if exclude_plates:
+        platelist = [i for i in platelist if i not in exclude_plates]
+        plate_and_well_list = [
+            x for x in plate_and_well_list if x[0] not in exclude_plates
+        ]
+    if include_plates:
+        platelist = include_plates
+        plate_and_well_list = [x for x in plate_and_well_list if x[0] in include_plates]
+
     num_series = int(metadata["barcoding_rows"]) * int(metadata["barcoding_columns"])
-    if "barcoding_imperwell" in list(metadata.keys()):
-        if metadata["barcoding_imperwell"] != "":
-            if int(metadata["barcoding_imperwell"]) != 0:
-                num_series = int(metadata["barcoding_imperwell"])
+    if metadata["barcoding_imperwell"] != "":
+        if int(metadata["barcoding_imperwell"]) != 0:
+            num_series = int(metadata["barcoding_imperwell"])
     expected_files_per_well = (
         num_series * ((int(metadata["barcoding_cycles"]) * 4) + 1)
     ) + 3
@@ -75,19 +104,26 @@ def lambda_handler(event, context):
     # First let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
 
+    run_DCP.grab_batch_config(bucket_name, prefix, batch)
+    from configAWS import SQS_DUPLICATE_QUEUE
+
     filter_prefix = image_prefix + batch + "/images_aligned/barcoding"
     # Expected length shows that all transfers (i.e. all wells) have at least started
     expected_len = ((len(plate_and_well_list) - 1) * expected_files_per_well) + 1
 
+    print("Checking if all files are present")
+    prev_step_app_name = (
+        config_dict["APP_NAME"].rsplit("_", 1)[-2] + "_ApplyIllumBarcoding"
+    )
     done = helpful_functions.check_if_run_done(
         s3,
         bucket_name,
         filter_prefix,
         expected_len,
-        current_app_name,
+        config_dict["APP_NAME"],
         prev_step_app_name,
         sqs,
-        duplicate_queue_name,
+        SQS_DUPLICATE_QUEUE,
     )
 
     if not done:
@@ -115,12 +151,12 @@ def lambda_handler(event, context):
                 + eachplate
                 + "/load_data_pipeline7.csv"
             )
-            print(("Created", csv_on_bucket_name))
+            print(f"Created {csv_on_bucket_name}")
             with open(per_plate_csv, "rb") as a:
                 s3.put_object(Body=a, Bucket=bucket_name, Key=csv_on_bucket_name)
 
         # now let's do our stuff!
-        app_name = run_DCP.run_setup(bucket_name, prefix, batch, step)
+        app_name = run_DCP.run_setup(bucket_name, prefix, batch, config_dict)
 
         # make the jobs
         create_batch_jobs.create_batch_jobs_7(
@@ -133,11 +169,9 @@ def lambda_handler(event, context):
         )
 
         # Start a cluster
-        run_DCP.run_cluster(
-            bucket_name, prefix, batch, step, fleet_file_name, num_sites
-        )
+        run_DCP.run_cluster(bucket_name, prefix, batch, num_sites, config_dict)
 
         # Run the monitor
-        run_DCP.run_monitor(bucket_name, prefix, batch, step)
+        run_DCP.run_monitor(bucket_name, prefix, batch, step, config_dict)
         print("Go run the monitor now")
         return "Cluster started"

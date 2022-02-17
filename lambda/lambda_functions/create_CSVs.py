@@ -24,22 +24,36 @@ def create_CSV_pipeline1(
         df = pandas.DataFrame(columns=columns)
         for chan in channels:
             listoffiles = []
-            for round in rounddict.keys():
-                if chan in rounddict[round]:
-                    for well in platedict.keys():
-                        listoffiles.append(platedict[well][round])
+            if len(Channelrounds) > 1:
+                for round in rounddict.keys():
+                    if chan in rounddict[round]:
+                        for well in platedict.keys():
+                            listoffiles.append(platedict[well][round])
+            if len(Channelrounds) == 1:
+                fullplatename = list(Channeldict.keys())[0] + "_" + platename
+                for round in rounddict.keys():
+                    if chan in rounddict[round]:
+                        for well in platedict.keys():
+                            listoffiles.append(platedict[well][fullplatename])
             listoffiles = [x for l in listoffiles for x in l]
             df["FileName_Orig" + chan] = listoffiles
         df["Metadata_Plate"] = [platename] * len(listoffiles)
         df["Metadata_Series"] = list(range(seriesperwell)) * len(platedict.keys())
-        for eachround in Channelrounds:
-            pathperround = path + eachround + "/"
+        if len(Channelrounds) > 1:
+            for eachround in Channelrounds:
+                pathperround = path + eachround + "/"
+                for chan in channels:
+                    for i in list(Channeldict[eachround].values()):
+                        if chan == i[0]:
+                            df["PathName_Orig" + chan] = pathperround
+                            df["Frame_Orig" + chan] = i[1]
+        if len(Channelrounds) == 1:
             for chan in channels:
+                df["PathName_Orig" + chan] = path + fullplatename + "/"
                 for i in list(Channeldict[eachround].values()):
                     if chan == i[0]:
-                        df["PathName_Orig" + chan] = pathperround
                         df["Frame_Orig" + chan] = i[1]
-        file_out_name = "/tmp/" + str(platename) + ".csv"
+        file_out_name = "/tmp/" + str(platename) + "_1.csv"
         df.to_csv(file_out_name, index=False)
         # Make .csv for 2_CP_ApplyIllum
         df["Metadata_Site"] = df["Metadata_Series"]
@@ -55,21 +69,30 @@ def create_CSV_pipeline1(
         df["Metadata_Well_Value"] = well_val_df_list
         for chan in channels:
             listoffiles = []
-            for round in rounddict.keys():
-                if chan in rounddict[round]:
-                    for well in platedict.keys():
-                        listoffiles.append(platedict[well][round])
+            if len(Channelrounds) > 1:
+                for round in rounddict.keys():
+                    if chan in rounddict[round]:
+                        for well in platedict.keys():
+                            listoffiles.append(platedict[well][round])
+            if len(Channelrounds) == 1:
+                fullplatename = list(Channeldict.keys())[0] + "_" + platename
+                for round in rounddict.keys():
+                    if chan in rounddict[round]:
+                        for well in platedict.keys():
+                            listoffiles.append(platedict[well][fullplatename])
             listoffiles = [x for l in listoffiles for x in l]
             df["PathName_Illum" + chan] = [illum_path] * len(listoffiles)
             df["FileName_Illum" + chan] = [platename + "_Illum" + chan + ".npy"] * len(
                 listoffiles
             )
-        file_out_name_2 = "/tmp/" + str(platename) + ".csv"
+        file_out_name_2 = "/tmp/" + str(platename) + "_2.csv"
         df.to_csv(file_out_name_2, index=False)
     return file_out_name, file_out_name_2
 
 
-def create_CSV_pipeline3(platename, seriesperwell, path, well_list, range_skip):
+def create_CSV_pipeline3(
+    platename, seriesperwell, path, well_list, range_skip, segmentation_channel
+):
     columns = [
         "Metadata_Plate",
         "Metadata_Site",
@@ -77,10 +100,10 @@ def create_CSV_pipeline3(platename, seriesperwell, path, well_list, range_skip):
         "Metadata_Well_Value",
     ]
     columns_per_channel = ["PathName_", "FileName_"]
-    channels = ["DNA", "Phalloidin"]
+    channels = ["DNA", segmentation_channel]
     columns += [col + chan for col in columns_per_channel for chan in channels]
     df = pandas.DataFrame(columns=columns)
-    sitelist = list(range(0, seriesperwell, range_skip))
+    sitelist = list(range(0, seriesperwell, int(range_skip)))
     sites_per_well = len(sitelist)
     total_file_count = sites_per_well * len(well_list)
     df["Metadata_Plate"] = [platename] * total_file_count
@@ -451,6 +474,63 @@ def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_l
                 for well in parsed_well_list
                 for site in range(seriesperwell)
             ]
+    file_out_name = "/tmp/" + str(platename) + ".csv"
+    df.to_csv(file_out_name, index=False)
+    return file_out_name
+
+
+def create_CSV_pipeline8Y(platename, numsites, path, well_list):
+    columns = [
+        "Metadata_Plate",
+        "Metadata_Site",
+        "Metadata_Well",
+        "Metadata_Well_Value",
+    ]
+    columns += ["PathName_Cycle01_DAPI", "FileName_Cycle01_DAPI"]
+    columns += ["PathName_CorrDNA", "FileName_CorrDNA"]
+    df = pandas.DataFrame(columns=columns)
+    total_file_count = numsites * len(well_list)
+    df["Metadata_Plate"] = [platename] * total_file_count
+    df["Metadata_Site"] = list(range(1, numsites + 1)) * len(
+        well_list
+    )  # tile counting starts at 1 not 0
+    pathlist = []
+    namesuflist = []
+    for well in well_list:
+        for site in range(1, numsites + 1):
+            pathlist.append(path + "/" + platename + "_" + well + "/")
+            namesuflist.append("_Site_" + str(site) + ".tiff")
+    pathnamelist = [path + "CorrDNA" for path in pathlist]
+    df["PathName_CorrDNA"] = pathnamelist
+    namelist = ["CorrDNA" + name for name in namesuflist]
+    df["FileName_CorrDNA"] = namelist
+
+    well_df_list = []
+    well_val_df_list = []
+    parsed_well_list = []
+    pathlist = []
+    for eachwell in well_list:
+        well_df_list += [eachwell] * numsites
+        pathlist += [os.path.join(path, platename + "_" + eachwell)] * numsites
+        if "Well" not in eachwell:
+            well_val = eachwell
+        else:
+            if "Well_" in eachwell:
+                well_val = eachwell[5:]
+            else:
+                well_val = eachwell[4:]
+        parsed_well_list.append(well_val)
+        well_val_df_list += [well_val] * numsites
+    df["Metadata_Well"] = well_df_list
+    df["Metadata_Well_Value"] = well_val_df_list
+
+    pathnamelist = [path + "/Cycle01_DAPI" for path in pathlist]
+    df["PathName_Cycle01_DAPI"] = pathnamelist
+    df["FileName_Cycle01_DAPI"] = [
+        "Cycle01_DAPI_Site_" + str(site) + ".tiff"
+        for well in parsed_well_list
+        for site in range(1, numsites + 1)
+    ]
     file_out_name = "/tmp/" + str(platename) + ".csv"
     df.to_csv(file_out_name, index=False)
     return file_out_name
