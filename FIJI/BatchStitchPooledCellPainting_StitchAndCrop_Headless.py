@@ -170,7 +170,7 @@ if os.path.isdir(subdir):
                         if compress.lower()!='true':
                                 savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
-                        for eachpresuf in presuflist:
+                        for eachpresuf in presuflist: # for each channel
                                 thisprefix, thissuffix=eachpresuf
                                 thissuffixnicename = thissuffix.split('.')[0]
                                 if thissuffixnicename[0]=='_':
@@ -191,16 +191,19 @@ if os.path.isdir(subdir):
                                 im=IJ.getImage()
                                 width = str(int(round(im.width*float(scalingstring))))
                                 height = str(int(round(im.height*float(scalingstring))))
+                                # scale the barcoding and cell painting images to match each other
                                 print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                                 IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                                 time.sleep(15)
                                 im2=IJ.getImage()
+                                #padding to ensure tiles are all the same size (for CellProfiler later on)
                                 print("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
                                 time.sleep(15)
                                 im3=IJ.getImage()
                                 savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
+                                #scaling to make a downsampled image for QC
                                 print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.getImage()
@@ -329,7 +332,7 @@ if os.path.isdir(subdir):
                                 " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
                                 copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
                                 filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
-                                fileoutname='StitchedALL'+filename.replace("{xx}","").replace("{yy}","")
+                                fileoutname='Stitched'+filename.replace("{i}","")
                                 instructions = standard_grid_instructions[0] + filename + standard_grid_instructions[1]
                                 print(instructions)
                                 IJ.run("Grid/Collection stitching", instructions)
@@ -341,6 +344,57 @@ if os.path.isdir(subdir):
                                 print(os.path.join(out_subdir,fileoutname))
                                 time.sleep(300)
                                 IJ.run("Close All")
+                                # cropping
+                                for eachpresuf in presuflist: # for each channel
+                                        thisprefix, thissuffix=eachpresuf
+                                        thissuffixnicename = thissuffix.split('.')[0]
+                                        if thissuffixnicename[0]=='_':
+                                                thissuffixnicename=thissuffixnicename[1:]
+                                        tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
+                                        if not os.path.exists(tile_subdir_persuf):
+                                                os.mkdir(tile_subdir_persuf)
+                                        filename=thisprefix+'_Well_'+eachwell+'_Site_{i}_'+thissuffix
+                                        fileoutname='Stitched'+filename.replace("{i}","")
+                                        with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
+                                                with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
+                                                        for line in infile:
+                                                                line=line.replace(permprefix,thisprefix)
+                                                                line=line.replace(permsuffix,thissuffix)
+                                                                outfile.write(line)
+
+                                        IJ.run("Grid/Collection stitching", copy_grid_instructions)
+                                        im=IJ.getImage()
+                                        width = str(int(round(im.width*float(scalingstring))))
+                                        height = str(int(round(im.height*float(scalingstring))))
+                                        # scale the barcoding and cell painting images to match each other
+                                        print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        time.sleep(15)
+                                        im2=IJ.getImage()
+                                        #padding to ensure tiles are all the same size (for CellProfiler later on)
+                                        print("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
+                                        IJ.run("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
+                                        time.sleep(15)
+                                        im3=IJ.getImage()
+                                        savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                        im=IJ.getImage()
+                                        #scaling to make a downsampled image for QC
+                                        print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.getImage()
+                                        savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                        IJ.run("Close All")
+                                        im=IJ.open(os.path.join(out_subdir,fileoutname))
+                                        im = IJ.getImage()
+                                        for eachxtile in range(tileperside):
+                                                for eachytile in range(tileperside):
+                                                        each_tile_num = eachxtile*tileperside + eachytile + 1
+                                                        IJ.makeRectangle(eachxtile*tilesize, eachytile*tilesize,tilesize,tilesize)
+                                                        im_tile=im.crop()
+                                                        savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
+                                        IJ.run("Close All")
+
+
                         else:
                                 #top left quarter
                                 print('Running top left')
