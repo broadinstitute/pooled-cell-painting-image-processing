@@ -278,8 +278,9 @@ if os.path.isdir(subdir):
                 tiles_per_quarter = int(tileperside)/2
                 tileperside = int(tileperside)
                 tilesize=int(final_tile_size)
-                if tilesize * tiles_per_quarter > upscaled_row_size:
-                        upscaled_row_size = tilesize * tiles_per_quarter
+                if quarter_if_round:
+                        if tilesize * tiles_per_quarter > upscaled_row_size:
+                                upscaled_row_size = tilesize * tiles_per_quarter
                 upscaled_col_size=upscaled_row_size
                 pixels_to_crop = int(round(int(size)*float(overlap_pct)/200))
 
