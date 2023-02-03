@@ -276,6 +276,7 @@ if os.path.isdir(subdir):
                 max_val = max(int(top_rows),int(bot_rows),int(left_columns),int(right_columns))
                 upscaled_row_size=int(size)*max_val*rounded_scale_factor
                 tiles_per_quarter = int(tileperside)/2
+                tileperside = int(tileperside)
                 tilesize=int(final_tile_size)
                 if tilesize * tiles_per_quarter > upscaled_row_size:
                         upscaled_row_size = tilesize * tiles_per_quarter
