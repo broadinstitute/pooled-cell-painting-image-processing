@@ -263,26 +263,33 @@ if os.path.isdir(subdir):
                 rows = str(len(row_widths))
                 columns = str(max(row_widths))
 
-                # xoffset_tiles and yoffset_tiles can be used if you need to adjust the "where to draw the line between quarters"
-                # by a whole tile. You may want to add more padding if you do this
-                top_rows = str((int(rows)/2)+int(yoffset_tiles))
-                left_columns = str((int(columns)/2)+int(xoffset_tiles))
-                bot_rows = str(int(rows)-int(top_rows))
-                right_columns = str(int(columns)-int(left_columns))
-                scale_factor=float(scalingstring)
-                rounded_scale_factor=int(round(scale_factor))
-                #For upscaled row and column size, we're always going to use the biggest number, we'd rather pad than miss stuff
-                #Because we can't assure same final tile size now either, now we need to specify it, ugh, and make sure the padding is big enough
-                max_val = max(int(top_rows),int(bot_rows),int(left_columns),int(right_columns))
-                upscaled_row_size=int(size)*max_val*rounded_scale_factor
-                tiles_per_quarter = int(tileperside)/2
                 tileperside = int(tileperside)
-                tilesize=int(final_tile_size)
+                tilesize=int(final_tile_size)   
+                scale_factor=float(scalingstring)
+                rounded_scale_factor=int(round(scale_factor)) 
+
                 if quarter_if_round:
+                        # xoffset_tiles and yoffset_tiles can be used if you need to adjust the "where to draw the line between quarters"
+                        # by a whole tile. You may want to add more padding if you do this
+                        top_rows = str((int(rows)/2)+int(yoffset_tiles))
+                        left_columns = str((int(columns)/2)+int(xoffset_tiles))
+                        bot_rows = str(int(rows)-int(top_rows))
+                        right_columns = str(int(columns)-int(left_columns))
+                        #For upscaled row and column size, we're always going to use the biggest number, we'd rather pad than miss stuff
+                        #Because we can't assure same final tile size now either, now we need to specify it, ugh, and make sure the padding is big enough
+                        max_val = max(int(top_rows),int(bot_rows),int(left_columns),int(right_columns))
+                        upscaled_row_size=int(size)*max_val*rounded_scale_factor
+                        tiles_per_quarter = int(tileperside)/2            
                         if tilesize * tiles_per_quarter > upscaled_row_size:
                                 upscaled_row_size = tilesize * tiles_per_quarter
-                upscaled_col_size=upscaled_row_size
-                pixels_to_crop = int(round(int(size)*float(overlap_pct)/200))
+                        upscaled_col_size=upscaled_row_size
+                        pixels_to_crop = int(round(int(size)*float(overlap_pct)/200))
+                else:
+                        max_val = max(rows,columns)
+                        upscaled_row_size=int(size)*max_val*rounded_scale_factor          
+                        if tilesize * tileperside > upscaled_row_size:
+                                upscaled_row_size = tilesize * tileperside
+                        upscaled_col_size=upscaled_row_size
 
                 pos_dict = {}
                 count = 0
