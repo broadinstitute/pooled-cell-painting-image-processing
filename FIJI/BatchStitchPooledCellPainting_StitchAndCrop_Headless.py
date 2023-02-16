@@ -285,7 +285,7 @@ if os.path.isdir(subdir):
                         upscaled_col_size=upscaled_row_size
                         pixels_to_crop = int(round(int(size)*float(overlap_pct)/200))
                 else:
-                        max_val = max(rows,columns)
+                        max_val = max(int(rows), int(columns))
                         upscaled_row_size=int(size)*max_val*rounded_scale_factor          
                         if tilesize * tileperside > upscaled_row_size:
                                 upscaled_row_size = tilesize * tileperside
