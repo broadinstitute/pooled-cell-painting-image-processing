@@ -268,7 +268,7 @@ if os.path.isdir(subdir):
                 scale_factor=float(scalingstring)
                 rounded_scale_factor=int(round(scale_factor)) 
 
-                if quarter_if_round:
+                if quarter_if_round.lower() == "true":
                         # xoffset_tiles and yoffset_tiles can be used if you need to adjust the "where to draw the line between quarters"
                         # by a whole tile. You may want to add more padding if you do this
                         top_rows = str((int(rows)/2)+int(yoffset_tiles))
