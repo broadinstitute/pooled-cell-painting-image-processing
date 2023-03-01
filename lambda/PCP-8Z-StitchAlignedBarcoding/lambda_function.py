@@ -48,8 +48,6 @@ def lambda_handler(event, context):
     batch = "nameofthebatch"
     prefix = "projects/2018_11_20_Periscope_X/workspace/"
 
-    print(plate, batch, image_prefix, prefix)
-
     # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
     print(f"Downloading metadata from {metadata_on_bucket_name}")
@@ -95,7 +93,7 @@ def lambda_handler(event, context):
 
     # Start a cluster
     run_DCP.run_cluster(
-        bucket_name, prefix, batch, len(plate_and_well_list, config_dict)
+        bucket_name, prefix, batch, len(plate_and_well_list), config_dict
     )
 
     # Run the monitor
