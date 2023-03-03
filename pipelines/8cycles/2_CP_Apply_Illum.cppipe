@@ -17,23 +17,23 @@ LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_win
     Rescale intensities?:Yes
 
 CorrectIlluminationApply:[module_num:2|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:Protein
+    Select the input image:OrigProtein
     Name the output image:CorrProtein
     Select the illumination function:IllumProtein
     Select how the illumination function is applied:Divide
-    Select the input image:WGA
+    Select the input image:OrigWGA
     Name the output image:CorrWGA
     Select the illumination function:IllumWGA
     Select how the illumination function is applied:Divide
-    Select the input image:Mito
+    Select the input image:OrigMito
     Name the output image:CorrMito
     Select the illumination function:IllumMito
     Select how the illumination function is applied:Divide
-    Select the input image:ER
+    Select the input image:OrigER
     Name the output image:CorrER
     Select the illumination function:IllumER
     Select how the illumination function is applied:Divide
-    Select the input image:DNA
+    Select the input image:OrigDNA
     Name the output image:CorrDNA
     Select the illumination function:IllumDNA
     Select how the illumination function is applied:Divide
@@ -44,7 +44,7 @@ SaveImages:[module_num:3|svn_version:'Unknown'|variable_revision_number:15|show_
     Select the type of image to save:Image
     Select the image to save:CorrDNA
     Select method for constructing file names:Single name
-    Select image name for file prefix:DNA
+    Select image name for file prefix:OrigDNA
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_CorrDNA
     Number of digits:4
     Append a suffix to the image file name?:Yes
@@ -63,7 +63,7 @@ SaveImages:[module_num:4|svn_version:'Unknown'|variable_revision_number:15|show_
     Select the type of image to save:Image
     Select the image to save:CorrER
     Select method for constructing file names:Single name
-    Select image name for file prefix:DNA
+    Select image name for file prefix:OrigDNA
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_CorrER
     Number of digits:4
     Append a suffix to the image file name?:Yes
@@ -82,7 +82,7 @@ SaveImages:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_
     Select the type of image to save:Image
     Select the image to save:CorrMito
     Select method for constructing file names:Single name
-    Select image name for file prefix:DNA
+    Select image name for file prefix:OrigDNA
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_CorrMito
     Number of digits:4
     Append a suffix to the image file name?:Yes
@@ -101,7 +101,7 @@ SaveImages:[module_num:6|svn_version:'Unknown'|variable_revision_number:15|show_
     Select the type of image to save:Image
     Select the image to save:CorrProtein
     Select method for constructing file names:Single name
-    Select image name for file prefix:DNA
+    Select image name for file prefix:OrigDNA
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_CorrProtein
     Number of digits:4
     Append a suffix to the image file name?:Yes
@@ -120,7 +120,7 @@ SaveImages:[module_num:7|svn_version:'Unknown'|variable_revision_number:15|show_
     Select the type of image to save:Image
     Select the image to save:CorrWGA
     Select method for constructing file names:Single name
-    Select image name for file prefix:DNA
+    Select image name for file prefix:OrigDNA
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_CorrWGA
     Number of digits:4
     Append a suffix to the image file name?:Yes
