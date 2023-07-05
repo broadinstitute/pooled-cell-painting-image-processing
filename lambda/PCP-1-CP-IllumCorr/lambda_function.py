@@ -81,6 +81,9 @@ def lambda_handler(event, context):
         image_list, filter_in=parse_name_filter, filter_out="copy"
     )
     metadata["painting_file_data"] = image_dict
+    if len(image_dict) < 1:
+        print ("Didn't find images. Confirm your file structure in S3 is correct.")
+        return
 
     # Get the final list of channels in this experiment
     Channelrounds = list(Channeldict.keys())
