@@ -71,6 +71,9 @@ def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1
             cycle_list = list(platedict[eachwell].keys())
             for cycle in cycle_list:
                 match = re.search("[-_]c[_-]{0,1}[0-9]{1,2}", cycle)
+                if match == None:
+                    print ("Failed to parse cycles from folder names. Check folder names or overwrite 'helpful_functions.py'")
+                    return
                 out = match.group(0)
                 cycle_num = int(out[out.index("c") + 1 :])
                 if cycle_num == 1 and one_or_many == "one":

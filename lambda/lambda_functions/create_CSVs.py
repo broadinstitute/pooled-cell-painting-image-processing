@@ -1,4 +1,4 @@
-import pandas
+import pandas as pd
 import os
 import ast
 
@@ -6,11 +6,12 @@ import ast
 def create_CSV_pipeline1(
     platename, seriesperwell, path, illum_path, platedict, one_or_many, Channeldict
 ):
+    print(f"Images files are in {path}")
+    print(f"Illum files will be made in {illum_path}")
     if one_or_many == "one":
         print("CSV creation not enabled for Channeldict for one file/well")
         return
     else:
-        columns_per_channel = ["PathName_", "FileName_", "Frame_"]
         columns = ["Metadata_Plate", "Metadata_Series", "Metadata_Site"]
         channels = []
         Channeldict = ast.literal_eval(Channeldict)
@@ -21,7 +22,7 @@ def create_CSV_pipeline1(
             templist += Channeldict[eachround].values()
             channels += list(i[0] for i in templist)
             rounddict[eachround] = list(i[0] for i in templist)
-        df = pandas.DataFrame(columns=columns)
+        df = pd.DataFrame(columns=columns)
         for chan in channels:
             listoffiles = []
             if len(Channelrounds) > 1:
@@ -31,6 +32,9 @@ def create_CSV_pipeline1(
                             listoffiles.append(platedict[well][round])
             if len(Channelrounds) == 1:
                 fullplatename = list(Channeldict.keys())[0] + "_" + platename
+                print(
+                    f"Plate Name is parsed as {fullplatename}. If this isn't correct, check your channel dictionary in metadata.json"
+                )
                 for round in rounddict.keys():
                     if chan in rounddict[round]:
                         for well in platedict.keys():
@@ -75,7 +79,7 @@ def create_CSV_pipeline1(
                         for well in platedict.keys():
                             listoffiles.append(platedict[well][round])
             if len(Channelrounds) == 1:
-                fullplatename = list(Channeldict.keys())[0] + "_" + platename
+                fullplatename = list(Channeldict.keys())[0] + "_CP" + platename
                 for round in rounddict.keys():
                     if chan in rounddict[round]:
                         for well in platedict.keys():
@@ -102,7 +106,7 @@ def create_CSV_pipeline3(
     columns_per_channel = ["PathName_", "FileName_"]
     channels = ["DNA", segmentation_channel]
     columns += [col + chan for col in columns_per_channel for chan in channels]
-    df = pandas.DataFrame(columns=columns)
+    df = pd.DataFrame(columns=columns)
     sitelist = list(range(0, seriesperwell, int(range_skip)))
     sites_per_well = len(sitelist)
     total_file_count = sites_per_well * len(well_list)
@@ -128,15 +132,7 @@ def create_CSV_pipeline3(
     for chan in channels:
         df["PathName_" + chan] = path_list
         df["FileName_" + chan] = [
-            "Plate_"
-            + platename
-            + "_Well_"
-            + well
-            + "_Site_"
-            + str(site)
-            + "_Corr"
-            + chan
-            + ".tiff"
+            f"Plate_{platename}_Well_{well}_Site_{str(site)}_Corr{chan}.tiff"
             for well in parsed_well_list
             for site in sitelist
         ]
@@ -160,7 +156,7 @@ def create_CSV_pipeline5(
     if one_or_many == "one" and fast_or_slow == "fast":
         columns_per_channel = ["PathName_", "FileName_", "Series_", "Frame_"]
         columns += [col + chan for col in columns_per_channel for chan in channels]
-        df = pandas.DataFrame(columns=columns)
+        df = pd.DataFrame(columns=columns)
         well_list = platedict[1]
         total_file_count = seriesperwell * len(well_list) * expected_cycles
         df["Metadata_Plate"] = [platename] * total_file_count
@@ -212,7 +208,7 @@ def create_CSV_pipeline5(
     elif one_or_many == "many" and fast_or_slow == "slow":
         columns_per_channel = ["PathName_", "FileName_", "Frame_"]
         columns += [col + chan for col in columns_per_channel for chan in channels]
-        df = pandas.DataFrame(columns=columns)
+        df = pd.DataFrame(columns=columns)
         well_list = platedict[1]
         total_file_count = seriesperwell * len(well_list) * expected_cycles
         df["Metadata_Plate"] = [platename] * total_file_count
@@ -273,7 +269,7 @@ def create_CSV_pipeline6(
             for oi in or_il
             for channel in channels
         ]
-        df = pandas.DataFrame(columns=columns)
+        df = pd.DataFrame(columns=columns)
         well_list = list(platedict["1"].keys())
         total_file_count = seriesperwell * len(well_list)
         df["Metadata_Plate"] = [platename] * total_file_count
@@ -336,9 +332,9 @@ def create_CSV_pipeline6(
                     "Frame_" + this_cycle + "OrigT"
                 ] = df["Frame_" + this_cycle + "OrigA"] = df[
                     "Frame_" + this_cycle + "OrigC"
-                ] = (
-                    [0] * total_file_count
-                )
+                ] = [
+                    0
+                ] * total_file_count
     elif one_or_many == "many" and fast_or_slow == "slow":
         columns = [
             "Metadata_Plate",
@@ -357,7 +353,7 @@ def create_CSV_pipeline6(
             for oi in or_il
             for channel in channels
         ]
-        df = pandas.DataFrame(columns=columns)
+        df = pd.DataFrame(columns=columns)
         well_list = list(platedict["1"].keys())
         total_file_count = seriesperwell * len(well_list)
         df["Metadata_Plate"] = [platename] * total_file_count
@@ -382,21 +378,21 @@ def create_CSV_pipeline6(
                 ] * seriesperwell
                 file_list += platedict[str(cycle)][eachwell][1]
             for chan in channels:
-                df["PathName_" + this_cycle + "Orig" + chan] = path_list
-                df["Frame_" + this_cycle + "Illum" + chan] = [0] * total_file_count
-                df["PathName_" + this_cycle + "Illum" + chan] = [
+                df[f"PathName_{this_cycle}Orig{chan}"] = path_list
+                df[f"Frame_{this_cycle}Illum{chan}"] = [0] * total_file_count
+                df[f"PathName_{this_cycle}Illum{chan}"] = [
                     illum_path
                 ] * total_file_count
-                df["FileName_" + this_cycle + "Illum" + chan] = [
-                    platename + "_Cycle" + str(cycle) + "_Illum" + chan + ".npy"
+                df[f"FileName_{this_cycle}Illum{chan}"] = [
+                    f"{platename}_Cycle{str(cycle)}_Illum{chan}.npy"
                 ] * total_file_count  # this name doesn't have digit padding
-                df["FileName_" + this_cycle + "Orig" + chan] = file_list
-            df["Frame_" + this_cycle + "OrigDNA"] = [0] * total_file_count
-            df["Frame_" + this_cycle + "OrigG"] = [1] * total_file_count
-            df["Frame_" + this_cycle + "OrigT"] = [2] * total_file_count
-            df["Frame_" + this_cycle + "OrigA"] = [3] * total_file_count
-            df["Frame_" + this_cycle + "OrigC"] = [4] * total_file_count
-        file_out_name = "/tmp/" + str(platename) + ".csv"
+                df[f"FileName_{this_cycle}Orig{chan}"] = file_list
+            df[f"Frame_{this_cycle}OrigDNA"] = [0] * total_file_count
+            df[f"Frame_{this_cycle}OrigG"] = [1] * total_file_count
+            df[f"Frame_{this_cycle}OrigT"] = [2] * total_file_count
+            df[f"Frame_{this_cycle}OrigA"] = [3] * total_file_count
+            df[f"Frame_{this_cycle}OrigC"] = [4] * total_file_count
+        file_out_name = f"/tmp/{str(platename)}.csv"
         df.to_csv(file_out_name, index=False)
         return file_out_name
 
@@ -419,7 +415,7 @@ def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_l
         for channel in channels
     ]
     columns += ["PathName_Cycle01_DAPI", "FileName_Cycle01_DAPI"]
-    df = pandas.DataFrame(columns=columns)
+    df = pd.DataFrame(columns=columns)
     total_file_count = seriesperwell * len(well_list)
     df["Metadata_Plate"] = [platename] * total_file_count
     df["Metadata_Site"] = list(range(seriesperwell)) * len(well_list)
@@ -449,28 +445,14 @@ def create_CSV_pipeline7(platename, seriesperwell, expected_cycles, path, well_l
         for chan in channels:
             df["PathName" + this_cycle + chan] = pathlist
             df["FileName" + this_cycle + chan] = [
-                "Plate_"
-                + platename
-                + "_Well_"
-                + well
-                + "_Site_"
-                + str(site)
-                + this_cycle
-                + chan
-                + ".tiff"
+                f"Plate_{platename}_Well_{well}_Site_{str(site)}{this_cycle}{chan}.tiff"
                 for well in parsed_well_list
                 for site in range(seriesperwell)
             ]  # this name doesn't have digit padding
         if cycle == 1:
             df["PathName_Cycle01_DAPI"] = pathlist
             df["FileName_Cycle01_DAPI"] = [
-                "Plate_"
-                + platename
-                + "_Well_"
-                + well
-                + "_Site_"
-                + str(site)
-                + "_Cycle01_DAPI.tiff"
+                f"Plate_{platename}_Well_{well}_Site_{str(site)}_Cycle01_DAPI.tiff"
                 for well in parsed_well_list
                 for site in range(seriesperwell)
             ]
@@ -488,7 +470,7 @@ def create_CSV_pipeline8Y(platename, numsites, path, well_list):
     ]
     columns += ["PathName_Cycle01_DAPI", "FileName_Cycle01_DAPI"]
     columns += ["PathName_CorrDNA", "FileName_CorrDNA"]
-    df = pandas.DataFrame(columns=columns)
+    df = pd.DataFrame(columns=columns)
     total_file_count = numsites * len(well_list)
     df["Metadata_Plate"] = [platename] * total_file_count
     df["Metadata_Site"] = list(range(1, numsites + 1)) * len(
@@ -558,7 +540,7 @@ def create_CSV_pipeline9(platename, numsites, expected_cycles, path, well_list):
     columns += [
         prefix + suffix for prefix in columns_per_channel for suffix in cp_columns
     ]
-    df = pandas.DataFrame(columns=columns)
+    df = pd.DataFrame(columns=columns)
     total_file_count = numsites * len(well_list)
     df["Metadata_Plate"] = [platename] * total_file_count
     df["Metadata_Site"] = list(range(1, numsites + 1)) * len(
@@ -598,9 +580,9 @@ def create_CSV_pipeline9(platename, numsites, expected_cycles, path, well_list):
         pathcycle = "/Cycle%02d_" % cycle
         for chan in channels:
             pathnamelist = [path + pathcycle + chan for path in pathlist]
-            df["PathName_" + this_cycle + "_" + chan] = pathnamelist
-            df["FileName_" + this_cycle + "_" + chan] = [
-                this_cycle + "_" + chan + "_Site_" + str(site) + ".tiff"
+            df[f"PathName_{this_cycle}_{chan}"] = pathnamelist
+            df[f"FileName_{this_cycle}_{chan}"] = [
+                f"{this_cycle}_{chan}_Site_{str(site)}.tiff"
                 for well in parsed_well_list
                 for site in range(1, numsites + 1)
             ]  # this name doesn't have digit padding
@@ -608,10 +590,10 @@ def create_CSV_pipeline9(platename, numsites, expected_cycles, path, well_list):
             pathnamelist = [path + "/Cycle01_DAPI" for path in pathlist]
             df["PathName_Cycle01_DAPI"] = pathnamelist
             df["FileName_Cycle01_DAPI"] = [
-                "Cycle01_DAPI_Site_" + str(site) + ".tiff"
+                f"Cycle01_DAPI_Site_{str(site)}.tiff"
                 for well in parsed_well_list
                 for site in range(1, numsites + 1)
             ]
-    file_out_name = "/tmp/" + str(platename) + ".csv"
+    file_out_name = f"/tmp/{str(platename)}.csv"
     df.to_csv(file_out_name, index=False)
     return file_out_name
