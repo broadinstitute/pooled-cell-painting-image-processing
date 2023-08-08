@@ -17,6 +17,7 @@
 #@String localtemp
 #@String downloadfilter
 #@String round_or_square
+#@String quarter_if_round
 #@String final_tile_size
 #@String xoffset_tiles
 #@String yoffset_tiles
@@ -169,7 +170,7 @@ if os.path.isdir(subdir):
                         if compress.lower()!='true':
                                 savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                         IJ.run("Close All")
-                        for eachpresuf in presuflist:
+                        for eachpresuf in presuflist: # for each channel
                                 thisprefix, thissuffix=eachpresuf
                                 thissuffixnicename = thissuffix.split('.')[0]
                                 if thissuffixnicename[0]=='_':
@@ -190,16 +191,19 @@ if os.path.isdir(subdir):
                                 im=IJ.getImage()
                                 width = str(int(round(im.width*float(scalingstring))))
                                 height = str(int(round(im.height*float(scalingstring))))
+                                # scale the barcoding and cell painting images to match each other
                                 print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                                 IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
                                 time.sleep(15)
                                 im2=IJ.getImage()
+                                #padding to ensure tiles are all the same size (for CellProfiler later on)
                                 print("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
                                 IJ.run("Canvas Size...", "width="+str(upscaledsize)+" height="+str(upscaledsize)+" position=Top-Left zero")
                                 time.sleep(15)
                                 im3=IJ.getImage()
                                 savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 im=IJ.getImage()
+                                #scaling to make a downsampled image for QC
                                 print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
                                 im_10=IJ.getImage()
@@ -246,6 +250,12 @@ if os.path.isdir(subdir):
                         18, 18, 20, 20, 20,
                         20, 20, 20, 18, 18,
                         16, 16, 14, 10, 6]
+                elif imperwell == '293':
+                        row_widths = [7, 11, 13, 15, 17, 17,
+                        19, 19, 19, 19, 19, 19, 19, 17, 17,
+                        15, 13, 11, 7]
+                elif imperwell == '88':
+                        row_widths = [6, 8, 10, 10, 10, 10, 10, 10, 8, 6]
                 elif imperwell == '256':
                         row_widths = [6,10,12,14,16,16,18,18,18,18,18,18,16,16,14,12,10,6]
                 elif imperwell == '52':
@@ -257,24 +267,33 @@ if os.path.isdir(subdir):
                 rows = str(len(row_widths))
                 columns = str(max(row_widths))
 
-                # xoffset_tiles and yoffset_tiles can be used if you need to adjust the "where to draw the line between quarters"
-                # by a whole tile. You may want to add more padding if you do this
-                top_rows = str((int(rows)/2)+int(yoffset_tiles))
-                left_columns = str((int(columns)/2)+int(xoffset_tiles))
-                bot_rows = str(int(rows)-int(top_rows))
-                right_columns = str(int(columns)-int(left_columns))
+                tileperside = int(tileperside)
+                tilesize=int(final_tile_size)   
                 scale_factor=float(scalingstring)
-                rounded_scale_factor=int(round(scale_factor))
-                #For upscaled row and column size, we're always going to use the biggest number, we'd rather pad than miss stuff
-                #Because we can't assure same final tile size now either, now we need to specify it, ugh, and make sure the padding is big enough
-                max_val = max(int(top_rows),int(bot_rows),int(left_columns),int(right_columns))
-                upscaled_row_size=int(size)*max_val*rounded_scale_factor
-                tiles_per_quarter = int(tileperside)/2
-                tilesize=int(final_tile_size)
-                if tilesize * tiles_per_quarter > upscaled_row_size:
-                        upscaled_row_size = tilesize * tiles_per_quarter
-                upscaled_col_size=upscaled_row_size
-                pixels_to_crop = int(round(int(size)*float(overlap_pct)/200))
+                rounded_scale_factor=int(round(scale_factor)) 
+
+                if quarter_if_round.lower() == "true":
+                        # xoffset_tiles and yoffset_tiles can be used if you need to adjust the "where to draw the line between quarters"
+                        # by a whole tile. You may want to add more padding if you do this
+                        top_rows = str((int(rows)/2)+int(yoffset_tiles))
+                        left_columns = str((int(columns)/2)+int(xoffset_tiles))
+                        bot_rows = str(int(rows)-int(top_rows))
+                        right_columns = str(int(columns)-int(left_columns))
+                        #For upscaled row and column size, we're always going to use the biggest number, we'd rather pad than miss stuff
+                        #Because we can't assure same final tile size now either, now we need to specify it, ugh, and make sure the padding is big enough
+                        max_val = max(int(top_rows),int(bot_rows),int(left_columns),int(right_columns))
+                        upscaled_row_size=int(size)*max_val*rounded_scale_factor
+                        tiles_per_quarter = int(tileperside)/2            
+                        if tilesize * tiles_per_quarter > upscaled_row_size:
+                                upscaled_row_size = tilesize * tiles_per_quarter
+                        upscaled_col_size=upscaled_row_size
+                        pixels_to_crop = int(round(int(size)*float(overlap_pct)/200))
+                else:
+                        max_val = max(int(rows), int(columns))
+                        upscaled_row_size=int(size)*max_val*rounded_scale_factor          
+                        if tilesize * tileperside > upscaled_row_size:
+                                upscaled_row_size = tilesize * tileperside
+                        upscaled_col_size=upscaled_row_size
 
                 pos_dict = {}
                 count = 0
@@ -304,7 +323,7 @@ if os.path.isdir(subdir):
                                                         IJ.open(os.path.join(subdir,in_name))
                                                 else:
                                                         IJ.newImage("Untitled", "16-bit noise",int(size),int(size), 1)
-                                                        IJ.run("Divide...", "value=300") #get the noise value below the real camera noise level
+                                                        IJ.run("Divide...", "value=100") #get the noise value below the real camera noise level
                                                         emptylist.append(out_name)
                                                 im = IJ.getImage()
                                                 IJ.saveAs(im,'tiff',os.path.join(subdir, out_name))
@@ -318,295 +337,367 @@ if os.path.isdir(subdir):
                         imagelist = os.listdir(subdir)
                         print(len(imagelist), 'files in subdir')
                         print(imagelist[:10])
-                        #top left quarter
-                        print('Running top left')
-                        #Change per quarter
-                        standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(left_columns)+" grid_size_y="+top_rows+" tile_overlap="+overlap_pct+" first_file_index_x=0 first_file_index_y=0 directory="+subdir+" file_names=",
-                        " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
-                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
-                        filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
-                        #Change per quarter
-                        fileoutname='StitchedTopLeft'+filename.replace("{xx}","").replace("{yy}","")
-                        instructions = standard_grid_instructions[0] + filename + standard_grid_instructions[1]
-                        print(instructions)
-                        IJ.run("Grid/Collection stitching", instructions)
-                        im=IJ.getImage()
-                        #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
-                        if compress.lower()!='true':
-                                savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
-                        IJ.run("Close All")
-                        for eachpresuf in presuflist:
-                                thisprefix, thissuffix=eachpresuf
-                                thissuffixnicename = thissuffix.split('.')[0]
-                                if thissuffixnicename[0]=='_':
-                                        thissuffixnicename=thissuffixnicename[1:]
-                                tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
-                                if not os.path.exists(tile_subdir_persuf):
-                                        os.mkdir(tile_subdir_persuf)
-                                filename=thisprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+thissuffix
+
+                        if quarter_if_round.lower() == "false":
+                                #all quarters
+                                print('Stitching whole well')
+                                standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(columns)+" grid_size_y="+str(rows)+" tile_overlap="+overlap_pct+" first_file_index_x=0 first_file_index_y=0 directory="+subdir+" file_names=",
+                                " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                                copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                                filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
+                                fileoutname='Stitched'+filename.replace("{i}","")
+                                instructions = standard_grid_instructions[0] + filename + standard_grid_instructions[1]
+                                print(instructions)
+                                IJ.run("Grid/Collection stitching", instructions)
+                                im=IJ.getImage()
+                                #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
+                                #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                                if compress.lower()!='true':
+                                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                print(os.path.join(out_subdir,fileoutname))
+                                time.sleep(300)
+                                IJ.run("Close All")
+                                # cropping
+                                for eachpresuf in presuflist: # for each channel
+                                        thisprefix, thissuffix=eachpresuf
+                                        thissuffixnicename = thissuffix.split('.')[0]
+                                        if thissuffixnicename[0]=='_':
+                                                thissuffixnicename=thissuffixnicename[1:]
+                                        tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
+                                        if not os.path.exists(tile_subdir_persuf):
+                                                os.mkdir(tile_subdir_persuf)
+                                        filename=thisprefix+'_Well_'+eachwell+'_Site_{i}_'+thissuffix
+                                        fileoutname='Stitched'+filename.replace("{i}","")
+                                        with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
+                                                with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
+                                                        for line in infile:
+                                                                line=line.replace(permprefix,thisprefix)
+                                                                line=line.replace(permsuffix,thissuffix)
+                                                                outfile.write(line)
+
+                                        IJ.run("Grid/Collection stitching", copy_grid_instructions)
+                                        im=IJ.getImage()
+                                        width = str(int(round(im.width*float(scalingstring))))
+                                        height = str(int(round(im.height*float(scalingstring))))
+                                        # scale the barcoding and cell painting images to match each other
+                                        print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        time.sleep(15)
+                                        im2=IJ.getImage()
+                                        #padding to ensure tiles are all the same size (for CellProfiler later on)
+                                        print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
+                                        IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
+                                        time.sleep(15)
+                                        im3=IJ.getImage()
+                                        savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                        im=IJ.getImage()
+                                        #scaling to make a downsampled image for QC
+                                        print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.getImage()
+                                        savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                        IJ.run("Close All")
+                                        im=IJ.open(os.path.join(out_subdir,fileoutname))
+                                        im = IJ.getImage()
+                                        for eachxtile in range(tileperside):
+                                                for eachytile in range(tileperside):
+                                                        each_tile_num = eachxtile*tileperside + eachytile + 1
+                                                        IJ.makeRectangle(eachxtile*tilesize, eachytile*tilesize,tilesize,tilesize)
+                                                        im_tile=im.crop()
+                                                        savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
+                                        IJ.run("Close All")
+
+
+                        else:
+                                #top left quarter
+                                print('Running top left')
+                                #Change per quarter
+                                standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(left_columns)+" grid_size_y="+top_rows+" tile_overlap="+overlap_pct+" first_file_index_x=0 first_file_index_y=0 directory="+subdir+" file_names=",
+                                " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                                copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                                filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
                                 #Change per quarter
                                 fileoutname='StitchedTopLeft'+filename.replace("{xx}","").replace("{yy}","")
-                                with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
-                                        with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
-                                                for line in infile:
-                                                        if not any([empty in line for empty in emptylist]):
-                                                                line=line.replace(permprefix,thisprefix)
-                                                                line=line.replace(permsuffix,thissuffix)
-                                                                outfile.write(line)
-
-                                IJ.run("Grid/Collection stitching", copy_grid_instructions)
-                                im0=IJ.getImage()
-                                #chop off the bottom and right
-                                #Change per quarter
-                                IJ.makeRectangle(0,0,im0.width-pixels_to_crop,im0.height-pixels_to_crop)
-                                im1=im0.crop()
-                                width = str(int(round(im1.width*float(scalingstring))))
-                                height = str(int(round(im1.height*float(scalingstring))))
-                                print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
-                                IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
-                                time.sleep(15)
-                                im2=IJ.getImage()
-                                #Chnage per quarter
-                                print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Right zero")
-                                IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Right zero")
-                                time.sleep(15)
-                                im3=IJ.getImage()
-                                savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                instructions = standard_grid_instructions[0] + filename + standard_grid_instructions[1]
+                                print(instructions)
+                                IJ.run("Grid/Collection stitching", instructions)
                                 im=IJ.getImage()
-                                print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
-                                im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
-                                im_10=IJ.getImage()
-                                savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
+                                #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                                if compress.lower()!='true':
+                                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 IJ.run("Close All")
-                                im=IJ.open(os.path.join(out_subdir,fileoutname))
-                                im = IJ.getImage()
-                                tile_offset = upscaled_row_size - (tilesize * tiles_per_quarter)
-                                for eachxtile in range(tiles_per_quarter):
-                                        for eachytile in range(tiles_per_quarter):
-                                                #Change per quarter
-                                                each_tile_num = eachxtile*int(tileperside) + eachytile + 1
-                                                #Change per quarter
-                                                IJ.makeRectangle((eachxtile*tilesize)+tile_offset, (eachytile*tilesize)+tile_offset,tilesize,tilesize)
-                                                im_tile=im.crop()
-                                                savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
-                                IJ.run("Close All")
+                                for eachpresuf in presuflist:
+                                        thisprefix, thissuffix=eachpresuf
+                                        thissuffixnicename = thissuffix.split('.')[0]
+                                        if thissuffixnicename[0]=='_':
+                                                thissuffixnicename=thissuffixnicename[1:]
+                                        tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
+                                        if not os.path.exists(tile_subdir_persuf):
+                                                os.mkdir(tile_subdir_persuf)
+                                        filename=thisprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+thissuffix
+                                        #Change per quarter
+                                        fileoutname='StitchedTopLeft'+filename.replace("{xx}","").replace("{yy}","")
+                                        with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
+                                                with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
+                                                        for line in infile:
+                                                                if not any([empty in line for empty in emptylist]):
+                                                                        line=line.replace(permprefix,thisprefix)
+                                                                        line=line.replace(permsuffix,thissuffix)
+                                                                        outfile.write(line)
 
-                        #top right quarter
-                        print('Running top right')
-                        #Change per quarter
-                        standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(right_columns)+" grid_size_y="+top_rows+" tile_overlap="+overlap_pct+" first_file_index_x="+str(left_columns)+" first_file_index_y=0 directory="+subdir+" file_names=",
-                        " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
-                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
-                        filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
-                        #Change per quarter
-                        fileoutname='StitchedTopRight'+filename.replace("{xx}","").replace("{yy}","")
-                        IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
-                        im=IJ.getImage()
-                        #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
-                        if compress.lower()!='true':
-                                savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
-                        IJ.run("Close All")
-                        for eachpresuf in presuflist:
-                                thisprefix, thissuffix=eachpresuf
-                                thissuffixnicename = thissuffix.split('.')[0]
-                                if thissuffixnicename[0]=='_':
-                                        thissuffixnicename=thissuffixnicename[1:]
-                                tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
-                                if not os.path.exists(tile_subdir_persuf):
-                                        os.mkdir(tile_subdir_persuf)
-                                filename=thisprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+thissuffix
+                                        IJ.run("Grid/Collection stitching", copy_grid_instructions)
+                                        im0=IJ.getImage()
+                                        #chop off the bottom and right
+                                        #Change per quarter
+                                        IJ.makeRectangle(0,0,im0.width-pixels_to_crop,im0.height-pixels_to_crop)
+                                        im1=im0.crop()
+                                        width = str(int(round(im1.width*float(scalingstring))))
+                                        height = str(int(round(im1.height*float(scalingstring))))
+                                        print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        time.sleep(15)
+                                        im2=IJ.getImage()
+                                        #Chnage per quarter
+                                        print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Right zero")
+                                        IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Right zero")
+                                        time.sleep(15)
+                                        im3=IJ.getImage()
+                                        savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                        im=IJ.getImage()
+                                        print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.getImage()
+                                        savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                        IJ.run("Close All")
+                                        im=IJ.open(os.path.join(out_subdir,fileoutname))
+                                        im = IJ.getImage()
+                                        tile_offset = upscaled_row_size - (tilesize * tiles_per_quarter)
+                                        for eachxtile in range(tiles_per_quarter):
+                                                for eachytile in range(tiles_per_quarter):
+                                                        #Change per quarter
+                                                        each_tile_num = eachxtile*int(tileperside) + eachytile + 1
+                                                        #Change per quarter
+                                                        IJ.makeRectangle((eachxtile*tilesize)+tile_offset, (eachytile*tilesize)+tile_offset,tilesize,tilesize)
+                                                        im_tile=im.crop()
+                                                        savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
+                                        IJ.run("Close All")
+
+                                #top right quarter
+                                print('Running top right')
+                                #Change per quarter
+                                standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(right_columns)+" grid_size_y="+top_rows+" tile_overlap="+overlap_pct+" first_file_index_x="+str(left_columns)+" first_file_index_y=0 directory="+subdir+" file_names=",
+                                " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                                copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                                filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
                                 #Change per quarter
                                 fileoutname='StitchedTopRight'+filename.replace("{xx}","").replace("{yy}","")
-                                with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
-                                        with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
-                                                for line in infile:
-                                                        if not any([empty in line for empty in emptylist]):
-                                                                line=line.replace(permprefix,thisprefix)
-                                                                line=line.replace(permsuffix,thissuffix)
-                                                                outfile.write(line)
-
-                                IJ.run("Grid/Collection stitching", copy_grid_instructions)
-                                im0=IJ.getImage()
-                                #chop off the bottom and left
-                                #Change per quarter
-                                IJ.makeRectangle(pixels_to_crop,0,im0.width-pixels_to_crop,im0.height-pixels_to_crop)
-                                im1=im0.crop()
-                                width = str(int(round(im1.width*float(scalingstring))))
-                                height = str(int(round(im1.height*float(scalingstring))))
-                                print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
-                                IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
-                                time.sleep(15)
-                                im2=IJ.getImage()
-                                #Chnage per quarter
-                                print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Left zero")
-                                IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Left zero")
-                                time.sleep(15)
-                                im3=IJ.getImage()
-                                savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                                 im=IJ.getImage()
-                                print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
-                                im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
-                                im_10=IJ.getImage()
-                                savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
+                                #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                                if compress.lower()!='true':
+                                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 IJ.run("Close All")
-                                im=IJ.open(os.path.join(out_subdir,fileoutname))
-                                im = IJ.getImage()
-                                tile_offset = upscaled_row_size - (tilesize * tiles_per_quarter)
-                                for eachxtile in range(tiles_per_quarter):
-                                        for eachytile in range(tiles_per_quarter):
-                                                #Change per quarter
-                                                each_tile_num = int(tiles_per_quarter)*int(tileperside)+ eachxtile*int(tileperside) + eachytile + 1
-                                                #Change per quarter
-                                                IJ.makeRectangle((eachxtile*tilesize), (eachytile*tilesize)+tile_offset,tilesize,tilesize)
-                                                im_tile=im.crop()
-                                                savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
-                                IJ.run("Close All")
+                                for eachpresuf in presuflist:
+                                        thisprefix, thissuffix=eachpresuf
+                                        thissuffixnicename = thissuffix.split('.')[0]
+                                        if thissuffixnicename[0]=='_':
+                                                thissuffixnicename=thissuffixnicename[1:]
+                                        tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
+                                        if not os.path.exists(tile_subdir_persuf):
+                                                os.mkdir(tile_subdir_persuf)
+                                        filename=thisprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+thissuffix
+                                        #Change per quarter
+                                        fileoutname='StitchedTopRight'+filename.replace("{xx}","").replace("{yy}","")
+                                        with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
+                                                with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
+                                                        for line in infile:
+                                                                if not any([empty in line for empty in emptylist]):
+                                                                        line=line.replace(permprefix,thisprefix)
+                                                                        line=line.replace(permsuffix,thissuffix)
+                                                                        outfile.write(line)
 
-                        #bottom left quarter
-                        print('Running bottom left')
-                        #Change per quarter
-                        standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(left_columns)+" grid_size_y="+bot_rows+" tile_overlap="+overlap_pct+" first_file_index_x=0 first_file_index_y="+top_rows+" directory="+subdir+" file_names=",
-                        " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
-                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
-                        filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
-                        #Change per quarter
-                        fileoutname='StitchedBottomLeft'+filename.replace("{xx}","").replace("{yy}","")
-                        IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
-                        im=IJ.getImage()
-                        #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
-                        if compress.lower()!='true':
-                                savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
-                        IJ.run("Close All")
-                        for eachpresuf in presuflist:
-                                thisprefix, thissuffix=eachpresuf
-                                thissuffixnicename = thissuffix.split('.')[0]
-                                if thissuffixnicename[0]=='_':
-                                        thissuffixnicename=thissuffixnicename[1:]
-                                tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
-                                if not os.path.exists(tile_subdir_persuf):
-                                        os.mkdir(tile_subdir_persuf)
-                                filename=thisprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+thissuffix
+                                        IJ.run("Grid/Collection stitching", copy_grid_instructions)
+                                        im0=IJ.getImage()
+                                        #chop off the bottom and left
+                                        #Change per quarter
+                                        IJ.makeRectangle(pixels_to_crop,0,im0.width-pixels_to_crop,im0.height-pixels_to_crop)
+                                        im1=im0.crop()
+                                        width = str(int(round(im1.width*float(scalingstring))))
+                                        height = str(int(round(im1.height*float(scalingstring))))
+                                        print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        time.sleep(15)
+                                        im2=IJ.getImage()
+                                        #Chnage per quarter
+                                        print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Left zero")
+                                        IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Bottom-Left zero")
+                                        time.sleep(15)
+                                        im3=IJ.getImage()
+                                        savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                        im=IJ.getImage()
+                                        print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.getImage()
+                                        savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                        IJ.run("Close All")
+                                        im=IJ.open(os.path.join(out_subdir,fileoutname))
+                                        im = IJ.getImage()
+                                        tile_offset = upscaled_row_size - (tilesize * tiles_per_quarter)
+                                        for eachxtile in range(tiles_per_quarter):
+                                                for eachytile in range(tiles_per_quarter):
+                                                        #Change per quarter
+                                                        each_tile_num = int(tiles_per_quarter)*int(tileperside)+ eachxtile*int(tileperside) + eachytile + 1
+                                                        #Change per quarter
+                                                        IJ.makeRectangle((eachxtile*tilesize), (eachytile*tilesize)+tile_offset,tilesize,tilesize)
+                                                        im_tile=im.crop()
+                                                        savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
+                                        IJ.run("Close All")
+
+                                #bottom left quarter
+                                print('Running bottom left')
+                                #Change per quarter
+                                standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(left_columns)+" grid_size_y="+bot_rows+" tile_overlap="+overlap_pct+" first_file_index_x=0 first_file_index_y="+top_rows+" directory="+subdir+" file_names=",
+                                " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                                copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                                filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
                                 #Change per quarter
                                 fileoutname='StitchedBottomLeft'+filename.replace("{xx}","").replace("{yy}","")
-                                with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
-                                        with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
-                                                for line in infile:
-                                                        if not any([empty in line for empty in emptylist]):
-                                                                line=line.replace(permprefix,thisprefix)
-                                                                line=line.replace(permsuffix,thissuffix)
-                                                                outfile.write(line)
-
-                                IJ.run("Grid/Collection stitching", copy_grid_instructions)
-                                im0=IJ.getImage()
-                                #chop off the top and right
-                                #Change per quarter
-                                IJ.makeRectangle(0,pixels_to_crop,im0.width-pixels_to_crop,im0.height-pixels_to_crop)
-                                im1=im0.crop()
-                                width = str(int(round(im1.width*float(scalingstring))))
-                                height = str(int(round(im1.height*float(scalingstring))))
-                                print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
-                                IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
-                                time.sleep(15)
-                                im2=IJ.getImage()
-                                #Chnage per quarter
-                                print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Right zero")
-                                IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Right zero")
-                                time.sleep(15)
-                                im3=IJ.getImage()
-                                savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                                 im=IJ.getImage()
-                                print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
-                                im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
-                                im_10=IJ.getImage()
-                                savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
+                                #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                                if compress.lower()!='true':
+                                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 IJ.run("Close All")
-                                im=IJ.open(os.path.join(out_subdir,fileoutname))
-                                im = IJ.getImage()
-                                tile_offset = upscaled_row_size - (tilesize * tiles_per_quarter)
-                                for eachxtile in range(tiles_per_quarter):
-                                        for eachytile in range(tiles_per_quarter):
-                                                #Change per quarter
-                                                each_tile_num = eachxtile*int(tileperside) + int(tiles_per_quarter) + eachytile + 1
-                                                #Change per quarter
-                                                IJ.makeRectangle((eachxtile*tilesize)+tile_offset, (eachytile*tilesize),tilesize,tilesize)
-                                                im_tile=im.crop()
-                                                savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
-                                IJ.run("Close All")
+                                for eachpresuf in presuflist:
+                                        thisprefix, thissuffix=eachpresuf
+                                        thissuffixnicename = thissuffix.split('.')[0]
+                                        if thissuffixnicename[0]=='_':
+                                                thissuffixnicename=thissuffixnicename[1:]
+                                        tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
+                                        if not os.path.exists(tile_subdir_persuf):
+                                                os.mkdir(tile_subdir_persuf)
+                                        filename=thisprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+thissuffix
+                                        #Change per quarter
+                                        fileoutname='StitchedBottomLeft'+filename.replace("{xx}","").replace("{yy}","")
+                                        with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
+                                                with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
+                                                        for line in infile:
+                                                                if not any([empty in line for empty in emptylist]):
+                                                                        line=line.replace(permprefix,thisprefix)
+                                                                        line=line.replace(permsuffix,thissuffix)
+                                                                        outfile.write(line)
 
-                        #bottom right quarter
-                        print('Running bottom right')
-                        #Change per quarter
-                        standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(right_columns)+" grid_size_y="+bot_rows+" tile_overlap="+overlap_pct+" first_file_index_x="+str(left_columns)+" first_file_index_y="+top_rows+" directory="+subdir+" file_names=",
-                        " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
-                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
-                        filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
-                        #Change per quarter
-                        fileoutname='StitchedBottomRight'+filename.replace("{xx}","").replace("{yy}","")
-                        IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
-                        im=IJ.getImage()
-                        #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
-                        #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
-                        if compress.lower()!='true':
-                                savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
-                        IJ.run("Close All")
-                        for eachpresuf in presuflist:
-                                thisprefix, thissuffix=eachpresuf
-                                thissuffixnicename = thissuffix.split('.')[0]
-                                if thissuffixnicename[0]=='_':
-                                        thissuffixnicename=thissuffixnicename[1:]
-                                tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
-                                if not os.path.exists(tile_subdir_persuf):
-                                        os.mkdir(tile_subdir_persuf)
-                                filename=thisprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+thissuffix
+                                        IJ.run("Grid/Collection stitching", copy_grid_instructions)
+                                        im0=IJ.getImage()
+                                        #chop off the top and right
+                                        #Change per quarter
+                                        IJ.makeRectangle(0,pixels_to_crop,im0.width-pixels_to_crop,im0.height-pixels_to_crop)
+                                        im1=im0.crop()
+                                        width = str(int(round(im1.width*float(scalingstring))))
+                                        height = str(int(round(im1.height*float(scalingstring))))
+                                        print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        time.sleep(15)
+                                        im2=IJ.getImage()
+                                        #Chnage per quarter
+                                        print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Right zero")
+                                        IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Right zero")
+                                        time.sleep(15)
+                                        im3=IJ.getImage()
+                                        savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                        im=IJ.getImage()
+                                        print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.getImage()
+                                        savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                        IJ.run("Close All")
+                                        im=IJ.open(os.path.join(out_subdir,fileoutname))
+                                        im = IJ.getImage()
+                                        tile_offset = upscaled_row_size - (tilesize * tiles_per_quarter)
+                                        for eachxtile in range(tiles_per_quarter):
+                                                for eachytile in range(tiles_per_quarter):
+                                                        #Change per quarter
+                                                        each_tile_num = eachxtile*int(tileperside) + int(tiles_per_quarter) + eachytile + 1
+                                                        #Change per quarter
+                                                        IJ.makeRectangle((eachxtile*tilesize)+tile_offset, (eachytile*tilesize),tilesize,tilesize)
+                                                        im_tile=im.crop()
+                                                        savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
+                                        IJ.run("Close All")
+
+                                #bottom right quarter
+                                print('Running bottom right')
+                                #Change per quarter
+                                standard_grid_instructions=["type=[Filename defined position] order=[Defined by filename         ] grid_size_x="+str(right_columns)+" grid_size_y="+bot_rows+" tile_overlap="+overlap_pct+" first_file_index_x="+str(left_columns)+" first_file_index_y="+top_rows+" directory="+subdir+" file_names=",
+                                " output_textfile_name=TileConfiguration.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
+                                copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration.registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                                filename=permprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+permsuffix
                                 #Change per quarter
                                 fileoutname='StitchedBottomRight'+filename.replace("{xx}","").replace("{yy}","")
-                                with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
-                                        with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
-                                                for line in infile:
-                                                        if not any([empty in line for empty in emptylist]):
-                                                                line=line.replace(permprefix,thisprefix)
-                                                                line=line.replace(permsuffix,thissuffix)
-                                                                outfile.write(line)
-
-                                IJ.run("Grid/Collection stitching", copy_grid_instructions)
-                                im0=IJ.getImage()
-                                #chop off the top and left
-                                #Change per quarter
-                                IJ.makeRectangle(pixels_to_crop,pixels_to_crop,im0.width-pixels_to_crop,im0.height-pixels_to_crop)
-                                im1=im0.crop()
-                                width = str(int(round(im1.width*float(scalingstring))))
-                                height = str(int(round(im1.height*float(scalingstring))))
-                                print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
-                                IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
-                                time.sleep(15)
-                                im2=IJ.getImage()
-                                #Chnage per quarter
-                                print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
-                                IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
-                                time.sleep(15)
-                                im3=IJ.getImage()
-                                savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                                 im=IJ.getImage()
-                                print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
-                                im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
-                                im_10=IJ.getImage()
-                                savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                #We're going to overwrite this file later, but it gives us a chance for an early checkpoint
+                                #This doesn't seem to play nicely with the compression option on, it doesn't get overwritten later and bad things happen
+                                if compress.lower()!='true':
+                                        savefile(im,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
                                 IJ.run("Close All")
-                                im=IJ.open(os.path.join(out_subdir,fileoutname))
-                                im = IJ.getImage()
-                                tile_offset = upscaled_row_size - (tilesize * tiles_per_quarter)
-                                for eachxtile in range(tiles_per_quarter):
-                                        for eachytile in range(tiles_per_quarter):
-                                                #Change per quarter
-                                                each_tile_num = int(tiles_per_quarter)*int(tileperside) +eachxtile*int(tileperside)+ int(tiles_per_quarter) + eachytile + 1
-                                                #Change per quarter
-                                                IJ.makeRectangle((eachxtile*tilesize), (eachytile*tilesize),tilesize,tilesize)
-                                                im_tile=im.crop()
-                                                savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
-                                IJ.run("Close All")
+                                for eachpresuf in presuflist:
+                                        thisprefix, thissuffix=eachpresuf
+                                        thissuffixnicename = thissuffix.split('.')[0]
+                                        if thissuffixnicename[0]=='_':
+                                                thissuffixnicename=thissuffixnicename[1:]
+                                        tile_subdir_persuf = os.path.join(tile_subdir,thissuffixnicename)
+                                        if not os.path.exists(tile_subdir_persuf):
+                                                os.mkdir(tile_subdir_persuf)
+                                        filename=thisprefix+'_Well_'+eachwell+'_x_{xx}_y_{yy}_'+thissuffix
+                                        #Change per quarter
+                                        fileoutname='StitchedBottomRight'+filename.replace("{xx}","").replace("{yy}","")
+                                        with open(os.path.join(subdir, 'TileConfiguration.registered.txt'),'r') as infile:
+                                                with open(os.path.join(subdir, 'TileConfiguration.registered_copy.txt'),'w') as outfile:
+                                                        for line in infile:
+                                                                if not any([empty in line for empty in emptylist]):
+                                                                        line=line.replace(permprefix,thisprefix)
+                                                                        line=line.replace(permsuffix,thissuffix)
+                                                                        outfile.write(line)
+
+                                        IJ.run("Grid/Collection stitching", copy_grid_instructions)
+                                        im0=IJ.getImage()
+                                        #chop off the top and left
+                                        #Change per quarter
+                                        IJ.makeRectangle(pixels_to_crop,pixels_to_crop,im0.width-pixels_to_crop,im0.height-pixels_to_crop)
+                                        im1=im0.crop()
+                                        width = str(int(round(im1.width*float(scalingstring))))
+                                        height = str(int(round(im1.height*float(scalingstring))))
+                                        print("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        IJ.run("Scale...", "x="+scalingstring+" y="+scalingstring+" width="+width+" height="+height+" interpolation=Bilinear average create")
+                                        time.sleep(15)
+                                        im2=IJ.getImage()
+                                        #Chnage per quarter
+                                        print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
+                                        IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
+                                        time.sleep(15)
+                                        im3=IJ.getImage()
+                                        savefile(im3,os.path.join(out_subdir,fileoutname),plugin,compress=compress)
+                                        im=IJ.getImage()
+                                        print("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.run("Scale...", "x=0.1 y=0.1 width="+str(im.width/10)+" height="+str(im.width/10)+" interpolation=Bilinear average create")
+                                        im_10=IJ.getImage()
+                                        savefile(im_10,os.path.join(downsample_subdir,fileoutname),plugin,compress=compress)
+                                        IJ.run("Close All")
+                                        im=IJ.open(os.path.join(out_subdir,fileoutname))
+                                        im = IJ.getImage()
+                                        tile_offset = upscaled_row_size - (tilesize * tiles_per_quarter)
+                                        for eachxtile in range(tiles_per_quarter):
+                                                for eachytile in range(tiles_per_quarter):
+                                                        #Change per quarter
+                                                        each_tile_num = int(tiles_per_quarter)*int(tileperside) +eachxtile*int(tileperside)+ int(tiles_per_quarter) + eachytile + 1
+                                                        #Change per quarter
+                                                        IJ.makeRectangle((eachxtile*tilesize), (eachytile*tilesize),tilesize,tilesize)
+                                                        im_tile=im.crop()
+                                                        savefile(im_tile,os.path.join(tile_subdir_persuf,thissuffixnicename+'_Site_'+str(each_tile_num)+'.tiff'),plugin,compress=compress)
+                                        IJ.run("Close All")
 
         else:
                 print("Must identify well as round or square")

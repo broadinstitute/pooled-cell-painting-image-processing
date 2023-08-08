@@ -177,6 +177,7 @@ def create_batch_jobs_4(
     xoffset_tiles=0,
     yoffset_tiles=0,
     compress="False",
+    quarter_if_round="True",
 ):
     step_to_stitch = "images_corrected"
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
@@ -204,6 +205,7 @@ def create_batch_jobs_4(
             "bucketname": bucket_name,
             "localtemp": "local_temp",
             "round_or_square": round_or_square,
+            "quarter_if_round": quarter_if_round,
             "final_tile_size": str(final_tile_size),
             "xoffset_tiles": str(xoffset_tiles),
             "yoffset_tiles": str(yoffset_tiles),
@@ -435,6 +437,7 @@ def create_batch_jobs_8(
     xoffset_tiles=0,
     yoffset_tiles=0,
     compress="False",
+    quarter_if_round="True",
 ):
     step_to_stitch = "images_corrected"
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
@@ -462,6 +465,7 @@ def create_batch_jobs_8(
             "bucketname": bucket_name,
             "localtemp": "local_temp",
             "round_or_square": round_or_square,
+            "quarter_if_round": quarter_if_round,
             "final_tile_size": str(final_tile_size),
             "xoffset_tiles": str(xoffset_tiles),
             "yoffset_tiles": str(yoffset_tiles),
@@ -495,6 +499,7 @@ def create_batch_jobs_8Z(
     xoffset_tiles=0,
     yoffset_tiles=0,
     compress="False",
+    quarter_if_round="True",
 ):
     step_to_stitch = "images_aligned"
     local_start_path = posixpath.join("/home/ubuntu/bucket", startpath)
@@ -522,6 +527,7 @@ def create_batch_jobs_8Z(
             "bucketname": bucket_name,
             "localtemp": "local_temp",
             "round_or_square": round_or_square,
+            "quarter_if_round": quarter_if_round,
             "final_tile_size": str(final_tile_size),
             "xoffset_tiles": str(xoffset_tiles),
             "yoffset_tiles": str(yoffset_tiles),

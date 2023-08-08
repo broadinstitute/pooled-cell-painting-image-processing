@@ -129,6 +129,7 @@ def lambda_handler(event, context):
             xoffset_tiles=metadata["painting_xoffset_tiles"],
             yoffset_tiles=metadata["painting_yoffset_tiles"],
             compress=metadata["compress"],
+            quarter_if_round=metadata["quarter_if_round"],
         )
 
         # Start a cluster
