@@ -256,6 +256,10 @@ if os.path.isdir(subdir):
                         15, 13, 11, 7]
                 elif imperwell == '88':
                         row_widths = [6, 8, 10, 10, 10, 10, 10, 10, 8, 6]
+                elif imperwell == '256':
+                        row_widths = [6,10,12,14,16,16,18,18,18,18,18,18,16,16,14,12,10,6]
+                elif imperwell == '52':
+                        row_widths = [4,6,8,8,8,8,6,4]
                 else:
                         print(imperwell, "images/well for a round well is not currently supported")
                         sys.exit()

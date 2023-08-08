@@ -1,8 +1,8 @@
 CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
-DateRevision:413
+DateRevision:424
 GitHash:
-ModuleCount:24
+ModuleCount:26
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -13,17 +13,17 @@ LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_win
     Process just a range of rows?:No
     Rows to process:1,100000
     Group images by metadata?:Yes
-    Select metadata tags for grouping:Plate,Site,Well
+    Select metadata tags for grouping:Plate,Well
     Rescale intensities?:Yes
 
-IdentifyPrimaryObjects:[module_num:2|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:2|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:['original threshold correction factor 1.2, change to 1.0']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:DNA
     Name the primary objects to be identified:ConfluentRegions
     Typical diameter of objects, in pixel units (Min,Max):50,5000
     Discard objects outside the diameter range?:Yes
     Discard objects touching the border of the image?:Yes
-    Method to distinguish clumped objects:Shape
-    Method to draw dividing lines between clumped objects:Shape
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
     Size of smoothing filter:8
     Suppress local maxima that are closer than this minimum allowed distance:8
     Speed up by using lower-resolution image to find local maxima?:Yes
@@ -32,14 +32,12 @@ IdentifyPrimaryObjects:[module_num:2|svn_version:'Unknown'|variable_revision_num
     Automatically calculate minimum allowed distance between local maxima?:No
     Handling of objects if excessive number of objects identified:Continue
     Maximum number of objects:500
-    Display accepted local maxima?:No
-    Select maxima color:Blue
     Use advanced settings?:Yes
     Threshold setting version:12
     Threshold strategy:Global
     Thresholding method:Minimum Cross-Entropy
     Threshold smoothing scale:1.3488
-    Threshold correction factor:1.2
+    Threshold correction factor:1.1
     Lower and upper bounds on threshold:0.0,1.0
     Manual threshold:0.0
     Select the measurement to threshold with:None
@@ -78,9 +76,9 @@ MaskImage:[module_num:5|svn_version:'Unknown'|variable_revision_number:3|show_wi
     Select image for mask:None
     Invert the mask?:Yes
 
-IdentifyPrimaryObjects:[module_num:6|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:6|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:MaskedDAPI
-    Name the primary objects to be identified:Nuclei
+    Name the primary objects to be identified:PreNuclei
     Typical diameter of objects, in pixel units (Min,Max):10,50
     Discard objects outside the diameter range?:Yes
     Discard objects touching the border of the image?:Yes
@@ -94,14 +92,12 @@ IdentifyPrimaryObjects:[module_num:6|svn_version:'Unknown'|variable_revision_num
     Automatically calculate minimum allowed distance between local maxima?:No
     Handling of objects if excessive number of objects identified:Continue
     Maximum number of objects:500
-    Display accepted local maxima?:No
-    Select maxima color:Blue
     Use advanced settings?:Yes
     Threshold setting version:12
     Threshold strategy:Global
     Thresholding method:Minimum Cross-Entropy
     Threshold smoothing scale:1.3488
-    Threshold correction factor:1
+    Threshold correction factor:1.0
     Lower and upper bounds on threshold:0.0,1.0
     Manual threshold:0.0
     Select the measurement to threshold with:None
@@ -145,8 +141,8 @@ Smooth:[module_num:8|svn_version:'Unknown'|variable_revision_number:2|show_windo
     Clip intensities to 0 and 1?:Yes
 
 IdentifySecondaryObjects:[module_num:9|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input objects:Nuclei
-    Name the objects to be identified:Cells
+    Select the input objects:PreNuclei
+    Name the objects to be identified:PreCells
     Select the method to identify the secondary objects:Propagation
     Select the input image:MitoPlusER_Smoothed
     Number of pixels by which to expand the primary objects:10
@@ -160,7 +156,7 @@ IdentifySecondaryObjects:[module_num:9|svn_version:'Unknown'|variable_revision_n
     Thresholding method:Otsu
     Threshold smoothing scale:0.0
     Threshold correction factor:1
-    Lower and upper bounds on threshold:0.0,1.0
+    Lower and upper bounds on threshold:0.0110612246133765,0.01555518885808156
     Manual threshold:0.0
     Select the measurement to threshold with:None
     Two-class or three-class thresholding?:Three classes
@@ -174,7 +170,35 @@ IdentifySecondaryObjects:[module_num:9|svn_version:'Unknown'|variable_revision_n
     # of deviations:2.0
     Thresholding method:Otsu
 
-RescaleIntensity:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSizeShape:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:PreCells
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:PreCells
+    Name the output objects:Cells
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:1
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:AreaShape_Area
+    Filter using a minimum measurement value?:No
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:4000
+    Select additional object to relabel:PreNuclei
+    Name the relabeled objects:Nuclei
+    Allow fuzzy feature matching?:No
+
+RescaleIntensity:[module_num:12|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:DNA
     Name the output image:RescaleDAPIPaintingForVis
     Rescaling method:Stretch each image to use the full intensity range
@@ -188,7 +212,7 @@ RescaleIntensity:[module_num:10|svn_version:'Unknown'|variable_revision_number:3
     Divisor value:1.0
     Divisor measurement:None
 
-RescaleIntensity:[module_num:11|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RescaleIntensity:[module_num:13|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Protein
     Name the output image:RescaleProteinForVis
     Rescaling method:Stretch each image to use the full intensity range
@@ -202,7 +226,7 @@ RescaleIntensity:[module_num:11|svn_version:'Unknown'|variable_revision_number:3
     Divisor value:1.0
     Divisor measurement:None
 
-RescaleIntensity:[module_num:12|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RescaleIntensity:[module_num:14|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:ER
     Name the output image:RescaleERForVis
     Rescaling method:Stretch each image to use the full intensity range
@@ -216,7 +240,7 @@ RescaleIntensity:[module_num:12|svn_version:'Unknown'|variable_revision_number:3
     Divisor value:1.0
     Divisor measurement:None
 
-RescaleIntensity:[module_num:13|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RescaleIntensity:[module_num:15|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Mito
     Name the output image:RescaleMitoForVis
     Rescaling method:Stretch each image to use the full intensity range
@@ -230,7 +254,7 @@ RescaleIntensity:[module_num:13|svn_version:'Unknown'|variable_revision_number:3
     Divisor value:1.0
     Divisor measurement:None
 
-RescaleIntensity:[module_num:14|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RescaleIntensity:[module_num:16|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:WGA
     Name the output image:RescaleWGAForVis
     Rescaling method:Stretch each image to use the full intensity range
@@ -244,7 +268,7 @@ RescaleIntensity:[module_num:14|svn_version:'Unknown'|variable_revision_number:3
     Divisor value:1.0
     Divisor measurement:None
 
-GrayToColor:[module_num:15|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+GrayToColor:[module_num:17|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select a color scheme:Stack
     Rescale intensity:No
     Select the image to be colored red:RescaleERForVis
@@ -279,7 +303,7 @@ GrayToColor:[module_num:15|svn_version:'Unknown'|variable_revision_number:4|show
     Color:#800080
     Weight:1.0
 
-GrayToColor:[module_num:16|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+GrayToColor:[module_num:18|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select a color scheme:RGB
     Rescale intensity:No
     Select the image to be colored red:RescaleERForVis
@@ -302,7 +326,7 @@ GrayToColor:[module_num:16|svn_version:'Unknown'|variable_revision_number:4|show
     Color:#ff0000
     Weight:1.0
 
-GrayToColor:[module_num:17|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+GrayToColor:[module_num:19|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select a color scheme:RGB
     Rescale intensity:No
     Select the image to be colored red:RescaleMitoForVis
@@ -325,7 +349,7 @@ GrayToColor:[module_num:17|svn_version:'Unknown'|variable_revision_number:4|show
     Color:#ff0000
     Weight:1.0
 
-OverlayOutlines:[module_num:18|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:20|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:ColorProteinERDAPI
     Name the output image:ColorProteinERDAPI_Overlay
@@ -339,7 +363,7 @@ OverlayOutlines:[module_num:18|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:#FF8000
     Select objects to display:ConfluentRegions
 
-OverlayOutlines:[module_num:19|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:21|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:ColorMitoWGADAPI
     Name the output image:ColorMitoWGADAPI_Overlay
@@ -353,7 +377,7 @@ OverlayOutlines:[module_num:19|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:#FF8000
     Select objects to display:ConfluentRegions
 
-SaveImages:[module_num:20|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:22|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:StackAllChannels
     Select method for constructing file names:From image filename
@@ -371,8 +395,9 @@ SaveImages:[module_num:20|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:21|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+SaveImages:[module_num:23|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Select the type of image to save:Image
     Select the image to save:ColorMitoWGADAPI_Overlay
     Select method for constructing file names:From image filename
@@ -390,8 +415,9 @@ SaveImages:[module_num:21|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:22|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:24|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:ColorProteinERDAPI_Overlay
     Select method for constructing file names:From image filename
@@ -409,8 +435,9 @@ SaveImages:[module_num:22|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-ExportToSpreadsheet:[module_num:23|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+ExportToSpreadsheet:[module_num:25|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:Yes
     Add image file and folder names to your object data file?:No
@@ -450,7 +477,7 @@ ExportToSpreadsheet:[module_num:23|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-CreateBatchFiles:[module_num:24|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+CreateBatchFiles:[module_num:26|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Store batch files in default output folder?:Yes
     Output folder path:/home/ubuntu/bucket/projects/2018_11_20_Periscope_Calico/workspace/batchfiles/20190919_6W_CP074A/analysis
     Are the cluster computers running Windows?:No

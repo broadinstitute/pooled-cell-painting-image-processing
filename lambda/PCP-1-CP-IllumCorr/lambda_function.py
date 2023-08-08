@@ -22,12 +22,12 @@ config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_IllumPainting",
     "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
     "TASKS_PER_MACHINE": "1",
-    "MACHINE_TYPE": ["m4.xlarge"],
-    "MACHINE_PRICE": "0.10",
+    "MACHINE_TYPE": ["c5.xlarge"],
+    "MACHINE_PRICE": "0.15",
     "EBS_VOL_SIZE": "22",
     "DOWNLOAD_FILES": "False",
     "DOCKER_CORES": "4",
-    "MEMORY": "15000",
+    "MEMORY": "7500",
     "SECONDS_TO_START": "180",
     "SQS_MESSAGE_VISIBILITY": "7200",
     "CHECK_IF_DONE_BOOL": "True",
@@ -47,10 +47,12 @@ def lambda_handler(event, context):
     key = event["Records"][0]["s3"]["object"]["key"]
     prefix, batchAndPipe = key.split("pipelines/")
     image_prefix = prefix.split("workspace")[0]
-    batch = batchAndPipe.split("1_")[0][:-1]
+    batch = batchAndPipe.rsplit("/")[0]
+    print (f"Batch is {batch}")
 
     # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
+    print(f"Downloading metadata from {metadata_on_bucket_name}")
     metadata = helpful_functions.download_and_read_metadata_file(
         s3, bucket, metadata_file_name, metadata_on_bucket_name
     )
@@ -81,6 +83,9 @@ def lambda_handler(event, context):
         image_list, filter_in=parse_name_filter, filter_out="copy"
     )
     metadata["painting_file_data"] = image_dict
+    if len(image_dict) < 1:
+        print ("Didn't find images. Confirm your file structure in S3 is correct.")
+        return
 
     # Get the final list of channels in this experiment
     Channelrounds = list(Channeldict.keys())
@@ -131,7 +136,6 @@ def lambda_handler(event, context):
                             f"{eachwell} {eachround} doesn't have full well files. {len(per_well)} files found."
                         )
             if not SABER:
-                platename = list(Channeldict.keys())[0] + "_" + eachplate
                 paint_cycle_name = list(platedict[well_list[0]].keys())[0]
                 per_well = platedict[eachwell][paint_cycle_name]
                 if len(per_well) != full_well_files:
@@ -142,12 +146,8 @@ def lambda_handler(event, context):
         if incomplete_wells:
             for well in incomplete_wells:
                 del platedict[well]
-        bucket_folder = (
-            "/home/ubuntu/bucket/" + image_prefix + batch + "/images/" + eachplate + "/"
-        )
-        illum_folder = (
-            "/home/ubuntu/bucket/" + image_prefix + batch + "/illum/" + eachplate
-        )
+        bucket_folder = f"/home/ubuntu/bucket/{image_prefix}{batch}/images/{eachplate}/"
+        illum_folder = f"/home/ubuntu/bucket/{image_prefix}{batch}/illum/{eachplate}/"
         per_plate_csv, per_plate_csv_2 = create_CSVs.create_CSV_pipeline1(
             eachplate,
             num_series,
@@ -157,22 +157,9 @@ def lambda_handler(event, context):
             metadata["one_or_many_files"],
             metadata["Channeldict"],
         )
-        csv_on_bucket_name = (
-            prefix
-            + "load_data_csv/"
-            + batch
-            + "/"
-            + eachplate
-            + "/load_data_pipeline1.csv"
-        )
-        csv_on_bucket_name_2 = (
-            prefix
-            + "load_data_csv/"
-            + batch
-            + "/"
-            + eachplate
-            + "/load_data_pipeline2.csv"
-        )
+        csv_on_bucket_name = f"{prefix}load_data_csv/{batch}/{eachplate}/load_data_pipeline1.csv"
+        csv_on_bucket_name_2 = f"{prefix}load_data_csv/{batch}/{eachplate}/load_data_pipeline2.csv"
+
         with open(per_plate_csv, "rb") as a:
             s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
         with open(per_plate_csv_2, "rb") as a:

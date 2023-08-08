@@ -42,7 +42,7 @@ def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_na
 
 
 def create_batch_jobs_2(
-    startpath, batchsuffix, illumpipename, platelist, well_list, app_name
+    startpath, batchsuffix, illumpipename, plate_well_dict, app_name
 ):
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
@@ -54,8 +54,8 @@ def create_batch_jobs_2(
         startpath, os.path.join("workspace/load_data_csv", batchsuffix)
     )
     illumqueue = JobQueue(app_name + "Queue")
-    for toillum in platelist:
-        for well in well_list:
+    for toillum in plate_well_dict.keys():
+        for well in plate_well_dict[toillum]:
             templateMessage_illum = {
                 "Metadata": "Metadata_Plate=" + toillum + ",Metadata_Well=" + well,
                 "pipeline": posixpath.join(pipelinepath, illumpipename),

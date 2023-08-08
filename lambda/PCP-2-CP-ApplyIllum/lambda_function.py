@@ -47,8 +47,6 @@ def lambda_handler(event, context):
     # Log the received event
     bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
     key = event["Records"][0]["s3"]["object"]["key"]
-    keys = [x["s3"]["object"]["key"] for x in event["Records"]]
-    plate = key.split("/")[-2]
     batch = key.split("/")[-4]
     image_prefix = key.split(batch)[0]
     prefix = os.path.join(image_prefix, "workspace/")
@@ -89,8 +87,12 @@ def lambda_handler(event, context):
         platelist = [i for i in platelist if i not in exclude_plates]
     if include_plates:
         platelist = include_plates
-    platedict = image_dict[plate]
-    well_list = list(platedict.keys())
+    
+    plate_well_dict = {}
+    for plate in platelist:
+        platedict = image_dict[plate]
+        well_list = list(platedict.keys())
+        plate_well_dict[plate] = well_list
 
     # Now let's check if it seems like the whole thing is done or not
     sqs = boto3.client("sqs")
@@ -129,12 +131,13 @@ def lambda_handler(event, context):
             pipeline_name = "2_SABER_CP_Apply_Illum.cppipe"
         # make the jobs
         create_batch_jobs.create_batch_jobs_2(
-            image_prefix, batch, pipeline_name, platelist, well_list, app_name
+            image_prefix, batch, pipeline_name, plate_well_dict, app_name
         )
 
+        njobs = len([item for sublist in plate_well_dict.values() for item in sublist])
         # Start a cluster
         run_DCP.run_cluster(
-            bucket_name, prefix, batch, len(platelist) * len(well_list), config_dict,
+            bucket_name, prefix, batch, njobs, config_dict,
         )
 
         # Run the monitor

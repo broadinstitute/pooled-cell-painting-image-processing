@@ -22,14 +22,14 @@ config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_IllumBarcoding",
     "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
     "TASKS_PER_MACHINE": "1",
-    "MACHINE_TYPE": ["m4.xlarge"],
-    "MACHINE_PRICE": "0.10",
+    "MACHINE_TYPE": ["c5.xlarge"],
+    "MACHINE_PRICE": "0.15",
     "EBS_VOL_SIZE": "200",
     "DOWNLOAD_FILES": "False",
     "DOCKER_CORES": "4",
-    "MEMORY": "15000",
+    "MEMORY": "7500",
     "SECONDS_TO_START": "180",
-    "SQS_MESSAGE_VISIBILITY": "43200",
+    "SQS_MESSAGE_VISIBILITY": "10800",
     "CHECK_IF_DONE_BOOL": "True",
     "EXPECTED_NUMBER_FILES": "6",
     "MIN_FILE_SIZE_BYTES": "1",
@@ -103,7 +103,6 @@ def lambda_handler(event, context):
     print("Making the CSVs")
     for eachplate in platelist:
         platedict = parsed_image_dict[eachplate]
-        well_list = list(platedict.keys())
         bucket_folder = (
             "/home/ubuntu/bucket/" + image_prefix + batch + "/images/" + eachplate
         )
