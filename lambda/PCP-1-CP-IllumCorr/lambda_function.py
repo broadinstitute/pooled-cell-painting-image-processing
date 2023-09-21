@@ -76,11 +76,11 @@ def lambda_handler(event, context):
     if not SABER:
         parse_name_filter = "20X_CP_"
     if SABER:
-        parse_name_filter = ""
+        parse_name_filter = "20X"
     image_list_prefix = image_prefix + batch + "/images/"
     image_list = helpful_functions.paginate_a_folder(s3, bucket, image_list_prefix)
     image_dict = helpful_functions.parse_image_names(
-        image_list, filter_in=parse_name_filter, filter_out="copy"
+        image_list, filter_in=parse_name_filter, filter_out=["copy"]
     )
     metadata["painting_file_data"] = image_dict
     if len(image_dict) < 1:
@@ -174,7 +174,7 @@ def lambda_handler(event, context):
     if SABER:
         pipeline_name = "1_SABER_CP_Illum.cppipe"
     create_batch_jobs.create_batch_jobs_1(
-        image_prefix, batch, pipeline_name, platelist, app_name
+        image_prefix, batch, pipeline_name, platelist, app_name, SABER=SABER, config_dict=config_dict
     )
 
     # Start a cluster

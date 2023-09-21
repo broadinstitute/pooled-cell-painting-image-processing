@@ -7,17 +7,18 @@ import pandas
 import run_DCP
 
 
-def parse_image_names(imlist, filter_in, filter_out="jibberish"):
+def parse_image_names(imlist, filter_in, filter_out=["jibberish"]):
     image_dict = {}
     for image in imlist:
         if ".nd2" in image:
             if filter_in.lower() in image.lower():
-                if filter_out.lower() not in image.lower():
+                if not any(out.lower() in image.lower() for out in filter_out):
                     prePlate, platePlus = image.split("images/")
                     try:
                         plate, cycle, imname = platePlus.split("/")
                     except ValueError:
                         print("Images are not in standard folder organization in s3.")
+                        print(f"Failed parsing on {platePlus}")
                         return
                     well = imname[: imname.index("_")]
                     if plate not in list(image_dict.keys()):
@@ -55,10 +56,13 @@ def return_full_wells(image_dict, expected_cycles, one_or_many, files_per_well=1
                     ):
                         has_all_files = False
                         print(
-                            f"{eachplate} {eachwell} {cycle} only had {len(platedict[eachwell][cycle])} files"
+                            f"{eachplate} {eachwell} {cycle} has {len(platedict[eachwell][cycle])} files."
                         )
+                        print (f"Expected {files_per_well} files.")
                 if has_all_files:
                     full_wells.append(eachwell)
+            else:
+                print (f"{eachplate} {eachwell} has {len(cycle_list)} cycles. Expected {expected_cycles}.")
 
         # Initialize our output dictionary for the plate
         print(
