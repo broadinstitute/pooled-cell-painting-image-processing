@@ -18,7 +18,7 @@ class JobQueue:
         print(("Batch sent. Message ID:", response.get("MessageId")))
 
 
-def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_name):
+def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_name, SABER_round=False):
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
@@ -27,17 +27,30 @@ def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_na
         startpath, os.path.join("workspace/load_data_csv", batchsuffix)
     )
     illumqueue = JobQueue(app_name + "Queue")
-    for toillum in platelist:
-        templateMessage_illum = {
-            "Metadata": "Metadata_Plate=" + toillum,
-            "pipeline": posixpath.join(pipelinepath, illumpipename),
-            "output": illumoutpath,
-            "input": pipelinepath,
-            "data_file": posixpath.join(
-                datafilepath, toillum, "load_data_pipeline1.csv"
-            ),
-        }
-        illumqueue.scheduleBatch(templateMessage_illum)
+    if not SABER_round:
+        for toillum in platelist:
+            templateMessage_illum = {
+                "Metadata": "Metadata_Plate=" + toillum,
+                "pipeline": posixpath.join(pipelinepath, illumpipename),
+                "output": illumoutpath,
+                "input": pipelinepath,
+                "data_file": posixpath.join(
+                    datafilepath, toillum, "load_data_pipeline1.csv"
+                ),
+            }
+            illumqueue.scheduleBatch(templateMessage_illum)
+    else:
+        for toillum in platelist:
+            templateMessage_illum = {
+                "Metadata": "Metadata_Plate=" + toillum,
+                "pipeline": posixpath.join(pipelinepath, illumpipename),
+                "output": illumoutpath,
+                "input": pipelinepath,
+                "data_file": posixpath.join(
+                    datafilepath, toillum, f"load_data_pipeline1_{SABER_round}.csv"
+                ),
+            }
+            illumqueue.scheduleBatch(templateMessage_illum)
     print("Illum job submitted. Check your queue")
 
 
