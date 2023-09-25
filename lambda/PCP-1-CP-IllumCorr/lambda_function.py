@@ -182,8 +182,9 @@ def lambda_handler(event, context):
 
                 with open(per_plate_csv, "rb") as a:
                     s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
-                with open(per_plate_csv_2, "rb") as a:
-                    s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)            
+                if per_plate_csv_2:
+                    with open(per_plate_csv_2, "rb") as a:
+                        s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)            
 
     # Now it's time to run DCP
     app_name = run_DCP.run_setup(bucket, prefix, batch, config_dict)
