@@ -4,65 +4,109 @@ import ast
 
 
 def create_CSV_pipeline1(
-    platename, seriesperwell, path, illum_path, platedict, one_or_many, Channeldict, SABER_round=False
+    platename, seriesperwell, path, illum_path, platedict, one_or_many, Channeldict, pipeline, SABER_round=False
 ):
     print(f"Images files are in {path}")
     print(f"Illum files will be made in {illum_path}")
     if one_or_many == "one":
         print("CSV creation not enabled for Channeldict for one file/well")
-        return
+        return    
     else:
-        columns = ["Metadata_Plate", "Metadata_Series", "Metadata_Site"]
-        channels = []
-        Channeldict = ast.literal_eval(Channeldict)
-        rounddict = {}
-        Channelrounds = list(Channeldict.keys())
-        for eachround in Channelrounds:
-            templist = []
-            templist += Channeldict[eachround].values()
-            channels += list(i[0] for i in templist)
-            rounddict[eachround] = list(i[0] for i in templist)
-        df = pd.DataFrame(columns=columns)
-        for chan in channels:
-            if len(Channelrounds) > 1:
-                if chan in rounddict[SABER_round]:
-                    listoffiles = []
-                    for well in platedict.keys():
-                        listoffiles.append(platedict[well][SABER_round])
-                    listoffiles = [x for l in listoffiles for x in l]
-                    df["FileName_Orig" + chan] = listoffiles
-            if len(Channelrounds) == 1:
-                fullplatename = list(Channeldict.keys())[0] + "_" + platename
-                print(
-                    f"Plate Name is parsed as {fullplatename}. If this isn't correct, check your channel dictionary in metadata.json"
-                )
-                for round in rounddict.keys():
-                    if chan in rounddict[round]:
+        if pipeline == 1:
+            columns = ["Metadata_Plate", "Metadata_Series", "Metadata_Site"]
+            channels = []
+            Channeldict = ast.literal_eval(Channeldict)
+            rounddict = {}
+            Channelrounds = list(Channeldict.keys())
+            for eachround in Channelrounds:
+                templist = []
+                templist += Channeldict[eachround].values()
+                channels += list(i[0] for i in templist)
+                rounddict[eachround] = list(i[0] for i in templist)
+            df = pd.DataFrame(columns=columns)
+            for chan in channels:
+                if len(Channelrounds) > 1:
+                    if chan in rounddict[SABER_round]:
                         listoffiles = []
                         for well in platedict.keys():
-                            listoffiles.append(platedict[well][fullplatename])
+                            listoffiles.append(platedict[well][SABER_round])
                         listoffiles = [x for l in listoffiles for x in l]
                         df["FileName_Orig" + chan] = listoffiles
-        df["Metadata_Plate"] = [platename] * len(listoffiles)
-        df["Metadata_Series"] = list(range(seriesperwell)) * len(platedict.keys())
-        if len(Channelrounds) > 1:
-            pathperround = path + SABER_round + "/"
+                if len(Channelrounds) == 1:
+                    fullplatename = list(Channeldict.keys())[0] + "_" + platename
+                    print(
+                        f"Plate Name is parsed as {fullplatename}. If this isn't correct, check your channel dictionary in metadata.json"
+                    )
+                    for round in rounddict.keys():
+                        if chan in rounddict[round]:
+                            listoffiles = []
+                            for well in platedict.keys():
+                                listoffiles.append(platedict[well][fullplatename])
+                            listoffiles = [x for l in listoffiles for x in l]
+                            df["FileName_Orig" + chan] = listoffiles
+            df["Metadata_Plate"] = [platename] * len(listoffiles)
+            df["Metadata_Series"] = list(range(seriesperwell)) * len(platedict.keys())
+            if len(Channelrounds) > 1:
+                pathperround = path + SABER_round + "/"
+                for chan in channels:
+                    for i in list(Channeldict[SABER_round].values()):
+                        if chan == i[0]:
+                            df["PathName_Orig" + chan] = pathperround
+                            df["Frame_Orig" + chan] = i[1]
+            if len(Channelrounds) == 1:
+                for chan in channels:
+                    df["PathName_Orig" + chan] = path + fullplatename + "/"
+                    for i in list(Channeldict[eachround].values()):
+                        if chan == i[0]:
+                            df["Frame_Orig" + chan] = i[1]
+            file_out_name = "/tmp/" + str(platename) + "_1.csv"
+            df.to_csv(file_out_name, index=False)
+        
+        if pipeline == 2:
+            # Make .csv for 2_CP_ApplyIllum
+            columns = ["Metadata_Plate", "Metadata_Series", "Metadata_Site"]
+            channels = []
+            Channeldict = ast.literal_eval(Channeldict)
+            rounddict = {}
+            Channelrounds = list(Channeldict.keys())
+            for eachround in Channelrounds:
+                templist = []
+                templist += Channeldict[eachround].values()
+                channels += list(i[0] for i in templist)
+                rounddict[eachround] = list(i[0] for i in templist)
+            df = pd.DataFrame(columns=columns)
             for chan in channels:
-                for i in list(Channeldict[SABER_round].values()):
-                    if chan == i[0]:
-                        df["PathName_Orig" + chan] = pathperround
-                        df["Frame_Orig" + chan] = i[1]
-        if len(Channelrounds) == 1:
-            for chan in channels:
-                df["PathName_Orig" + chan] = path + fullplatename + "/"
-                for i in list(Channeldict[eachround].values()):
-                    if chan == i[0]:
-                        df["Frame_Orig" + chan] = i[1]
-        file_out_name = "/tmp/" + str(platename) + "_1.csv"
-        df.to_csv(file_out_name, index=False)
-
-        # Make .csv for 2_CP_ApplyIllum
-        if SABER_round == False or SABER_round == list(Channeldict.keys())[0]:
+                listoffiles = []
+                if len(Channelrounds) > 1: #SABER
+                    for round in rounddict.keys():
+                        if chan in rounddict[round]:
+                            for well in platedict.keys():
+                                listoffiles.append(platedict[well][round])
+                elif len(Channelrounds) == 1:
+                    fullplatename = list(Channeldict.keys())[0] + "_" + platename
+                    for round in rounddict.keys():
+                        if chan in rounddict[round]:
+                            for well in platedict.keys():
+                                listoffiles.append(platedict[well][fullplatename])
+                listoffiles = [x for l in listoffiles for x in l]
+                df["FileName_Orig" + chan] = listoffiles
+            df["Metadata_Plate"] = [platename] * len(listoffiles)
+            df["Metadata_Series"] = list(range(seriesperwell)) * len(platedict.keys())
+            if len(Channelrounds) > 1: #SABER
+                for eachround in Channelrounds:
+                    pathperround = path + eachround + "/"
+                    for chan in channels:
+                        for i in list(Channeldict[eachround].values()):
+                            if chan == i[0]:
+                                df["PathName_Orig" + chan] = pathperround
+                                df["Frame_Orig" + chan] = i[1]
+            elif len(Channelrounds) == 1:
+                for chan in channels:
+                    df["PathName_Orig" + chan] = path + fullplatename + "/"
+                    for i in list(Channeldict[eachround].values()):
+                        if chan == i[0]:
+                            df["Frame_Orig" + chan] = i[1]
+            
             df["Metadata_Site"] = df["Metadata_Series"]
             well_df_list = []
             well_val_df_list = []
@@ -92,11 +136,9 @@ def create_CSV_pipeline1(
                 df["FileName_Illum" + chan] = [platename + "_Illum" + chan + ".npy"] * len(
                     listoffiles
                 )
-            file_out_name_2 = "/tmp/" + str(platename) + "_2.csv"
-            df.to_csv(file_out_name_2, index=False)
-        else:
-            file_out_name_2 = False
-    return file_out_name, file_out_name_2
+            file_out_name = "/tmp/" + str(platename) + "_2.csv"
+            df.to_csv(file_out_name, index=False)
+    return file_out_name
 
 
 def create_CSV_pipeline3(
