@@ -55,7 +55,7 @@ def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_na
 
 
 def create_batch_jobs_2(
-    startpath, batchsuffix, illumpipename, plate_well_dict, app_name
+    startpath, batchsuffix, illumpipename, plate_well_dict, app_name, num_series
 ):
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
@@ -69,16 +69,17 @@ def create_batch_jobs_2(
     illumqueue = JobQueue(app_name + "Queue")
     for toillum in plate_well_dict.keys():
         for well in plate_well_dict[toillum]:
-            templateMessage_illum = {
-                "Metadata": "Metadata_Plate=" + toillum + ",Metadata_Well=" + well,
-                "pipeline": posixpath.join(pipelinepath, illumpipename),
-                "output": illumoutpath,
-                "input": pipelinepath,
-                "data_file": posixpath.join(
-                    datafilepath, toillum, "load_data_pipeline2.csv"
-                ),
-            }
-            illumqueue.scheduleBatch(templateMessage_illum)
+            for site in range(0, num_series+1):
+                templateMessage_illum = {
+                    "Metadata": f"Metadata_Plate={toillum},Metadata_Well={well},Metadata_Site={site}",
+                    "pipeline": posixpath.join(pipelinepath, illumpipename),
+                    "output": illumoutpath,
+                    "input": pipelinepath,
+                    "data_file": posixpath.join(
+                        datafilepath, toillum, "load_data_pipeline2.csv"
+                    ),
+                }
+                illumqueue.scheduleBatch(templateMessage_illum)
     print("Illum job submitted. Check your queue")
 
 
