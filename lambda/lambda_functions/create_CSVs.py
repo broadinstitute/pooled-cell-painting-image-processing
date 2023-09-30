@@ -142,7 +142,7 @@ def create_CSV_pipeline1(
 
 
 def create_CSV_pipeline3(
-    platename, seriesperwell, path, well_list, range_skip, segmentation_channel
+    platename, seriesperwell, path, well_list, segmentation_channel
 ):
     columns = [
         "Metadata_Plate",
@@ -154,7 +154,7 @@ def create_CSV_pipeline3(
     channels = ["DNA", segmentation_channel]
     columns += [col + chan for col in columns_per_channel for chan in channels]
     df = pd.DataFrame(columns=columns)
-    sitelist = list(range(0, seriesperwell, int(range_skip)))
+    sitelist = list(range(0, seriesperwell))
     sites_per_well = len(sitelist)
     total_file_count = sites_per_well * len(well_list)
     df["Metadata_Plate"] = [platename] * total_file_count
@@ -172,7 +172,7 @@ def create_CSV_pipeline3(
     df["Metadata_Well"] = well_df_list
     df["Metadata_Well_Value"] = well_val_df_list
     path_list = [
-        os.path.join(path, platename + "-" + well)
+        os.path.join(path, f"{platename}-{well}-{site}")
         for well in well_list
         for site in sitelist
     ]
