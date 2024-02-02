@@ -386,6 +386,7 @@ if os.path.isdir(subdir):
                                         im2=IJ.getImage()
                                         #padding to ensure tiles are all the same size (for CellProfiler later on)
                                         print("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
+                                        IJ.run("Canvas Size...", "width="+str(width+1240)+" height="+str(height+1410)+" position=Bottom-Right zero")
                                         IJ.run("Canvas Size...", "width="+str(upscaled_col_size)+" height="+str(upscaled_row_size)+" position=Top-Left zero")
                                         time.sleep(15)
                                         im3=IJ.getImage()
