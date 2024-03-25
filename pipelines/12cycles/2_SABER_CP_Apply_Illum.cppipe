@@ -1,8 +1,8 @@
 CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
-DateRevision:413
+DateRevision:425
 GitHash:
-ModuleCount:29
+ModuleCount:28
 HasImagePlaneDetails:False
 
 LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -13,13 +13,13 @@ LoadData:[module_num:1|svn_version:'Unknown'|variable_revision_number:6|show_win
     Process just a range of rows?:No
     Rows to process:1,100000
     Group images by metadata?:Yes
-    Select metadata tags for grouping:Plate,Well
+    Select metadata tags for grouping:Plate,Site,Well
     Rescale intensities?:Yes
 
 CorrectIlluminationApply:[module_num:2|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:OrigCOX-IV
+    Select the input image:OrigCOXIV
     Name the output image:CorrCOXIV
-    Select the illumination function:IllumCOX-IV
+    Select the illumination function:IllumCOXIV
     Select how the illumination function is applied:Divide
     Select the input image:OrigCalnexin
     Name the output image:CorrCalnexin
@@ -45,10 +45,6 @@ CorrectIlluminationApply:[module_num:2|svn_version:'Unknown'|variable_revision_n
     Name the output image:CorrDNA_round3
     Select the illumination function:IllumDNA_round3
     Select how the illumination function is applied:Divide
-    Select the input image:OrigDNA_round4
-    Name the output image:CorrDNA_round4
-    Select the illumination function:IllumDNA_round4
-    Select how the illumination function is applied:Divide
     Select the input image:OrigG3BP1
     Name the output image:CorrG3BP1
     Select the illumination function:IllumG3BP1
@@ -57,9 +53,9 @@ CorrectIlluminationApply:[module_num:2|svn_version:'Unknown'|variable_revision_n
     Name the output image:CorrGM130
     Select the illumination function:IllumGM130
     Select how the illumination function is applied:Divide
-    Select the input image:OrigGolgin-97
+    Select the input image:OrigGolgin97
     Name the output image:CorrGolgin97
-    Select the illumination function:IllumGolgin-97
+    Select the illumination function:IllumGolgin97
     Select how the illumination function is applied:Divide
     Select the input image:OrigLAMP1
     Name the output image:CorrLAMP1
@@ -73,21 +69,21 @@ CorrectIlluminationApply:[module_num:2|svn_version:'Unknown'|variable_revision_n
     Name the output image:CorrSyto9
     Select the illumination function:IllumSyto9
     Select how the illumination function is applied:Divide
-    Select the input image:OrigTDP-43
+    Select the input image:OrigTDP43
     Name the output image:CorrTDP43
-    Select the illumination function:IllumTDP-43
+    Select the illumination function:IllumTDP43
     Select how the illumination function is applied:Divide
-    Select the input image:OrigTubulin
-    Name the output image:CorrTubulin
-    Select the illumination function:IllumTubulin
+    Select the input image:Origbtubulin
+    Name the output image:Corrbtubulin
+    Select the illumination function:Illumbtubulin
     Select how the illumination function is applied:Divide
-    Select the input image:Origp65
-    Name the output image:Corrp65
-    Select the illumination function:Illump65
+    Select the input image:OrigP65NFkb
+    Name the output image:Corrp65NFkb
+    Select the illumination function:IllumP65NFkb
     Select how the illumination function is applied:Divide
-    Select the input image:OrigpRPS6
-    Name the output image:CorrpRPS6
-    Select the illumination function:IllumpRPS6
+    Select the input image:OrigPRSPS6
+    Name the output image:CorrPRSPS6
+    Select the illumination function:IllumPRSPS6
     Select how the illumination function is applied:Divide
     Set output image values less than 0 equal to 0?:Yes
     Set output image values greater than 1 equal to 1?:Yes
@@ -99,14 +95,17 @@ Align:[module_num:3|svn_version:'Unknown'|variable_revision_number:3|show_window
     Name the first output image:AlignedRed
     Select the second input image:CorrDNA_round1
     Name the second output image:AlignedDNA_round1
-    Select the additional image:CorrGM130
-    Name the output image:AlignedGM130
+    Select the additional image:CorrCatalase
+    Name the output image:AlignedCatalase
     Select how the alignment is to be applied:Similarly
-    Select the additional image:CorrTubulin
-    Name the output image:AlignedTubulin
+    Select the additional image:Corrbtubulin
+    Name the output image:Alignedbtubulin
     Select how the alignment is to be applied:Similarly
     Select the additional image:CorrCalnexin
     Name the output image:AlignedCalnexin
+    Select how the alignment is to be applied:Similarly
+    Select the additional image:Corrp65NFkb
+    Name the output image:AlignedP65NFkb
     Select how the alignment is to be applied:Similarly
 
 Align:[module_num:4|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -119,11 +118,11 @@ Align:[module_num:4|svn_version:'Unknown'|variable_revision_number:3|show_window
     Select the additional image:CorrCOXIV
     Name the output image:AlignedCOXIV
     Select how the alignment is to be applied:Similarly
-    Select the additional image:CorrTDP43
-    Name the output image:AlignedTDP43
+    Select the additional image:CorrGolgin97
+    Name the output image:AlignedGolgin97
     Select how the alignment is to be applied:Similarly
-    Select the additional image:CorrG3BP1
-    Name the output image:AlignedG3BP1
+    Select the additional image:CorrPRSPS6
+    Name the output image:AlignedPRSPS6
     Select how the alignment is to be applied:Similarly
     Select the additional image:CorrLAMP1
     Name the output image:AlignedLAMP1
@@ -136,32 +135,21 @@ Align:[module_num:5|svn_version:'Unknown'|variable_revision_number:3|show_window
     Name the first output image:AlignedRed
     Select the second input image:CorrDNA_round3
     Name the second output image:AlignedDNA_round3
-    Select the additional image:CorrCatalase
-    Name the output image:AlignedCatalase
-    Select how the alignment is to be applied:Similarly
-    Select the additional image:CorrGolgin97
-    Name the output image:AlignedGolgin97
-    Select how the alignment is to be applied:Similarly
-    Select the additional image:Corrp65
-    Name the output image:Alignedp65
-    Select how the alignment is to be applied:Similarly
-    Select the additional image:CorrpRPS6
-    Name the output image:AlignedpRPS6
-    Select how the alignment is to be applied:Similarly
-
-Align:[module_num:6|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the alignment method:Mutual Information
-    Crop mode:Keep size
-    Select the first input image:CorrDNA_round0
-    Name the first output image:AlignedRed
-    Select the second input image:CorrDNA_round4
-    Name the second output image:AlignedDNA_round4
     Select the additional image:CorrSyto9
     Name the output image:AlignedSyto9
     Select how the alignment is to be applied:Similarly
+    Select the additional image:CorrTDP43
+    Name the output image:AlignedTDP43
+    Select how the alignment is to be applied:Similarly
+    Select the additional image:CorrG3BP1
+    Name the output image:AlignedG3BP1
+    Select how the alignment is to be applied:Similarly
+    Select the additional image:CorrGM130
+    Name the output image:AlignedGM130
+    Select how the alignment is to be applied:Similarly
 
-MeasureColocalization:[module_num:7|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select images to measure:AlignedDNA_round1, AlignedDNA_round2, AlignedDNA_round3, AlignedDNA_round4, CorrDNA_round0
+MeasureColocalization:[module_num:6|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:AlignedDNA_round1, AlignedDNA_round2, AlignedDNA_round3, CorrDNA_round0
     Set threshold as percentage of maximum intensity for the images:15.0
     Select where to measure correlation:Across entire image
     Select objects to measure:
@@ -173,9 +161,9 @@ MeasureColocalization:[module_num:7|svn_version:'Unknown'|variable_revision_numb
     Calculate the Manders coefficients using Costes auto threshold?:No
     Method for Costes thresholding:Faster
 
-FlagImage:[module_num:8|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FlagImage:[module_num:7|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Hidden:1
-    Hidden:4
+    Hidden:3
     Name the flag's category:Metadata
     Name the flag:AlignmentFlag
     How should measurements be linked?:Flag if any fail
@@ -190,6 +178,7 @@ FlagImage:[module_num:8|svn_version:'Unknown'|variable_revision_number:4|show_wi
     Rules file location:Elsewhere...|
     Rules file name:rules.txt
     Class number:
+    Allow fuzzy feature matching?:No
     Flag is based on:Whole-image measurement
     Select the object to be used for flagging:None
     Which measurement?:Correlation_Correlation_AlignedDNA_round2_CorrDNA_round0
@@ -200,6 +189,7 @@ FlagImage:[module_num:8|svn_version:'Unknown'|variable_revision_number:4|show_wi
     Rules file location:Elsewhere...|
     Rules file name:rules.txt
     Class number:
+    Allow fuzzy feature matching?:No
     Flag is based on:Whole-image measurement
     Select the object to be used for flagging:None
     Which measurement?:Correlation_Correlation_AlignedDNA_round3_CorrDNA_round0
@@ -210,19 +200,10 @@ FlagImage:[module_num:8|svn_version:'Unknown'|variable_revision_number:4|show_wi
     Rules file location:Elsewhere...|
     Rules file name:rules.txt
     Class number:
-    Flag is based on:Whole-image measurement
-    Select the object to be used for flagging:None
-    Which measurement?:Correlation_Correlation_AlignedDNA_round4_CorrDNA_round0
-    Flag images based on low values?:Yes
-    Minimum value:0.9
-    Flag images based on high values?:No
-    Maximum value:1.0
-    Rules file location:Elsewhere...|
-    Rules file name:rules.txt
-    Class number:
+    Allow fuzzy feature matching?:No
     Ignore flag skips on last cycle?:No
 
-SaveImages:[module_num:9|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:8|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrDNA_round0
     Select method for constructing file names:Single name
@@ -240,8 +221,9 @@ SaveImages:[module_num:9|svn_version:'Unknown'|variable_revision_number:15|show_
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:10|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:9|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:CorrPhalloidin
     Select method for constructing file names:Single name
@@ -259,13 +241,14 @@ SaveImages:[module_num:10|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:11|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:10|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:AlignedCOXIV
     Select method for constructing file names:Single name
     Select image name for file prefix:DNA
-    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_CorrCOX-IV
+    Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_CorrCOXIV
     Number of digits:4
     Append a suffix to the image file name?:Yes
     Text to append to the image name:_Site_\g<Site>_CorrDNA
@@ -278,8 +261,9 @@ SaveImages:[module_num:11|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:12|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:11|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:AlignedCalnexin
     Select method for constructing file names:Single name
@@ -297,8 +281,9 @@ SaveImages:[module_num:12|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:13|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:12|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:AlignedCatalase
     Select method for constructing file names:Single name
@@ -316,8 +301,9 @@ SaveImages:[module_num:13|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:14|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:13|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:AlignedG3BP1
     Select method for constructing file names:Single name
@@ -335,8 +321,9 @@ SaveImages:[module_num:14|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:15|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:14|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:AlignedGM130
     Select method for constructing file names:Single name
@@ -354,8 +341,9 @@ SaveImages:[module_num:15|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:16|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:15|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:AlignedGolgin97
     Select method for constructing file names:Single name
@@ -373,8 +361,9 @@ SaveImages:[module_num:16|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:17|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:16|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:AlignedLAMP1
     Select method for constructing file names:Single name
@@ -392,8 +381,9 @@ SaveImages:[module_num:17|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:18|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:17|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:AlignedSyto9
     Select method for constructing file names:Single name
@@ -411,8 +401,9 @@ SaveImages:[module_num:18|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:19|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:18|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:AlignedTDP43
     Select method for constructing file names:Single name
@@ -430,10 +421,11 @@ SaveImages:[module_num:19|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:20|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:19|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:AlignedTubulin
+    Select the image to save:Alignedbtubulin
     Select method for constructing file names:Single name
     Select image name for file prefix:DNA
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_CorrTubulin
@@ -449,10 +441,11 @@ SaveImages:[module_num:20|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:21|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:20|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:Alignedp65
+    Select the image to save:AlignedP65NFkb
     Select method for constructing file names:Single name
     Select image name for file prefix:DNA
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_Corrp65
@@ -468,10 +461,11 @@ SaveImages:[module_num:21|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-SaveImages:[module_num:22|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:21|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
-    Select the image to save:AlignedpRPS6
+    Select the image to save:AlignedPRSPS6
     Select method for constructing file names:Single name
     Select image name for file prefix:DNA
     Enter single file name:Plate_\g<Plate>_Well_\g<Well_Value>_Site_\g<Site>_CorrpRPS6
@@ -487,8 +481,9 @@ SaveImages:[module_num:22|svn_version:'Unknown'|variable_revision_number:15|show
     Create subfolders in the output folder?:No
     Base image folder:Default Output Folder sub-folder|20X_CP_\g<Plate>
     How to save the series:T (Time)
+    Save with lossless compression?:No
 
-IdentifyPrimaryObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:14|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:CorrDNA_round0
     Name the primary objects to be identified:ConfluentRegions
     Typical diameter of objects, in pixel units (Min,Max):500,5000
@@ -504,8 +499,6 @@ IdentifyPrimaryObjects:[module_num:23|svn_version:'Unknown'|variable_revision_nu
     Automatically calculate minimum allowed distance between local maxima?:Yes
     Handling of objects if excessive number of objects identified:Continue
     Maximum number of objects:500
-    Display accepted local maxima?:No
-    Select maxima color:Blue
     Use advanced settings?:Yes
     Threshold setting version:12
     Threshold strategy:Global
@@ -526,7 +519,7 @@ IdentifyPrimaryObjects:[module_num:23|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2.0
     Thresholding method:Otsu
 
-MaskImage:[module_num:24|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MaskImage:[module_num:23|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:CorrDNA_round0
     Name the output image:MaskedDAPI
     Use objects or an image as a mask?:Objects
@@ -534,15 +527,15 @@ MaskImage:[module_num:24|svn_version:'Unknown'|variable_revision_number:3|show_w
     Select image for mask:None
     Invert the mask?:Yes
 
-MaskImage:[module_num:25|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:CorrTubulin
+MaskImage:[module_num:24|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Corrbtubulin
     Name the output image:MaskedTubulin
     Use objects or an image as a mask?:Objects
     Select object for mask:ConfluentRegions
     Select image for mask:None
     Invert the mask?:Yes
 
-IdentifyPrimaryObjects:[module_num:26|svn_version:'Unknown'|variable_revision_number:14|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:25|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:MaskedDAPI
     Name the primary objects to be identified:Nuclei
     Typical diameter of objects, in pixel units (Min,Max):10,80
@@ -558,8 +551,6 @@ IdentifyPrimaryObjects:[module_num:26|svn_version:'Unknown'|variable_revision_nu
     Automatically calculate minimum allowed distance between local maxima?:No
     Handling of objects if excessive number of objects identified:Continue
     Maximum number of objects:500
-    Display accepted local maxima?:No
-    Select maxima color:Blue
     Use advanced settings?:Yes
     Threshold setting version:12
     Threshold strategy:Global
@@ -580,7 +571,7 @@ IdentifyPrimaryObjects:[module_num:26|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2.0
     Thresholding method:Otsu
 
-IdentifySecondaryObjects:[module_num:27|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifySecondaryObjects:[module_num:26|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Nuclei
     Name the objects to be identified:Cells
     Select the method to identify the secondary objects:Watershed - Image
@@ -610,7 +601,7 @@ IdentifySecondaryObjects:[module_num:27|svn_version:'Unknown'|variable_revision_
     # of deviations:2.0
     Thresholding method:Minimum Cross-Entropy
 
-ExportToSpreadsheet:[module_num:28|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+ExportToSpreadsheet:[module_num:27|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:No
     Add image file and folder names to your object data file?:No
@@ -634,7 +625,7 @@ ExportToSpreadsheet:[module_num:28|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-CreateBatchFiles:[module_num:29|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+CreateBatchFiles:[module_num:28|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Store batch files in default output folder?:Yes
     Output folder path:c:\users\administrator\desktop\batchfiles\20190930_6w_cp075\illum
     Are the cluster computers running Windows?:No

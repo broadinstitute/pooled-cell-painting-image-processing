@@ -23,16 +23,16 @@ step = "3"
 # AWS Configuration Specific to this Function
 config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_PaintingSegmentationCheck",
-    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.4",
     "TASKS_PER_MACHINE": "1",
-    "MACHINE_TYPE": ["m4.xlarge"],
+    "MACHINE_TYPE": ["m5.xlarge"],
     "MACHINE_PRICE": "0.10",
     "EBS_VOL_SIZE": "22",
     "DOWNLOAD_FILES": "False",
     "DOCKER_CORES": "4",
     "MEMORY": "15000",
     "SECONDS_TO_START": "180",
-    "SQS_MESSAGE_VISIBILITY": "1800",
+    "SQS_MESSAGE_VISIBILITY": "300",
     "CHECK_IF_DONE_BOOL": "False",
     "EXPECTED_NUMBER_FILES": "5",
     "MIN_FILE_SIZE_BYTES": "1",
@@ -184,7 +184,6 @@ def lambda_handler(event, context):
                 num_series,
                 bucket_folder,
                 well_list,
-                metadata["range_skip"],
                 segmentation_channel,
             )
             csv_on_bucket_name = (
@@ -204,12 +203,14 @@ def lambda_handler(event, context):
 
         # make the jobs
         create_batch_jobs.create_batch_jobs_3(
-            image_prefix, batch, pipeline_name, plate_and_well_list, app_name
+            image_prefix, batch, pipeline_name, plate_and_well_list, app_name, num_series, range_skip=metadata["range_skip"]
         )
+
+        sites = int(num_series)*int(metadata["range_skip"])
 
         # Start a cluster
         run_DCP.run_cluster(
-            bucket_name, prefix, batch, len(plate_and_well_list), config_dict,
+            bucket_name, prefix, batch, len(plate_and_well_list)*sites, config_dict,
         )
 
         # Run the monitor

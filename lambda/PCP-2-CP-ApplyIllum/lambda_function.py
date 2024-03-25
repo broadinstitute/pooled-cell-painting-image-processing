@@ -21,17 +21,17 @@ step = "2"
 # AWS Configuration Specific to this Function
 config_dict = {
     "APP_NAME": "2018_11_20_Periscope_X_ApplyIllumPainting",
-    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.1",
+    "DOCKERHUB_TAG": "cellprofiler/distributed-cellprofiler:2.0.0_4.2.4",
     "TASKS_PER_MACHINE": "1",
-    "MACHINE_TYPE": ["m4.2xlarge"],
+    "MACHINE_TYPE": ["m5.xlarge"],
     "MACHINE_PRICE": "0.25",
-    "EBS_VOL_SIZE": "350",
+    "EBS_VOL_SIZE": "30",
     "DOWNLOAD_FILES": "False",
     "DOCKER_CORES": "1",
-    "MEMORY": "30000",
+    "MEMORY": "15000",
     "SECONDS_TO_START": "180",
-    "SQS_MESSAGE_VISIBILITY": "43200",
-    "CHECK_IF_DONE_BOOL": "True",
+    "SQS_MESSAGE_VISIBILITY": "1200",
+    "CHECK_IF_DONE_BOOL": "False",
     "EXPECTED_NUMBER_FILES": "5000",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
@@ -131,10 +131,10 @@ def lambda_handler(event, context):
             pipeline_name = "2_SABER_CP_Apply_Illum.cppipe"
         # make the jobs
         create_batch_jobs.create_batch_jobs_2(
-            image_prefix, batch, pipeline_name, plate_well_dict, app_name
+            image_prefix, batch, pipeline_name, plate_well_dict, app_name, num_series
         )
 
-        njobs = len([item for sublist in plate_well_dict.values() for item in sublist])
+        njobs = len([item for sublist in plate_well_dict.values() for item in sublist])*num_series
         # Start a cluster
         run_DCP.run_cluster(
             bucket_name, prefix, batch, njobs, config_dict,
