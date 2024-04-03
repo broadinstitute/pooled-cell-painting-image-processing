@@ -46,6 +46,7 @@ def create_CSV_pipeline1(
                             df["FileName_Orig" + chan] = listoffiles
             df["Metadata_Plate"] = [platename] * len(listoffiles)
             df["Metadata_Series"] = list(range(seriesperwell)) * len(platedict.keys())
+            df["Metadata_Site"] = df["Metadata_Series"]
             if len(Channelrounds) > 1:
                 pathperround = path + SABER_round + "/"
                 for chan in channels:
