@@ -69,7 +69,7 @@ def create_batch_jobs_2(
     illumqueue = JobQueue(app_name + "Queue")
     for toillum in plate_well_dict.keys():
         for well in plate_well_dict[toillum]:
-            for site in range(0, num_series+1):
+            for site in range(0, num_series):
                 templateMessage_illum = {
                     "Metadata": f"Metadata_Plate={toillum},Metadata_Well={well},Metadata_Site={site}",
                     "pipeline": posixpath.join(pipelinepath, illumpipename),
