@@ -206,7 +206,7 @@ def lambda_handler(event, context):
             image_prefix, batch, pipeline_name, plate_and_well_list, app_name, num_series, range_skip=metadata["range_skip"]
         )
 
-        sites = int(num_series)*int(metadata["range_skip"])
+        sites = int(num_series)/int(metadata["range_skip"])
 
         # Start a cluster
         run_DCP.run_cluster(
