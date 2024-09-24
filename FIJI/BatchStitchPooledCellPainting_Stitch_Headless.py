@@ -151,7 +151,7 @@ if os.path.isdir(subdir):
                         if eachpresuf[1][-5:]!='.tiff':
                                 presuflist.remove(eachpresuf)
         presuflist.sort()
-        print welllist, presuflist
+        print (welllist, presuflist)
 
         if round_or_square == 'square':
                 print ("square not currently supported")
