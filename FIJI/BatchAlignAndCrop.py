@@ -3,14 +3,14 @@
 #@String subdir
 #@String out_subdir_tag
 #@String tileperside
-#@String stitchmethod
+#@String alignmethod
 #@String filterstring
 #@String awsdownload
 #@String bucketname
 #@String localtemp
 #@String downloadfilter
 
-from ij import IJ, WindowManager
+from ij import IJ
 import os
 import glob
 import copy
@@ -69,7 +69,8 @@ quad_dict = {}
 for quad in quadrants:
     quad_dict[quad]={"source":'(.*'+quad+'.*DAPI.*)','targets':[]}
     for target in target_channels:
-        quad_dict[quad]['targets'].append('(.*'+quad+'.*_'+target+'\..*)')
+        quad_dict[quad]['targets'].append('(.*'+quad+'.*_Cycle[0-9]{2}_'+target+'.*)')
+print(quad_dict)
 
 def batch_fix_names(foldername,rename_dict):
     for i in glob.glob(foldername+"/*.ti*"):
@@ -109,9 +110,9 @@ batch_fix_names(subdir,rename_dict)
 for quad in quadrants:
     im=IJ.run("Image Sequence...","open="+subdir+" virtual filter="+quad_dict[quad]["source"])
     im=IJ.getImage()
-    tile_size, total_size = get_sizes(im.width,im.height,tileperside)
+    tile_size, total_size = get_sizes(im.width,im.height,int(tileperside))
     window_name=os.path.split(os.path.normpath(subdir))[1]
-    IJ.run(im,"MultiStackReg", "stack_1="+window_name+" action_1=Align file_1=["+matrix_file+"] stack_2=None action_2=Ignore file_2=[] transformation=["+stitchmethod+"] save")
+    IJ.run(im,"MultiStackReg", "stack_1="+window_name+" action_1=Align file_1=["+matrix_file+"] stack_2=None action_2=Ignore file_2=[] transformation=["+alignmethod+"] save")
     IJ.run("Canvas Size...", "width="+str(total_size)+" height="+str(total_size)+" position=Top-Left zero")
     time.sleep(15)
     im2=IJ.getImage()
@@ -130,4 +131,4 @@ for quad in quadrants:
     for each_aligned in to_tile:
         outname = each_aligned.replace(out_subdir,tile_subdir).split('.')[0]
         im = IJ.open(each_aligned)
-        save_tiles(im,tileperside,tile_size,outname)
+        save_tiles(im,int(tileperside),tile_size,outname)
