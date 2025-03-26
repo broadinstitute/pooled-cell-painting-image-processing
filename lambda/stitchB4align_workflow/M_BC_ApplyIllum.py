@@ -32,7 +32,7 @@ config_dict = {
     "MEMORY": "15000",
     "SECONDS_TO_START": "180",
     "SQS_MESSAGE_VISIBILITY": "43200",
-    "CHECK_IF_DONE_BOOL": "True",
+    "CHECK_IF_DONE_BOOL": "False",
     "EXPECTED_NUMBER_FILES": "5",
     "MIN_FILE_SIZE_BYTES": "1",
     "NECESSARY_STRING": "",
