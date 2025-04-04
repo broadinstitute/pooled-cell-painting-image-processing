@@ -48,7 +48,7 @@ def lambda_handler(event, context):
     prefix, batchAndPipe = key.split("pipelines/")
     image_prefix = prefix.split("workspace")[0]
     batch = batchAndPipe.rsplit("/")[0]
-    print (f"Batch is {batch}")
+    print(f"Batch is {batch}")
 
     # Get the metadata file
     metadata_on_bucket_name = os.path.join(prefix, "metadata", batch, "metadata.json")
@@ -84,7 +84,7 @@ def lambda_handler(event, context):
     )
     metadata["painting_file_data"] = image_dict
     if len(image_dict) < 1:
-        print ("Didn't find images. Confirm your file structure in S3 is correct.")
+        print("Didn't find images. Confirm your file structure in S3 is correct.")
         return
 
     # Get the final list of channels in this experiment
@@ -148,22 +148,58 @@ def lambda_handler(event, context):
                 del platedict[well]
         bucket_folder = f"/home/ubuntu/bucket/{image_prefix}{batch}/images/{eachplate}/"
         illum_folder = f"/home/ubuntu/bucket/{image_prefix}{batch}/illum/{eachplate}/"
-        per_plate_csv, per_plate_csv_2 = create_CSVs.create_CSV_pipeline1(
-            eachplate,
-            num_series,
-            bucket_folder,
-            illum_folder,
-            platedict,
-            metadata["one_or_many_files"],
-            metadata["Channeldict"],
-        )
-        csv_on_bucket_name = f"{prefix}load_data_csv/{batch}/{eachplate}/load_data_pipeline1.csv"
-        csv_on_bucket_name_2 = f"{prefix}load_data_csv/{batch}/{eachplate}/load_data_pipeline2.csv"
+        if not SABER:
+            for num in range(1,3):
+                per_plate_csv = create_CSVs.create_CSV_pipeline1(
+                    eachplate,
+                    num_series,
+                    bucket_folder,
+                    illum_folder,
+                    platedict,
+                    metadata["one_or_many_files"],
+                    metadata["Channeldict"],
+                    num
+                )
+                csv_on_bucket_name = (
+                    f"{prefix}load_data_csv/{batch}/{eachplate}/load_data_pipeline{num}.csv"
+                )
 
-        with open(per_plate_csv, "rb") as a:
-            s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
-        with open(per_plate_csv_2, "rb") as a:
-            s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
+                with open(per_plate_csv, "rb") as a:
+                    s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
+
+        else:
+            for eachround in Channelrounds:
+                # create separate illum pipelines per SABER cycle
+                per_plate_csv = create_CSVs.create_CSV_pipeline1(
+                    eachplate,
+                    num_series,
+                    bucket_folder,
+                    illum_folder,
+                    platedict,
+                    metadata["one_or_many_files"],
+                    metadata["Channeldict"],
+                    1,
+                    SABER_round=eachround,
+                )
+                csv_on_bucket_name = f"{prefix}load_data_csv/{batch}/{eachplate}/load_data_pipeline1_{eachround}.csv"
+                with open(per_plate_csv, "rb") as a:
+                    s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name)
+            # create one apply illum pipeline
+            per_plate_csv_2 = create_CSVs.create_CSV_pipeline1(
+                eachplate,
+                num_series,
+                bucket_folder,
+                illum_folder,
+                platedict,
+                metadata["one_or_many_files"],
+                metadata["Channeldict"],
+                2,
+            )
+            csv_on_bucket_name_2 = (
+                f"{prefix}load_data_csv/{batch}/{eachplate}/load_data_pipeline2.csv"
+            )
+            with open(per_plate_csv_2, "rb") as a:
+                s3.put_object(Body=a, Bucket=bucket, Key=csv_on_bucket_name_2)
 
     # Now it's time to run DCP
     app_name = run_DCP.run_setup(bucket, prefix, batch, config_dict)
@@ -171,14 +207,32 @@ def lambda_handler(event, context):
     # Make a batch
     if not SABER:
         pipeline_name = "1_CP_Illum.cppipe"
-    if SABER:
-        pipeline_name = "1_SABER_CP_Illum.cppipe"
-    create_batch_jobs.create_batch_jobs_1(
-        image_prefix, batch, pipeline_name, platelist, app_name, SABER=SABER, config_dict=config_dict
-    )
+        create_batch_jobs.create_batch_jobs_1(
+            image_prefix,
+            batch,
+            pipeline_name,
+            platelist,
+            app_name,
+        )
+    else:
+        for eachround in Channelrounds:
+            pipeline_name = f"1_SABER_CP_Illum_{eachround}.cppipe"
+            create_batch_jobs.create_batch_jobs_1(
+                image_prefix,
+                batch,
+                pipeline_name,
+                platelist,
+                app_name,
+                SABER_round=eachround,
+            )
 
     # Start a cluster
-    run_DCP.run_cluster(bucket, prefix, batch, len(platelist), config_dict)
+    if SABER:
+        run_DCP.run_cluster(
+            bucket, prefix, batch, len(platelist) * len(Channelrounds), config_dict
+        )
+    else:
+        run_DCP.run_cluster(bucket, prefix, batch, len(platelist), config_dict)
 
     # Run the monitor
     run_DCP.run_monitor(bucket, prefix, batch, step, config_dict)

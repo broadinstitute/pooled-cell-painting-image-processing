@@ -18,7 +18,7 @@ class JobQueue:
         print(("Batch sent. Message ID:", response.get("MessageId")))
 
 
-def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_name):
+def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_name, SABER_round=False):
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
     )
@@ -27,22 +27,35 @@ def create_batch_jobs_1(startpath, batchsuffix, illumpipename, platelist, app_na
         startpath, os.path.join("workspace/load_data_csv", batchsuffix)
     )
     illumqueue = JobQueue(app_name + "Queue")
-    for toillum in platelist:
-        templateMessage_illum = {
-            "Metadata": "Metadata_Plate=" + toillum,
-            "pipeline": posixpath.join(pipelinepath, illumpipename),
-            "output": illumoutpath,
-            "input": pipelinepath,
-            "data_file": posixpath.join(
-                datafilepath, toillum, "load_data_pipeline1.csv"
-            ),
-        }
-        illumqueue.scheduleBatch(templateMessage_illum)
+    if not SABER_round:
+        for toillum in platelist:
+            templateMessage_illum = {
+                "Metadata": "Metadata_Plate=" + toillum,
+                "pipeline": posixpath.join(pipelinepath, illumpipename),
+                "output": illumoutpath,
+                "input": pipelinepath,
+                "data_file": posixpath.join(
+                    datafilepath, toillum, "load_data_pipeline1.csv"
+                ),
+            }
+            illumqueue.scheduleBatch(templateMessage_illum)
+    else:
+        for toillum in platelist:
+            templateMessage_illum = {
+                "Metadata": "Metadata_Plate=" + toillum,
+                "pipeline": posixpath.join(pipelinepath, illumpipename),
+                "output": illumoutpath,
+                "input": pipelinepath,
+                "data_file": posixpath.join(
+                    datafilepath, toillum, f"load_data_pipeline1_{SABER_round}.csv"
+                ),
+            }
+            illumqueue.scheduleBatch(templateMessage_illum)
     print("Illum job submitted. Check your queue")
 
 
 def create_batch_jobs_2(
-    startpath, batchsuffix, illumpipename, plate_well_dict, app_name
+    startpath, batchsuffix, illumpipename, plate_well_dict, app_name, num_series
 ):
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
@@ -56,21 +69,22 @@ def create_batch_jobs_2(
     illumqueue = JobQueue(app_name + "Queue")
     for toillum in plate_well_dict.keys():
         for well in plate_well_dict[toillum]:
-            templateMessage_illum = {
-                "Metadata": "Metadata_Plate=" + toillum + ",Metadata_Well=" + well,
-                "pipeline": posixpath.join(pipelinepath, illumpipename),
-                "output": illumoutpath,
-                "input": pipelinepath,
-                "data_file": posixpath.join(
-                    datafilepath, toillum, "load_data_pipeline2.csv"
-                ),
-            }
-            illumqueue.scheduleBatch(templateMessage_illum)
+            for site in range(0, num_series):
+                templateMessage_illum = {
+                    "Metadata": f"Metadata_Plate={toillum},Metadata_Well={well},Metadata_Site={site}",
+                    "pipeline": posixpath.join(pipelinepath, illumpipename),
+                    "output": illumoutpath,
+                    "input": pipelinepath,
+                    "data_file": posixpath.join(
+                        datafilepath, toillum, "load_data_pipeline2.csv"
+                    ),
+                }
+                illumqueue.scheduleBatch(templateMessage_illum)
     print("Illum job submitted. Check your queue")
 
 
 def create_batch_jobs_3(
-    startpath, batchsuffix, segmentpipename, plate_and_well_list, app_name
+    startpath, batchsuffix, segmentpipename, plate_and_well_list, app_name, num_sites, range_skip
 ):
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
@@ -83,25 +97,23 @@ def create_batch_jobs_3(
     )
     segmentqueue = JobQueue(app_name + "Queue")
     for tosegment in plate_and_well_list:
-        templateMessage_segment = {
-            "Metadata": "Metadata_Plate="
-            + tosegment[0]
-            + ",Metadata_Well="
-            + tosegment[1],
-            "pipeline": posixpath.join(pipelinepath, segmentpipename),
-            "output": segmentoutpath,
-            "output_structure": "Metadata_Plate",
-            "input": pipelinepath,
-            "data_file": posixpath.join(
-                datafilepath, tosegment[0], "load_data_pipeline3.csv"
-            ),
-        }
-        segmentqueue.scheduleBatch(templateMessage_segment)
+        for site in range(0,int(num_sites),int(range_skip)):
+            templateMessage_segment = {
+                "Metadata": f"Metadata_Plate={tosegment[0]},Metadata_Well={tosegment[1]},Metadata_Site={site}",
+                "pipeline": posixpath.join(pipelinepath, segmentpipename),
+                "output": segmentoutpath,
+                "output_structure": "Metadata_Plate",
+                "input": pipelinepath,
+                "data_file": posixpath.join(
+                    datafilepath, tosegment[0], "load_data_pipeline3.csv"
+                ),
+            }
+            segmentqueue.scheduleBatch(templateMessage_segment)
     print("Segment check job submitted. Check your queue")
 
 
 def create_batch_jobs_3A(
-    startpath, batchsuffix, segmentApipename, platelist, well_list, app_name
+    startpath, batchsuffix, segmentApipename, platelist, well_list, num_sites, range_skip, app_name,
 ):
     pipelinepath = posixpath.join(
         startpath, os.path.join("workspace/pipelines", batchsuffix)
@@ -115,18 +127,16 @@ def create_batch_jobs_3A(
     segmentAqueue = JobQueue(app_name + "Queue")
     for totroubleshoot in platelist:
         for well in well_list:
-            templateMessage_segmentA = {
-                "Metadata": "Metadata_Plate="
-                + totroubleshoot
-                + ",Metadata_Well="
-                + well,
-                "pipeline": posixpath.join(pipelinepath, segmentApipename),
-                "output": segmentAoutpath,
-                "input": pipelinepath,
-                "data_file": posixpath.join(
-                    datafilepath, totroubleshoot, "load_data_pipeline3A.csv"
-                ),
-            }
+            for site in range(0,num_sites,range_skip):
+                templateMessage_segmentA = {
+                    "Metadata": f"Metadata_Plate={totroubleshoot},Metadata_Well={well},Metadata_Site={site}",
+                    "pipeline": posixpath.join(pipelinepath, segmentApipename),
+                    "output": segmentAoutpath,
+                    "input": pipelinepath,
+                    "data_file": posixpath.join(
+                        datafilepath, totroubleshoot, "load_data_pipeline3A.csv"
+                    ),
+                }
             segmentAqueue.scheduleBatch(templateMessage_segmentA)
     print("Segment Troubleshoot A job submitted. Check your queue")
 
