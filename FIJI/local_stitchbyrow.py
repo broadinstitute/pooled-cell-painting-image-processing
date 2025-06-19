@@ -12,6 +12,8 @@ overlap = 6
 imagesize = 2960
 welllist = ['B01','B02','B03','B04','B05','B06','B07']
 
+tilesize = 1480*3.97 # barcoding acquisition size * scaling string
+
 # make sure startchan is processed first
 chanlist.remove(startchan)
 chanlist.insert(0, startchan)
@@ -84,8 +86,76 @@ for well in welllist:
 
 		# make size consistent post-stitching
 		IJ.run("Canvas Size...", "width="+str(imagesize*max(row_widths))+" height="+str(imagesize*len(row_widths))+" position=Center zero")
-			
 		IJ.saveAs(im, "tiff",os.path.join(wellsubdir,fileoutname))
-		IJ.run("Close All")
+
+		# crop to tiles that match barcoding image acquisition tiles (after they are scaled)
+		# hardcoded for 9 images per well, starting lower right, snake
+		# 0 counting to match non-stitch-crop barcoding
+		# IJ.makeRectangle starts at upper left
+		center = (imagesize*max(row_widths))/2
+		im=IJ.getImage()
+		# center (4)
+		IJ.makeRectangle(center-(tilesize/2), center-(tilesize/2),tilesize,tilesize)
+		im_tile=im.crop()
+		IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,'BCMatch4'+filename.replace("Row_{i}_","")))
+		# 3
+		IJ.makeRectangle(center-(tilesize/2)-imagesize*2, center-(tilesize/2),tilesize,tilesize)
+		im_tile=im.crop()
+		IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,'BCMatch3'+filename.replace("Row_{i}_","")))
+		# 5
+		IJ.makeRectangle(center+(tilesize/2), center-(tilesize/2),tilesize,tilesize)
+		im_tile=im.crop()
+		IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,'BCMatch5'+filename.replace("Row_{i}_","")))
+		# 0
+		IJ.makeRectangle(center+(tilesize/2), center+(tilesize/2),tilesize,tilesize)
+		im_tile=im.crop()
+		IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,'BCMatch0'+filename.replace("Row_{i}_","")))
+		# 1
+		IJ.makeRectangle(center-(tilesize/2), center+(tilesize/2),tilesize,tilesize)
+		im_tile=im.crop()
+		IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,'BCMatch1'+filename.replace("Row_{i}_","")))
+		# 2
+		IJ.makeRectangle(center-(tilesize/2)-imagesize*2, center+(tilesize/2),tilesize,tilesize)
+		im_tile=im.crop()
+		IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,'BCMatch2'+filename.replace("Row_{i}_","")))
+		# 6
+		IJ.makeRectangle(center+(tilesize/2), center-(tilesize/2)-imagesize*2,tilesize,tilesize)
+		im_tile=im.crop()
+		IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,'BCMatch6'+filename.replace("Row_{i}_","")))
+		# 7
+		IJ.makeRectangle(center-(tilesize/2), center-(tilesize/2)-imagesize*2,tilesize,tilesize)
+		im_tile=im.crop()
+		IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,'BCMatch7'+filename.replace("Row_{i}_","")))
+		# 8
+		IJ.makeRectangle(center-(tilesize/2)-imagesize*2, center-(tilesize/2)-imagesize*2,tilesize,tilesize)
+		im_tile=im.crop()
+		IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,'BCMatch8'+filename.replace("Row_{i}_","")))
 		
+		IJ.run("Close All")
+
+		# then crop each matched into 4 because the whole size is too large to run nicely in CellProfiler
+		for image in os.listdir(wellsubdir):
+			if 'BCMatch' in image:
+				IJ.open(os.path.join(wellsubdir,image))
+				im=IJ.getImage()
+
+				# make crops, upper left, snake
+				IJ.makeRectangle(0, 0,tilesize/2,tilesize/2)
+				im_tile=im.crop()
+				IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,image.replace('.tiff',"Crop0.tiff")))
+				
+				IJ.makeRectangle(tilesize/2, 0,tilesize/2,tilesize/2)
+				im_tile=im.crop()
+				IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,image.replace('.tiff',"Crop1.tiff")))
+				
+				IJ.makeRectangle(tilesize/2, tilesize/2,tilesize/2,tilesize/2)
+				im_tile=im.crop()
+				IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,image.replace('.tiff',"Crop2.tiff")))
+				
+				IJ.makeRectangle(0, tilesize/2,tilesize/2,tilesize/2)
+				im_tile=im.crop()
+				IJ.saveAs(im_tile,"tiff", os.path.join(wellsubdir,image.replace('.tiff',"Crop3.tiff")))
+				
+				IJ.run("Close All")
+
 print("done")
