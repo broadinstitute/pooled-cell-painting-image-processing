@@ -19,19 +19,19 @@ for image in os.listdir(folder):
 		# make crops, upper left, snake
 		IJ.makeRectangle(0, 0,fullsize/2,fullsize/2)
 		im_tile=im.crop()
-		IJ.saveAs(im_tile,"tiff", os.path.join(folder,image.replace('.tiff',"Crop0.tiff")))
+		IJ.saveAs(im_tile,"tiff", os.path.join(folder,image.replace('.tiff',"_Crop0.tiff")))
 
 		IJ.makeRectangle(fullsize/2, 0,fullsize/2,fullsize/2)
 		im_tile=im.crop()
-		IJ.saveAs(im_tile,"tiff", os.path.join(folder,image.replace('.tiff',"Crop1.tiff")))
+		IJ.saveAs(im_tile,"tiff", os.path.join(folder,image.replace('.tiff',"_Crop1.tiff")))
 
 		IJ.makeRectangle(fullsize/2, fullsize/2,fullsize/2,fullsize/2)
 		im_tile=im.crop()
-		IJ.saveAs(im_tile,"tiff", os.path.join(folder,image.replace('.tiff',"Crop2.tiff")))
+		IJ.saveAs(im_tile,"tiff", os.path.join(folder,image.replace('.tiff',"_Crop2.tiff")))
 
 		IJ.makeRectangle(0, fullsize/2,fullsize/2,fullsize/2)
 		im_tile=im.crop()
-		IJ.saveAs(im_tile,"tiff", os.path.join(folder,image.replace('.tiff',"Crop3.tiff")))
+		IJ.saveAs(im_tile,"tiff", os.path.join(folder,image.replace('.tiff',"_Crop3.tiff")))
 		
 		IJ.run("Close All")
 print("Done with scaling and cropping")
