@@ -139,7 +139,7 @@ if os.path.isdir(subdir):
                                                 order = "Left & Up"
                                         else:
                                                 order = "Right & Up"
-                                        standard_grid_instructions=["type=[Grid: snake by rows] order=["+order+"] grid_size_x="+str(rowlen)+" grid_size_y=1 tile_overlap="+str(overlap_pct)+" first_file_index_i="+str(startnum)+" directory="+out_subdir+" file_names=",
+                                        standard_grid_instructions=["type=[Grid: snake by rows] order=["+order+"] grid_size_x="+str(rowlen)+" grid_size_y=1 tile_overlap="+str(overlap_pct)+" first_file_index_i="+str(startnum)+" directory="+subdir+" file_names=",
                                         " output_textfile_name=TileConfiguration_Row"+str(rownum)+".txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
                                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
                                         im=IJ.getImage()
@@ -151,7 +151,7 @@ if os.path.isdir(subdir):
                                                         for line in infile:
                                                                 line=line.replace(firstpresuf,eachpresuf)
                                                                 outfile.write(line)
-                                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+out_subdir+" layout_file=TileConfiguration_Row"+str(rownum)+".registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
+                                        copy_grid_instructions="type=[Positions from file] order=[Defined by TileConfiguration] directory="+subdir+" layout_file=TileConfiguration_Row"+str(rownum)+".registered_copy.txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 ignore_z_stage computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"
                                         IJ.run("Grid/Collection stitching", copy_grid_instructions)
                                         # make width consistent post-stitching
                                         im=IJ.getImage()
