@@ -41,6 +41,8 @@ if not os.path.exists(tile_outdir):
 tile_subdir=os.path.join(tile_outdir, out_subdir_tag)
 if not os.path.exists(tile_subdir):
 	os.mkdir(tile_subdir)
+	
+subdir=os.path.join(input_file_location,subdir)
 
 if awsdownload == 'True':
 	if not os.path.exists(localtemp):
