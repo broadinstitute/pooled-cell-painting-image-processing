@@ -116,8 +116,10 @@ if os.path.isdir(subdir):
         print (welllist, presuflist)
 
         for well in welllist:
+                print ("starting on well "+well)
                 firstchan = True
                 for eachpresuf in presuflist: # for each channel
+                        print ("starting on suffix "+eachpresuf[1])
                         thisprefix, thissuffix=eachpresuf
                         thissuffixnicename = thissuffix.split('.')[0]
                         if thissuffixnicename[0]=='_':
@@ -129,6 +131,7 @@ if os.path.isdir(subdir):
                         rownum = 1
                         startnum = 0
                         for rowlen in row_widths:
+                                print ("starting on row "+str(rownum)+" of row length "+str(rowlen))
                                 filename=thisprefix+'_Well_'+well+'_Site_{i}_'+thissuffix
                                 fileoutname='Stitched'+filename.replace("Site_{i}","Row_"+str(rownum))
                                 if firstchan:
@@ -139,6 +142,7 @@ if os.path.isdir(subdir):
                                         standard_grid_instructions=["type=[Grid: snake by rows] order=["+order+"] grid_size_x="+str(rowlen)+" grid_size_y=1 tile_overlap="+str(overlap_pct)+" first_file_index_i="+str(startnum)+" directory="+out_subdir+" file_names=",
                                         " output_textfile_name=TileConfiguration_Row"+str(rownum)+".txt fusion_method=[Linear Blending] regression_threshold=0.30 max/avg_displacement_threshold=2.50 absolute_displacement_threshold=3.50 compute_overlap computation_parameters=[Save computation time (but use more RAM)] image_output=[Fuse and display]"]
                                         IJ.run("Grid/Collection stitching", standard_grid_instructions[0] + filename + standard_grid_instructions[1])
+                                        im=IJ.getImage()
                                         startnum += rowlen
                                 else:
                                         # use the stitching from the first channel
