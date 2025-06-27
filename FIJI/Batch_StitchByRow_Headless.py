@@ -29,7 +29,8 @@ import os
 
 row_widths = [5,7,7,7,7,7,5]
 imagesize = 2960
-tilesize = 2960*float(scalingstring) # barcoding acquisition size * scaling string
+scalingstring = 3.97 # barcode scaling string
+tilesize = 1480*float(scalingstring) # barcoding acquisition size * scaling string
 
 top_outfolder = 'output'
 if not os.path.exists(top_outfolder):
