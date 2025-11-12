@@ -265,6 +265,8 @@ if os.path.isdir(subdir):
                         row_widths = [6,10,12,14,16,16,18,18,18,18,18,18,16,16,14,12,10,6]
                 elif imperwell == '52':
                         row_widths = [4,6,8,8,8,8,6,4]
+                elif imperwell == '56':
+                        row_widths = [2, 6, 8, 8, 8, 8, 8, 6, 2]
                 elif imperwell == '45':
                         row_widths = [5,7,7,7,7,7,5]
                 else:
